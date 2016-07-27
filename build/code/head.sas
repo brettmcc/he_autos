@@ -284,8 +284,8 @@ keep id2011 headage2011 headgender2011 WGT2011 headmarital2011 headedu2011 headr
 
 data headinfor2013;
 set psiddata.fam13;
-id2013						  =     			 ER53002			;
-headage2013					  =					 ER53017			;
+id2013			      =     		 ER53002	    ;
+headage2013		      =			 ER53017	    ;
 headgender2013                =                  ER53018            ;      
 headedu2013                   =                  ER58223            ;
 headmarital2013               =                  ER58225            ;      
@@ -299,13 +299,15 @@ WGT2013                       =                  ER58257            ;
 keep id2013 headage2013 headgender2013 WGT2013 headmarital2013 headedu2013 headrace2013 headstatus2013 selfemploy2013 famsize2013 headocc3digit2013 headind3digit2013; run;
 
 data PSIDDATA.head;
-merge headinfor1999 headinfor2001 headinfor2003 headinfor2005 headinfor2007 headinfor2009;
+merge headinfor1999 headinfor2001 headinfor2003 headinfor2005 headinfor2007 headinfor2009 headinfor2011 headinfor2013;
 if    headage1999       > 120 then headage1999      =.   ;
 if    headage2001       > 120 then headage2001      =.   ;
 if    headage2003       > 120 then headage2003      =.   ;
 if    headage2005       > 120 then headage2005      =.   ;
 if    headage2007       > 120 then headage2007      =.   ;
 if    headage2009       > 120 then headage2009      =.   ;
+if    headage2011       > 120 then headage2011      =.   ;
+if    headage2013       > 120 then headage2013      =.   ;
                                                     
 if    headrace1999      > 7   then headrace1999     =.   ;
 if    headrace2001      > 7   then headrace2001     =.   ;
@@ -313,6 +315,8 @@ if    headrace2003      > 7   then headrace2003     =.   ;
 if    headrace2005      > 7   then headrace2005     =.   ;
 if    headrace2007      > 7   then headrace2007     =.   ;
 if    headrace2009      > 7   then headrace2009     =.   ;
+if    headrace2011      > 7   then headrace2011     =.   ;
+if    headrace2013      > 7   then headrace2013     =.   ;
 
 if    headmarital1999   > 7   then headmarital1999  =.   ; 
 if    headmarital2001   > 7   then headmarital2001  =.   ; 
@@ -320,6 +324,8 @@ if    headmarital2003   > 7   then headmarital2003  =.   ;
 if    headmarital2005   > 7   then headmarital2005  =.   ; 
 if    headmarital2007   > 7   then headmarital2007  =.   ; 
 if    headmarital2009   > 7   then headmarital2009  =.   ; 
+if    headmarital2011   > 7   then headmarital2011  =.   ; 
+if    headmarital2013   > 7   then headmarital2013  =.   ; 
 
 if    selfemploy1999    > 7   then selfemploy1999   =.   ; 
 if    selfemploy2001    > 7   then selfemploy2001   =.   ; 
@@ -327,6 +333,8 @@ if    selfemploy2003    > 7   then selfemploy2003   =.   ;
 if    selfemploy2005    > 7   then selfemploy2005   =.   ; 
 if    selfemploy2007    > 7   then selfemploy2007   =.   ; 
 if    selfemploy2009    > 7   then selfemploy2009   =.   ; 
+if    selfemploy2011    > 7   then selfemploy2011   =.   ; 
+if    selfemploy2013    > 7   then selfemploy2013   =.   ; 
 
 if    headstatus1999    > 10  then headstatus1999 = .;
 if    headstatus2001    > 10  then headstatus2001 = .;
@@ -334,6 +342,8 @@ if    headstatus2003    > 10  then headstatus2003 = .;
 if    headstatus2005    > 10  then headstatus2005 = .;
 if    headstatus2007    > 10  then headstatus2007 = .;
 if    headstatus2009    > 10  then headstatus2009 = .;
+if    headstatus2011    > 10  then headstatus2011 = .;
+if    headstatus2013    > 10  then headstatus2013 = .;
                                   
 if    headedu1999       = 99  then    headedu1999   =   .;                                 
 if    headedu2001       = 99  then    headedu2001   =   .;                                 
@@ -341,6 +351,8 @@ if    headedu2003       = 99  then    headedu2003   =   .;
 if    headedu2005       = 99  then    headedu2005   =   .;                                 
 if    headedu2007       = 99  then    headedu2007   =   .;                                 
 if    headedu2009       = 99  then    headedu2009   =   .;                                 
+if    headedu2011       = 99  then    headedu2011   =   .;                                 
+if    headedu2013       = 99  then    headedu2013   =   .;                                 
       
 if    headedu1999       < 12  and  headedu1999 ne . then school1999   = 1;
 if    headedu2001       < 12  and  headedu2001 ne . then school2001   = 1;
@@ -348,6 +360,8 @@ if    headedu2003       < 12  and  headedu2003 ne . then school2003   = 1;
 if    headedu2005       < 12  and  headedu2005 ne . then school2005   = 1;
 if    headedu2007       < 12  and  headedu2007 ne . then school2007   = 1;
 if    headedu2009       < 12  and  headedu2009 ne . then school2009   = 1;
+if    headedu2011       < 12  and  headedu2009 ne . then school2011   = 1;
+if    headedu2013       < 12  and  headedu2009 ne . then school2013   = 1;
       
 if    headedu1999       = 12 then school1999   = 2;                                 
 if    headedu2001       = 12 then school2001   = 2;                                 
@@ -355,6 +369,8 @@ if    headedu2003       = 12 then school2003   = 2;
 if    headedu2005       = 12 then school2005   = 2;                                 
 if    headedu2007       = 12 then school2007   = 2;                                 
 if    headedu2009       = 12 then school2009   = 2;                                 
+if    headedu2011       = 12 then school2011   = 2;                                 
+if    headedu2013       = 12 then school2013   = 2;                                 
                                                                                  
 if    headedu1999       > 12 and headedu1999  < 16  then school1999   = 3;          
 if    headedu2001       > 12 and headedu2001  < 16  then school2001   = 3;          
@@ -362,6 +378,8 @@ if    headedu2003       > 12 and headedu2003  < 16  then school2003   = 3;
 if    headedu2005       > 12 and headedu2005  < 16  then school2005   = 3;          
 if    headedu2007       > 12 and headedu2007  < 16  then school2007   = 3;          
 if    headedu2009       > 12 and headedu2009  < 16  then school2009   = 3;          
+if    headedu2011       > 12 and headedu2011  < 16  then school2011   = 3;          
+if    headedu2013       > 12 and headedu2013  < 16  then school2013   = 3;          
                                                                                                  
 if    headedu1999       >= 16  then school1999   = 4  ;                              
 if    headedu2001       >= 16  then school2001   = 4  ;                              
@@ -369,6 +387,8 @@ if    headedu2003       >= 16  then school2003   = 4  ;
 if    headedu2005       >= 16  then school2005   = 4  ;                              
 if    headedu2007       >= 16  then school2007   = 4  ;                              
 if    headedu2009       >= 16  then school2009   = 4  ;                              
+if    headedu2011       >= 16  then school2011   = 4  ;                              
+if    headedu2013       >= 16  then school2013   = 4  ;                              
 
 originalheadedu1999 = headedu1999; 
 originalheadedu2001 = headedu2001; 
@@ -376,6 +396,8 @@ originalheadedu2003 = headedu2003;
 originalheadedu2005 = headedu2005; 
 originalheadedu2007 = headedu2007; 
 originalheadedu2009 = headedu2009; 
+originalheadedu2011 = headedu2011; 
+originalheadedu2013 = headedu2013; 
 
 headedu1999   =   school1999; 
 headedu2001   =   school2001; 
@@ -383,6 +405,8 @@ headedu2003   =   school2003;
 headedu2005   =   school2005; 
 headedu2007   =   school2007; 
 headedu2009   =   school2009; 
+headedu2011   =   school2011; 
+headedu2013   =   school2013; 
 
 *%loopOcc;
 %macro occind(year);
@@ -497,6 +521,44 @@ or (headind3digit2009 ge 786  and headind3digit2009 le 847)
 or (headind3digit2009 ge 877  and headind3digit2009 le 929) then headind2009 = 11;
 if headind3digit2009  ge 937  and headind3digit2009 le 987  then headind2009 = 12;
 
+if headind3digit2011  =  .                                  then headind2011 = .; 
+if headind3digit2011  =  999                                then headind2011 = .; 
+if headind3digit2011  =  0                                  then headind2011 = 0; 
+if headind3digit2011  > 0     and headind3digit2011 le 29   then headind2011 = 1; 
+if headind3digit2011  ge 37   and headind3digit2011 le 49   then headind2011 = 2; 
+if headind3digit2011  =  77                                 then headind2011 = 3; 
+if headind3digit2011  ge 107  and headind3digit2011 le 399  then headind2011 = 4; 
+if (headind3digit2011 ge 57   and headind3digit2011 le 69)                        
+or (headind3digit2011 ge 647  and headind3digit2011 le 679) then headind2011 = 5; 
+if headind3digit2011  ge 407  and headind3digit2011 le 579  then headind2011 = 6; 
+if headind3digit2011  ge 687  and headind3digit2011 le 719  then headind2011 = 7; 
+if headind3digit2011  ge 757  and headind3digit2011 le 779  then headind2011 = 8; 
+if headind3digit2011  ge 866  and headind3digit2011 le 869  then headind2011 = 9; 
+if headind3digit2011  ge 856  and headind3digit2011 le 859  then headind2011 = 10;
+if (headind3digit2011 ge 727  and headind3digit2011 le 749)                       
+or (headind3digit2011 ge 786  and headind3digit2011 le 847)                       
+or (headind3digit2011 ge 877  and headind3digit2011 le 929) then headind2011 = 11;
+if headind3digit2011  ge 937  and headind3digit2011 le 987  then headind2011 = 12;
+
+if headind3digit2013  =  .                                  then headind2013 = .; 
+if headind3digit2013  =  999                                then headind2013 = .; 
+if headind3digit2013  =  0                                  then headind2013 = 0; 
+if headind3digit2013  > 0     and headind3digit2013 le 29   then headind2013 = 1; 
+if headind3digit2013  ge 37   and headind3digit2013 le 49   then headind2013 = 2; 
+if headind3digit2013  =  77                                 then headind2013 = 3; 
+if headind3digit2013  ge 107  and headind3digit2013 le 399  then headind2013 = 4; 
+if (headind3digit2013 ge 57   and headind3digit2013 le 69)                        
+or (headind3digit2013 ge 647  and headind3digit2013 le 679) then headind2013 = 5; 
+if headind3digit2013  ge 407  and headind3digit2013 le 579  then headind2013 = 6; 
+if headind3digit2013  ge 687  and headind3digit2013 le 719  then headind2013 = 7; 
+if headind3digit2013  ge 757  and headind3digit2013 le 779  then headind2013 = 8; 
+if headind3digit2013  ge 866  and headind3digit2013 le 869  then headind2013 = 9; 
+if headind3digit2013  ge 856  and headind3digit2013 le 859  then headind2013 = 10;
+if (headind3digit2013 ge 727  and headind3digit2013 le 749)                       
+or (headind3digit2013 ge 786  and headind3digit2013 le 847)                       
+or (headind3digit2013 ge 877  and headind3digit2013 le 929) then headind2013 = 11;
+if headind3digit2013  ge 937  and headind3digit2013 le 987  then headind2013 = 12;
+
 if headocc3digit2003 =  .                                  then headocc2003 = .;  
 if headocc3digit2003 =  999                                then headocc2003 = .;  
 if headocc3digit2003 =  0                                  then headocc2003 = 0;  
@@ -561,13 +623,47 @@ if headocc3digit2009 ge 600  and headocc3digit2009 le 613  then headocc2009 = 10
 if (headocc3digit2009 ge 370 and headocc3digit2009 le 465)                        
 or (headocc3digit2009 ge 980 and headocc3digit2009 le 983) then headocc2009 = 11; 
 
+if headocc3digit2011 =  .                                  then headocc2011 = .;  
+if headocc3digit2011 =  999                                then headocc2011 = .;  
+if headocc3digit2011 =  0                                  then headocc2011 = 0;  
+if (headocc3digit2011 ge 80  and headocc3digit2011 le 196)                        
+or (headocc3digit2011 ge 210 and headocc3digit2011 le 365) then headocc2011 = 1;  
+if (headocc3digit2011 ge 1   and headocc3digit2011 le 73)  then headocc2011 = 2;  
+if (headocc3digit2011 ge 200 and headocc3digit2011 le 206)                        
+or (headocc3digit2011 ge 470 and headocc3digit2011 le 496) then headocc2011 = 3;  
+if headocc3digit2011 ge 500  and headocc3digit2011 le 593  then headocc2011 = 4;  
+if headocc3digit2011 ge 700  and headocc3digit2011 le 896  then headocc2011 = 5;  
+if headocc3digit2011 ge 900  and headocc3digit2011 le 975  then headocc2011 = 7;  
+if headocc3digit2011 ge 620  and headocc3digit2011 le 694  then headocc2011 = 8;  
+if headocc3digit2011 ge 600  and headocc3digit2011 le 613  then headocc2011 = 10; 
+if (headocc3digit2011 ge 370 and headocc3digit2011 le 465)                        
+or (headocc3digit2011 ge 980 and headocc3digit2011 le 983) then headocc2011 = 11; 
+
+if headocc3digit2013 =  .                                  then headocc2013 = .;  
+if headocc3digit2013 =  999                                then headocc2013 = .;  
+if headocc3digit2013 =  0                                  then headocc2013 = 0;  
+if (headocc3digit2013 ge 80  and headocc3digit2013 le 196)                        
+or (headocc3digit2013 ge 210 and headocc3digit2013 le 365) then headocc2013 = 1;  
+if (headocc3digit2013 ge 1   and headocc3digit2013 le 73)  then headocc2013 = 2;  
+if (headocc3digit2013 ge 200 and headocc3digit2013 le 206)                        
+or (headocc3digit2013 ge 470 and headocc3digit2013 le 496) then headocc2013 = 3;  
+if headocc3digit2013 ge 500  and headocc3digit2013 le 593  then headocc2013 = 4;  
+if headocc3digit2013 ge 700  and headocc3digit2013 le 896  then headocc2013 = 5;  
+if headocc3digit2013 ge 900  and headocc3digit2013 le 975  then headocc2013 = 7;  
+if headocc3digit2013 ge 620  and headocc3digit2013 le 694  then headocc2013 = 8;  
+if headocc3digit2013 ge 600  and headocc3digit2013 le 613  then headocc2013 = 10; 
+if (headocc3digit2013 ge 370 and headocc3digit2013 le 465)                        
+or (headocc3digit2013 ge 980 and headocc3digit2013 le 983) then headocc2013 = 11; 
+
 keep
 id1999  headage1999  headgender1999   WGT1999  headmarital1999  headedu1999  headrace1999  headstatus1999  selfemploy1999  famsize1999  headocc3digit1999  headind3digit1999  headocc1999  headind1999  originalheadedu1999  
 id2001  headage2001  headgender2001   WGT2001  headmarital2001  headedu2001  headrace2001  headstatus2001  selfemploy2001  famsize2001  headocc3digit2001  headind3digit2001  headocc2001  headind2001  originalheadedu2001  
 id2003  headage2003  headgender2003   WGT2003  headmarital2003  headedu2003  headrace2003  headstatus2003  selfemploy2003  famsize2003  headocc3digit2003  headind3digit2003  headocc2003  headind2003  originalheadedu2003  
 id2005  headage2005  headgender2005   WGT2005  headmarital2005  headedu2005  headrace2005  headstatus2005  selfemploy2005  famsize2005  headocc3digit2005  headind3digit2005  headocc2005  headind2005  originalheadedu2005 
 id2007  headage2007  headgender2007   WGT2007  headmarital2007  headedu2007  headrace2007  headstatus2007  selfemploy2007  famsize2007  headocc3digit2007  headind3digit2007  headocc2007  headind2007  originalheadedu2007 
-id2009  headage2009  headgender2009   WGT2009  headmarital2009  headedu2009  headrace2009  headstatus2009  selfemploy2009  famsize2009  headocc3digit2009  headind3digit2009  headocc2009  headind2009  originalheadedu2009 ;
+id2009  headage2009  headgender2009   WGT2009  headmarital2009  headedu2009  headrace2009  headstatus2009  selfemploy2009  famsize2009  headocc3digit2009  headind3digit2009  headocc2009  headind2009  originalheadedu2009 
+id2011  headage2011  headgender2011   WGT2011  headmarital2011  headedu2011  headrace2011  headstatus2011  selfemploy2011  famsize2011  headocc3digit2011  headind3digit2011  headocc2011  headind2011  originalheadedu2011 
+id2013  headage2013  headgender2013   WGT2013  headmarital2013  headedu2013  headrace2013  headstatus2013  selfemploy2013  famsize2013  headocc3digit2013  headind3digit2013  headocc2013  headind2013  originalheadedu2013 ;
 run;
 
 proc freq data = psiddata.head;
@@ -577,7 +673,9 @@ headmarital2001  headedu2001  headrace2001  headstatus2001  selfemploy2001  fams
 headmarital2003  headedu2003  headrace2003  headstatus2003  selfemploy2003  famsize2003  headocc2003  headind2003            
 headmarital2005  headedu2005  headrace2005  headstatus2005  selfemploy2005  famsize2005  headocc2005  headind2005                          
 headmarital2007  headedu2007  headrace2007  headstatus2007  selfemploy2007  famsize2007  headocc2007  headind2007                          
-headmarital2009  headedu2009  headrace2009  headstatus2009  selfemploy2009  famsize2009  headocc2009  headind2009;                          
+headmarital2009  headedu2009  headrace2009  headstatus2009  selfemploy2009  famsize2009  headocc2009  headind2009                        
+headmarital2011  headedu2011  headrace2011  headstatus2011  selfemploy2011  famsize2011  headocc2011  headind2011                          
+headmarital2013  headedu2013  headrace2013  headstatus2013  selfemploy2013  famsize2013  headocc2013  headind2013;                           
 run;
 
 %macro freq(year);
@@ -586,7 +684,7 @@ tables headmarital&year headedu&year headrace&year selfemploy&year famsize&year 
 run;
 %mend;
 %freq(1999); %freq(2001);
-%freq(2003); %freq(2005); %freq(2007); %freq(2009); 
+%freq(2003); %freq(2005); %freq(2007); %freq(2009); %freq(2011); %freq(2013); 
 
 ******************************************************************************************************************
 *****Each year there are some invalid observations of education and race of PSID head and wife, valid information*
@@ -618,10 +716,10 @@ keep headrace pid;
 if in1;
 run;
 %mend;
-%vrace(1999) %vrace(2001) %vrace(2003) %vrace(2005) %vrace(2007) %vrace(2009)
+%vrace(1999) %vrace(2001) %vrace(2003) %vrace(2005) %vrace(2007) %vrace(2009) %vrace(2011) %vrace(2013)
 
 data vrace;
-set vrace1999 vrace2001 vrace2003 vrace2005 vrace2007 vrace2009;
+set vrace1999 vrace2001 vrace2003 vrace2005 vrace2007 vrace2009 vrace2011 vrace2013;
 proc sort data = vrace nodupkey;
 by pid;
 run;
@@ -660,7 +758,7 @@ by id&year;
 proc print data = race&year;
 run;
 %mend;
-%race(1999) %race(2001) %race(2003) %race(2005) %race(2007) %race(2009)
+%race(1999) %race(2001) %race(2003) %race(2005) %race(2007) %race(2009) %race(2011) %race(2013)
 
 %macro crace(year);
 proc sort data = psiddata.head;
@@ -678,7 +776,7 @@ tables headrace&year;
 run;
 %mend;
 %crace(1999) %crace(2001) %crace(2003) %crace(2005) 
-%crace(2007) %crace(2009)
+%crace(2007) %crace(2009) %crace(2011) %crace(2013)
 ********************************************************************************************************************
 ********************************************************************************************************************
 ********************************************************************************************************************
@@ -712,10 +810,10 @@ keep headedu pid w;
 if in1;
 run;
 %mend;
-%vedu(1999) %vedu(2001) %vedu(2003) %vedu(2005) %vedu(2007) %vedu(2009) 
+%vedu(1999) %vedu(2001) %vedu(2003) %vedu(2005) %vedu(2007) %vedu(2009) %vedu(2011) %vedu(2013) 
 
 data vedu;
-set vedu1999 vedu2001 vedu2003 vedu2005 vedu2007 vedu2009;
+set vedu1999 vedu2001 vedu2003 vedu2005 vedu2007 vedu2009 vedu2011 vedu2013;
 proc sort data = vedu nodupkey;
 by pid headedu;
 run;
@@ -828,7 +926,7 @@ proc sort data = edu&year;
 by id&year;
 run;
 %mend;
-%edu(1999) %edu(2001) %edu(2003) %edu(2005) %edu(2007) %edu(2009)
+%edu(1999) %edu(2001) %edu(2003) %edu(2005) %edu(2007) %edu(2009) %edu(2011) %edu(2013)
 
 %macro cedu(year);
 proc sort data = psiddata.head;
@@ -845,7 +943,7 @@ proc freq data = u;
 tables headedu&year;
 run;
 %mend;
-%cedu(1999) %cedu(2001) %cedu(2003) %cedu(2005) %cedu(2007) %cedu(2009)
+%cedu(1999) %cedu(2001) %cedu(2003) %cedu(2005) %cedu(2007) %cedu(2009) %cedu(2011) %cedu(2013)
 
 
 *******************************************************;
@@ -856,7 +954,9 @@ headmarital2001   headgender2001      headedu2001       headrace2001    headstat
 headmarital2003   headgender2003      headedu2003       headrace2003    headstatus2003    selfemploy2003      famsize2003   headocc2003    headind2003                              
 headmarital2005   headgender2005      headedu2005       headrace2005    headstatus2005    selfemploy2005      famsize2005   headocc2005    headind2005                             
 headmarital2007   headgender2007      headedu2007       headrace2007    headstatus2007    selfemploy2007      famsize2007   headocc2007    headind2007                             
-headmarital2009   headgender2009      headedu2009       headrace2009    headstatus2009    selfemploy2009      famsize2009   headocc2009    headind2009;                             
+headmarital2009   headgender2009      headedu2009       headrace2009    headstatus2009    selfemploy2009      famsize2009   headocc2009    headind2009                             
+headmarital2011   headgender2011      headedu2011       headrace2011    headstatus2011    selfemploy2011      famsize2011   headocc2011    headind2011                             
+headmarital2013   headgender2013      headedu2013       headrace2013    headstatus2013    selfemploy2013      famsize2013   headocc2013    headind2013;                             
 run;                                                                                                                               
 
 %macro freq(year);
@@ -868,4 +968,5 @@ tables headmarital&year headedu&year headgender&year headrace&year headstatus&ye
 run;
 %mend;
 
-%freq(1999); %freq(2001); %freq(2003); %freq(2005); %freq(2007); %freq(2009);
+%freq(1999); %freq(2001); %freq(2003); %freq(2005); %freq(2007); %freq(2009); %freq(2011); %freq(2013);
+

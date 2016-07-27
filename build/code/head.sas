@@ -265,6 +265,39 @@ headind3digit2009             =                  ER42168            ;
 WGT2009                       =                  ER47012            ;
 keep id2009 headage2009 headgender2009 WGT2009 headmarital2009 headedu2009 headrace2009 headstatus2009 selfemploy2009 famsize2009 headocc3digit2009 headind3digit2009; run;
 
+data headinfor2011;
+set psiddata.fam11;
+id2011                        =                  ER47302			;
+headage2011					  =					 ER47317			;
+headgender2011                =                  ER42018            ;      
+headedu2011                   =                  ER52405            ;
+headmarital2011               =                  ER52407            ;      
+headrace2011                  =                  ER51904            ;       
+headstatus2011                =                  ER47448            ;
+selfemploy2011                =                  ER47482            ;               
+famsize2011                   =                  ER47316            ;               
+headocc3digit2011             =                  ER47479            ;        
+headind3digit2011             =                  ER47480            ;        
+WGT2011                       =                  ER52436            ;
+keep id2011 headage2011 headgender2011 WGT2011 headmarital2011 headedu2011 headrace2011 headstatus2011 selfemploy2011 famsize2011 headocc3digit2011 headind3digit2011; run;
+
+
+data headinfor2013;
+set psiddata.fam13;
+id2013						  =     			 ER53002			;
+headage2013					  =					 ER53017			;
+headgender2013                =                  ER53018            ;      
+headedu2013                   =                  ER58223            ;
+headmarital2013               =                  ER58225            ;      
+headrace2013                  =                  ER57659            ;       
+headstatus2013                =                  ER53148            ;
+selfemploy2013                =                  ER53182            ;               
+famsize2013                   =                  ER53016            ;               
+headocc3digit2013             =                  ER53179            ;        
+headind3digit2013             =                  ER53180            ;        
+WGT2013                       =                  ER58257            ;
+keep id2013 headage2013 headgender2013 WGT2013 headmarital2013 headedu2013 headrace2013 headstatus2013 selfemploy2013 famsize2013 headocc3digit2013 headind3digit2013; run;
+
 data PSIDDATA.head;
 merge headinfor1999 headinfor2001 headinfor2003 headinfor2005 headinfor2007 headinfor2009;
 if    headage1999       > 120 then headage1999      =.   ;

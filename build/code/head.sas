@@ -161,22 +161,14 @@ id1999                        =                  ER13002            ;
 headage1999                   =                  ER13010            ;      
 headgender1999                =                  ER13011            ;      
 headmarital1999               =                  ER16423            ;      
-headrace1999                  =                  ER15928            ;      
+headrace1999                  =                  ER15928            ; 
+headedu1999					  =					 ER16516 			; 
 headstatus1999                =                  ER13205            ;
 selfemploy1999                =                  ER13210            ;               
 famsize1999                   =                  ER13009            ;               
 headocc3digit1999             =                  ER13215            ;        
 headind3digit1999             =                  ER13216            ;        
-keep id1999 headage1999 headgender1999 headmarital1999 headrace1999 headstatus1999 selfemploy1999 famsize1999 headocc3digit1999 headind3digit1999; 
-proc sort data = psiddata.racedu9401;
-by id1999;
-data headinfor1999;
-merge headinfor1999(in = in1) psiddata.racedu9401 psiddata.WGT1999;
-by id1999;
-if in1;
-headedu1999 = UPEDU99H;
-keep id1999 headage1999 headgender1999 WGT1999 headmarital1999 headedu1999 headrace1999 headstatus1999 selfemploy1999 famsize1999 headocc3digit1999 headind3digit1999; 
-
+keep id1999 headage1999 headgender1999 headmarital1999 headrace1999 headedu1999 headstatus1999 selfemploy1999 famsize1999 headocc3digit1999 headind3digit1999; 
 
 data headinfor2001;
 set psiddata.fam01;
@@ -184,22 +176,16 @@ id2001                        =                  ER17002            ;
 headage2001                   =                  ER17013            ;      
 headgender2001                =                  ER17014            ;      
 headmarital2001               =                  ER20369            ;      
-headrace2001                  =                  ER19989            ;      
+headrace2001                  =                  ER19989            ;
+headedu2001					  =					 ER20457 			; 
 headstatus2001                =                  ER17216            ;
 selfemploy2001                =                  ER17221            ;               
 famsize2001                   =                  ER17012            ;               
 headocc3digit2001             =                  ER17226            ;        
 headind3digit2001             =                  ER17227            ;        
 WGT2001                       =                  ER20394            ;
-keep id2001 headage2001 headgender2001 WGT2001 headmarital2001 headrace2001 headstatus2001 selfemploy2001 famsize2001 headocc3digit2001 headind3digit2001; 
-proc sort data = psiddata.racedu9401;
-by id2001;
-data headinfor2001;
-merge headinfor2001(in = in1) psiddata.racedu9401;
-by id2001;
-if in1;
-headedu2001 = UPEDU01H;
-keep id2001 headage2001 headgender2001 WGT2001 headmarital2001 headedu2001 headrace2001 headstatus2001 selfemploy2001 famsize2001 headocc3digit2001 headind3digit2001; 
+keep id2001 headage2001 headgender2001 WGT2001 headmarital2001 headrace2001 headedu2001 headstatus2001 selfemploy2001 famsize2001 headocc3digit2001 headind3digit2001; 
+
 
 data headinfor2003;
 set psiddata.fam03;
@@ -269,7 +255,7 @@ data headinfor2011;
 set psiddata.fam11;
 id2011                        =                  ER47302			;
 headage2011					  =					 ER47317			;
-headgender2011                =                  ER42018            ;      
+headgender2011                =                  ER47318            ;      
 headedu2011                   =                  ER52405            ;
 headmarital2011               =                  ER52407            ;      
 headrace2011                  =                  ER51904            ;       
@@ -284,8 +270,8 @@ keep id2011 headage2011 headgender2011 WGT2011 headmarital2011 headedu2011 headr
 
 data headinfor2013;
 set psiddata.fam13;
-id2013			      =     		 ER53002	    ;
-headage2013		      =			 ER53017	    ;
+id2013						  =     			 ER53002			;
+headage2013					  =					 ER53017			;
 headgender2013                =                  ER53018            ;      
 headedu2013                   =                  ER58223            ;
 headmarital2013               =                  ER58225            ;      
@@ -297,6 +283,7 @@ headocc3digit2013             =                  ER53179            ;
 headind3digit2013             =                  ER53180            ;        
 WGT2013                       =                  ER58257            ;
 keep id2013 headage2013 headgender2013 WGT2013 headmarital2013 headedu2013 headrace2013 headstatus2013 selfemploy2013 famsize2013 headocc3digit2013 headind3digit2013; run;
+
 
 data PSIDDATA.head;
 merge headinfor1999 headinfor2001 headinfor2003 headinfor2005 headinfor2007 headinfor2009 headinfor2011 headinfor2013;
@@ -381,14 +368,14 @@ if    headedu2009       > 12 and headedu2009  < 16  then school2009   = 3;
 if    headedu2011       > 12 and headedu2011  < 16  then school2011   = 3;          
 if    headedu2013       > 12 and headedu2013  < 16  then school2013   = 3;          
                                                                                                  
-if    headedu1999       >= 16  then school1999   = 4  ;                              
-if    headedu2001       >= 16  then school2001   = 4  ;                              
-if    headedu2003       >= 16  then school2003   = 4  ;                              
-if    headedu2005       >= 16  then school2005   = 4  ;                              
-if    headedu2007       >= 16  then school2007   = 4  ;                              
-if    headedu2009       >= 16  then school2009   = 4  ;                              
-if    headedu2011       >= 16  then school2011   = 4  ;                              
-if    headedu2013       >= 16  then school2013   = 4  ;                              
+if    headedu1999       >= 16  and headedu1999<90 then school1999   = 4  ;                              
+if    headedu2001       >= 16  and headedu2001<90 then school2001   = 4  ;                              
+if    headedu2003       >= 16  and headedu2003<90 then school2003   = 4  ;                              
+if    headedu2005       >= 16  and headedu2005<90 then school2005   = 4  ;                              
+if    headedu2007       >= 16  and headedu2007<90 then school2007   = 4  ;                              
+if    headedu2009       >= 16  and headedu2009<90 then school2009   = 4  ;                              
+if    headedu2011       >= 16  and headedu2011<90 then school2011   = 4  ;                              
+if    headedu2013       >= 16  and headedu2013<90 then school2013   = 4  ;                              
 
 originalheadedu1999 = headedu1999; 
 originalheadedu2001 = headedu2001; 

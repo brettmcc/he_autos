@@ -34,19 +34,99 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 0 - does not own property;
 %let mortgage = V104 V594 V1265 V1968 V2567 V6480 V7085 V7676 V8975 V10438 V11619 V13024 V14127 V15141 V16642 V18073 V19373 V20673 V22428 ER2036 ER5035 ER7035 ER10039 ER13044 ER17049 ER21048 ER25039 ER36039 ER42040 ER47345 ER53045;
 
+/****ADD HERE***/
+*Whether have second mortgage (HELOC + HEL)
+;
+
+
+
+%let basenames = "hmowner hmval hmval100pl hmval200pl hmval25pl hmval400pl hmval75pl hmvalaccuracycode mortgage";
 
 /**YEARS**/
 %let allyears = 1968 1969 1970 1971 1972 1973 1974 1975 1976 1977 1978 1979 1980 1981 1982 1983 1984 1985 1986 1987 1988 1989 1990 1991 1992 1993 1994 1995 1996 1997 1999 2001 2003 2005 2007 2009 2011 2013;
 %let aughts =  2001 2003 2005 2007 2009 2011 2013;
 %let lastFiveSurveys = 2005 2007 2009 2011 2013;
-%let 68to93 = 1968 1969 1970 1971 1972 1973 1974 1975 1976 1977 1978 1979 1980 1981 1982 1983 1984 1985 1986 1987 1988 1989 1990 1991 1992 1993;
-%let 68to72 = 1968 1969 1970 1971 1972;
-%let 79to81 = 1979 1980 1981;
-%let 83to13 = 1983 1984 1985 1986 1987 1988 1989 1990 1991 1992 1993 1994 1995 1996 1997 1999 2001 2003 2005 2007 2009 2011 2013;
+%let y68to93 = 1968 1969 1970 1971 1972 1973 1974 1975 1976 1977 1978 1979 1980 1981 1982 1983 1984 1985 1986 1987 1988 1989 1990 1991 1992 1993;
+%let y68to72 = 1968 1969 1970 1971 1972;
+%let y79to81 = 1979 1980 1981;
+%let y83to13 = 1983 1984 1985 1986 1987 1988 1989 1990 1991 1992 1993 1994 1995 1996 1997 1999 2001 2003 2005 2007 2009 2011 2013;
 
 
 /**MACRO**/
 %macro rename(yrs,vars,basename);
 	%let max = %sysfunc(countw(&yrs));
 	%do i=1 %to &max;
-		%let y = %scan(&yrs,&i);
+		%let yr = %scan(&yrs,&i);
+		%let twodigyr = %substr(&yr,3);
+		%let var = %scan(&vars.,&i.);
+		/*match year to ID variable*/
+		%if &yr = 1968 %then %let idvar = V3;
+		%else %if &yr = 1969 %then %let idvar = V442;
+		%else %if &yr = 1970 %then %let idvar = V1102;
+		%else %if &yr = 1971 %then %let idvar = V1802;
+		%else %if &yr = 1972 %then %let idvar = V2402;
+		%else %if &yr = 1973 %then %let idvar = V3002;
+		%else %if &yr = 1974 %then %let idvar = V3402;
+		%else %if &yr = 1975 %then %let idvar = V3802;
+		%else %if &yr = 1976 %then %let idvar = V4302;
+		%else %if &yr = 1977 %then %let idvar = V5202;
+		%else %if &yr = 1978 %then %let idvar = V5702;
+		%else %if &yr = 1979 %then %let idvar = V6302;
+		%else %if &yr = 1980 %then %let idvar = V6902;
+		%else %if &yr = 1981 %then %let idvar = V7502;
+		%else %if &yr = 1982 %then %let idvar = V8202;
+		%else %if &yr = 1983 %then %let idvar = V8802;
+		%else %if &yr = 1984 %then %let idvar = V10002;
+		%else %if &yr = 1985 %then %let idvar = V11102;
+		%else %if &yr = 1986 %then %let idvar = V12502;
+		%else %if &yr = 1987 %then %let idvar = V13702;
+		%else %if &yr = 1988 %then %let idvar = V14802;
+		%else %if &yr = 1989 %then %let idvar = V16302;
+		%else %if &yr = 1990 %then %let idvar = V17702;
+		%else %if &yr = 1991 %then %let idvar = V19002;
+		%else %if &yr = 1992 %then %let idvar = V20302;
+		%else %if &yr = 1993 %then %let idvar = V21602;
+		%else %if &yr = 1994 %then %let idvar = ER2002;
+		%else %if &yr = 1995 %then %let idvar = ER5002;
+		%else %if &yr = 1996 %then %let idvar = ER7002;
+		%else %if &yr = 1997 %then %let idvar = ER10002;
+		%else %if &yr = 1999 %then %let idvar = ER13002;
+		%else %if &yr = 2001 %then %let idvar = ER17002;
+		%else %if &yr = 2003 %then %let idvar = ER21002;
+		%else %if &yr = 2005 %then %let idvar = ER25002;
+		%else %if &yr = 2007 %then %let idvar = ER36002;
+		%else %if &yr = 2009 %then %let idvar = ER42002;
+		%else %if &yr = 2011 %then %let idvar = ER47302;
+		%else %if &yr = 2013 %then %let idvar = ER53002;
+
+		data &basename.&yr.;
+			set in.fam&twodigyr.;
+			id&yr. = &idvar.;
+			&basename.&yr. = &var.;
+			keep id&yr. &basename.&yr.;
+		run;
+
+		proc sort data=&basename.&yr.;
+			by id&yr.;
+		run;
+
+	%end;
+
+	data &basename.;
+		set &basename.:;
+	run;
+%mend;
+
+%rename(&allyears., &hmowner., hmowner)	%rename(&allyears., &hmval., hmval)
+%rename(&lastFiveSurveys., &hmval100pl., hmval100pl)
+%rename(&lastFiveSurveys., &hmval200pl., hmval200pl)
+%rename(&lastFiveSurveys., &hmval400pl., hmval400pl)
+%rename(&lastFiveSurveys., &hmval25pl., hmval25pl)
+%rename(&lastFiveSurveys., &hmval75pl., hmval75pl)
+%rename(&y68to93. &aughts., &hmvalaccuracycode., hmvalaccuracycode)
+%rename(&y68to72. &y79to81. &y83to13., &mortgage., mortgage)
+
+proc sql;
+	
+
+quit;

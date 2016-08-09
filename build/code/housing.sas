@@ -1,6 +1,10 @@
 * Housing.sas
 * Brett McCully, August 2016;
 
+*clear out any remaining work files;
+proc datasets lib=work kill memtype=data nolist;
+run;
+
 /**VARIABLES**/
 *id, 1968-2013;
 %let allidvars = V3 V442 V1102 V1802 V2402 V3002 V3402 V3802 V4302 V5202 V5702 V6302 V6902 V7502 V8202 V8802 V10002 V11102 V12502 V13702 V14802 V16302 V17702 V19002 V20302 V21602 ER2002 ER5002 ER7002 ER10002 ER13002 ER17002 ER21002 ER25002 ER36002 ER42002 ER47302 ER53002;
@@ -105,15 +109,25 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 			&basename.&yr. = &var.;
 			keep id&yr. &basename.&yr.;
 		run;
-
 		proc sort data=&basename.&yr.;
 			by id&yr.;
 		run;
-
+		proc sort data=out.person;
+			by id&yr.;
+		run;
+		data &basename.&yr.;
+			merge &basename.&yr. out.person;
+			by id&yr.;
+			keep pid &basename.&yr.;
+		run;
 	%end;
 
 	data &basename.;
-		set &basename.:;
+		merge &basename.:;
+		by pid;
+	run;
+	proc sort data=&basename.;
+		by pid;
 	run;
 %mend;
 
@@ -126,7 +140,13 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 %rename(&y68to93. &aughts., &hmvalaccuracycode., hmvalaccuracycode)
 %rename(&y68to72. &y79to81. &y83to13., &mortgage., mortgage)
 
-proc sql;
-	
 
-quit;
+data out.housing;
+	merge &basenames.;
+	by pid;
+run;
+
+
+
+
+

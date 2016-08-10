@@ -40,11 +40,13 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 
 /****ADD HERE***/
 *Whether have second mortgage (HELOC + HEL)
+1 - yes
+5 - no
+8 - DK
+9 - NA, refused
 ;
+%let secMtg = V595 V1266 V1971 V2570 V6482 V7087 V7678 V8977 V10440 V11621 V13026 V14129 V15142 V16643 V18075 V19375 V20675 V22430 ER2045 ER5044 ER7110 ER10056 ER13053 ER17060 ER21059 ER25050 ER36051 ER42059 ER47366 ER53066;
 
-
-
-%let basenames = "hmowner hmval hmval100pl hmval200pl hmval25pl hmval400pl hmval75pl hmvalaccuracycode mortgage";
 
 /**YEARS**/
 %let allyears = 1968 1969 1970 1971 1972 1973 1974 1975 1976 1977 1978 1979 1980 1981 1982 1983 1984 1985 1986 1987 1988 1989 1990 1991 1992 1993 1994 1995 1996 1997 1999 2001 2003 2005 2007 2009 2011 2013;
@@ -52,6 +54,7 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 %let lastFiveSurveys = 2005 2007 2009 2011 2013;
 %let y68to93 = 1968 1969 1970 1971 1972 1973 1974 1975 1976 1977 1978 1979 1980 1981 1982 1983 1984 1985 1986 1987 1988 1989 1990 1991 1992 1993;
 %let y68to72 = 1968 1969 1970 1971 1972;
+%let y69to72 = 1969 1970 1971 1972;
 %let y79to81 = 1979 1980 1981;
 %let y83to13 = 1983 1984 1985 1986 1987 1988 1989 1990 1991 1992 1993 1994 1995 1996 1997 1999 2001 2003 2005 2007 2009 2011 2013;
 
@@ -103,28 +106,34 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 		%else %if &yr = 2011 %then %let idvar = ER47302;
 		%else %if &yr = 2013 %then %let idvar = ER53002;
 
-		data &basename.&yr.;
+		%put &idvar.;
+		data temp;
 			set in.fam&twodigyr.;
 			id&yr. = &idvar.;
 			&basename.&yr. = &var.;
 			keep id&yr. &basename.&yr.;
 		run;
-		proc sort data=&basename.&yr.;
+		proc sort data=temp;
 			by id&yr.;
 		run;
 		proc sort data=out.person;
 			by id&yr.;
 		run;
 		data &basename.&yr.;
-			merge &basename.&yr. out.person;
+			merge temp out.person;
 			by id&yr.;
-			keep pid &basename.&yr.;
+			if &basename.&yr. ^= .;
+			keep pid &basename.&yr. id&yr.;
+		run;
+		proc sort data=&basename.&yr.;
+			by pid;
 		run;
 	%end;
 
 	data &basename.;
 		merge &basename.:;
 		by pid;
+		keep pid &basename.:;
 	run;
 	proc sort data=&basename.;
 		by pid;
@@ -139,10 +148,11 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 %rename(&lastFiveSurveys., &hmval75pl., hmval75pl)
 %rename(&y68to93. &aughts., &hmvalaccuracycode., hmvalaccuracycode)
 %rename(&y68to72. &y79to81. &y83to13., &mortgage., mortgage)
+%rename(&y69to72. &y79to81. &y83to13., &secMtg., secMtg)
 
 
 data out.housing;
-	merge &basenames.;
+	merge hmowner hmval hmval100pl hmval200pl hmval25pl hmval400pl hmval75pl hmvalaccuracycode mortgage secMtg;
 	by pid;
 run;
 

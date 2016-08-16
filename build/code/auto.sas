@@ -1,6 +1,8 @@
 * auto.sas;
 * August 2016, Brett McCully;
 
+options mprint;
+
 /**VARIABLE LISTS**/
 %let idvars99to13 = ER13002 ER17002 ER21002 ER25002 ER36002 ER42002 ER47302 ER53002;
 
@@ -22,7 +24,7 @@
 8 - DK
 9 - NA or refused;
 %let howacqveh1 = ER13107 ER17118 ER21757 ER25716 ER36734 ER42738 ER48056 ER53753;
-%let howacqveh2 =  	ER13137 ER17148 ER21786 ER25744 ER36762 ER42761 ER48081 ER53777;
+%let howacqveh2 = ER13137 ER17148 ER21786 ER25744 ER36762 ER42761 ER48081 ER53777;
 %let howacqveh3 = ER13167 ER17178 ER21815 ER25772 ER36790 ER42784 ER48106 ER53801;
 *new or used (1999 thru 2011)
 1 - new
@@ -30,7 +32,7 @@
 8 - DK
 9 - NA or refused;
 %let neworusedveh1 = ER13108 ER17119 ER21758 ER25717 ER36735 ER42739 ER48057;
-%let neworusedveh2 =  	ER13138 ER17149 ER21787 ER25745 ER36763 ER42762 ER48082;
+%let neworusedveh2 = ER13138 ER17149 ER21787 ER25745 ER36763 ER42762 ER48082;
 %let neworusedveh3 = ER13168 ER17179 ER21816 ER25773 ER36791 ER42785 ER48107;
 *car financing
 1 - yes, financed all or part of auto purchase
@@ -38,7 +40,7 @@
 8 - DK
 9 - NA or refused;
 %let financeveh1 = ER13119 ER17130 ER21769 ER25727 ER36745 ER42746 ER48064 ER53760;
-%let finacneveh2 = ER13149 ER17160 ER21798 ER25755 ER36773 ER42769 ER48089 ER53784;
+%let financeveh2 = ER13149 ER17160 ER21798 ER25755 ER36773 ER42769 ER48089 ER53784;
 %let financeveh3 = ER13179 ER17190 ER21827 ER25783 ER36801 ER42792 ER48114 ER53808;
 
 
@@ -75,12 +77,12 @@
 			neworusedveh2&yr. = %scan(&neworusedveh2.,&i.);
 			neworusedveh3&yr. = %scan(&neworusedveh3.,&i.);
 			%end;
-			financeveh1&yr. = %scan(financeveh1&yr.,&i.);
-			financeveh2&yr. = %scan(financeveh2&yr.,&i.);
-			financeveh3&yr. = %scan(financeveh3&yr.,&i.);
+			financeveh1&yr. = %scan(&financeveh1.,&i.);
+			financeveh2&yr. = %scan(&financeveh2.,&i.);
+			financeveh3&yr. = %scan(&financeveh3.,&i.);
 			keep id&yr. veh1boughtinlast2yrs&yr. veh2boughtinlast2yrs&yr. veh3boughtinlast2yrs&yr.
 				 veh1price&yr. veh2price&yr. veh3price&yr. howacqveh1&yr. howacqveh2&yr. howacqveh3&yr.
-				 neworusedveh1&yr. neworusedveh2&yr. neworusedveh3&yr. 
+				 %if &yr.^=2013 %then %do; neworusedveh1&yr. neworusedveh2&yr. neworusedveh3&yr. %end;
 				 financeveh1&yr. financeveh2&yr. financeveh3&yr.;
 		run;
 	%end;

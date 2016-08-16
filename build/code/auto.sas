@@ -48,7 +48,6 @@
 	%do i=1 %to &max;
 		%let yr = %scan(&yrs,&i);
 		%let twodigyr = %substr(&yr,3);
-		%let var = %scan(&vars.,&i.);
 		/*match year to ID variable*/
 		%if &yr = 1999 %then %let idvar = ER13002;
 		%else %if &yr. = 2001 %then %let idvar = ER17002;
@@ -60,7 +59,7 @@
 		%else %if &yr. = 2013 %then %let idvar = ER53002;
 
 		data auto&yr.;
-			set fam&twodigyr.;
+			set in.fam&twodigyr.;
 			id&yr. = &idvar.;
 			veh1boughtinlast2yrs&yr. = %scan(&veh1boughtinlast2yrs.,&i.);
 			veh2boughtinlast2yrs&yr. = %scan(&veh2boughtinlast2yrs.,&i.);
@@ -79,14 +78,17 @@
 			financeveh1&yr. = %scan(financeveh1&yr.,&i.);
 			financeveh2&yr. = %scan(financeveh2&yr.,&i.);
 			financeveh3&yr. = %scan(financeveh3&yr.,&i.);
-			keep id&yr. veh: howacqveh: neworusedveh: financeveh:;
+			keep id&yr. veh1boughtinlast2yrs&yr. veh2boughtinlast2yrs&yr. veh3boughtinlast2yrs&yr.
+				 veh1price&yr. veh2price&yr. veh3price&yr. howacqveh1&yr. howacqveh2&yr. howacqveh3&yr.
+				 neworusedveh1&yr. neworusedveh2&yr. neworusedveh3&yr. 
+				 financeveh1&yr. financeveh2&yr. financeveh3&yr.;
 		run;
-
+	%end;
 %mend;
 
 %rename(1999 2001 2003 2005 2007 2009 2011 2013);
 
-data auto;
+data out.auto;
 	merge auto:;
-	by 
+run;
 	

@@ -38,13 +38,11 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 0 - does not own property;
 %let mortgage = V104 V594 V1265 V1968 V2567 V6480 V7085 V7676 V8975 V10438 V11619 V13024 V14127 V15141 V16642 V18073 V19373 V20673 V22428 ER2036 ER5035 ER7035 ER10039 ER13044 ER17049 ER21048 ER25039 ER36039 ER42040 ER47345 ER53045;
 
-/****ADD HERE***/
 *Whether have second mortgage (HELOC + HEL)
 1 - yes
 5 - no
 8 - DK
-9 - NA, refused
-;
+9 - NA, refused;
 %let secMtg = V595 V1266 V1971 V2570 V6482 V7087 V7678 V8977 V10440 V11621 V13026 V14129 V15142 V16643 V18075 V19375 V20675 V22430 ER2045 ER5044 ER7110 ER10056 ER13053 ER17060 ER21059 ER25050 ER36051 ER42059 ER47366 ER53066;
 
 
@@ -107,38 +105,37 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 		%else %if &yr = 2013 %then %let idvar = ER53002;
 
 		%put &idvar.;
-		data temp;
+		data &basename.&yr.;
 			set in.fam&twodigyr.;
 			id&yr. = &idvar.;
 			&basename.&yr. = &var.;
 			keep id&yr. &basename.&yr.;
 		run;
-		proc sort data=temp;
-			by id&yr.;
-		run;
-		proc sort data=out.person;
-			by id&yr.;
-		run;
-		data &basename.&yr.;
-			merge temp out.person;
-			by id&yr.;
-			if &basename.&yr. ^= .;
-			keep pid &basename.&yr. id&yr.;
-		run;
 		proc sort data=&basename.&yr.;
-			by pid;
+			by id&yr.;
 		run;
 	%end;
-
-	data &basename.;
-		merge &basename.:;
-		by pid;
-		keep pid &basename.:;
-	run;
-	proc sort data=&basename.;
-		by pid;
-	run;
 %mend;
+%macro merging(yrs);
+	%let max = %sysfunc(countw(&yrs));
+	%do i=1 %to &max.;
+		%let yr = %scan(&yrs.,&i.);	
+		data housing&yr.;
+			merge hmowner&yr. hmval&yr. 
+				  %if &yr.<1973 OR (&yr.>1978 AND &yr.<1982) OR &yr.>1982 %then %do;
+					mortgage&yr. 
+					%if &yr^=1968 %then %do; secMtg&yr. %end;
+				  %end;
+				  %if &yr>2004 %then %do;
+					hmval100pl&yr. hmval200pl&yr. hmval25pl&yr. hmval400pl&yr. hmval75pl&yr. 
+				  %end;
+				  %if &yr<1994 OR &yr>2000 %then %do; hmvalaccuracycode&yr. %end;
+				  ;
+			by id&yr.;
+		run;
+	%end;
+%mend;
+
 
 %rename(&allyears., &hmowner., hmowner)	%rename(&allyears., &hmval., hmval)
 %rename(&lastFiveSurveys., &hmval100pl., hmval100pl)
@@ -149,14 +146,8 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 %rename(&y68to93. &aughts., &hmvalaccuracycode., hmvalaccuracycode)
 %rename(&y68to72. &y79to81. &y83to13., &mortgage., mortgage)
 %rename(&y69to72. &y79to81. &y83to13., &secMtg., secMtg)
-
+%merging(&allyears.)
 
 data out.housing;
-	merge hmowner hmval hmval100pl hmval200pl hmval25pl hmval400pl hmval75pl hmvalaccuracycode mortgage secMtg;
-	by pid;
+	merge housing:;
 run;
-
-
-
-
-

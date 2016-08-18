@@ -8,7 +8,8 @@ options mprint;
 
 *1 - vehicle purchased since last survey
  3 - leased since last survey (only 2003-2013)
- 5 - all others;
+ 5 - all others
+ inexplicable change in frequencies in 2013;
 %let veh1boughtinlast2yrs = ER13114 ER17125 ER21764 ER25722 ER36740 ER42743 ER48061 ER53757;
 %let veh2boughtinlast2yrs = ER13144 ER17155 ER21793 ER25750 ER36768 ER42766 ER48086 ER53781;
 %let veh3boughtinlast2yrs = ER13174 ER17185 ER21822 ER25778 ER36796 ER42789 ER48111 ER53805;
@@ -66,6 +67,7 @@ options mprint;
 			veh1boughtinlast2yrs&yr. = %scan(&veh1boughtinlast2yrs.,&i.);
 			veh2boughtinlast2yrs&yr. = %scan(&veh2boughtinlast2yrs.,&i.);
 			veh3boughtinlast2yrs&yr. = %scan(&veh3boughtinlast2yrs.,&i.);
+			vehboughtinlast2yrs&yr. = (veh1boughtinlast2yrs&yr.=1 OR veh1boughtinlast2yrs&yr.=1 OR veh1boughtinlast2yrs&yr.=1);
 			veh1price&yr. = %scan(&veh1price.,&i.);
 			veh2price&yr. = %scan(&veh2price.,&i.);
 			veh3price&yr. = %scan(&veh3price.,&i.);
@@ -83,7 +85,7 @@ options mprint;
 			financeveh1&yr. = %scan(&financeveh1.,&i.);
 			financeveh2&yr. = %scan(&financeveh2.,&i.);
 			financeveh3&yr. = %scan(&financeveh3.,&i.);
-			keep id&yr. veh1boughtinlast2yrs&yr. veh2boughtinlast2yrs&yr. veh3boughtinlast2yrs&yr.
+			keep id&yr. vehboughtinlast2yrs&yr. veh1boughtinlast2yrs&yr. veh2boughtinlast2yrs&yr. veh3boughtinlast2yrs&yr.
 				 veh1price&yr. veh2price&yr. veh3price&yr. howacqveh1&yr. howacqveh2&yr. howacqveh3&yr.
 				 %if &yr.^=2013 %then %do; neworusedveh1&yr. neworusedveh2&yr. neworusedveh3&yr. %end;
 				 financeveh1&yr. financeveh2&yr. financeveh3&yr.;

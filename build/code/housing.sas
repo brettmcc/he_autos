@@ -15,7 +15,6 @@ run;
 %let hmowner = V103 V593 V1264 V1967 V2566 V3108 V3522 V3939 V4450 V5364 V5864 V6479 V7084 V7675 V8364 V8974 V10437 V11618 V13023 V14126 V15140 V16641 V18072 V19372 V20672 V22427 ER2032 ER5031 ER7031 ER10035 ER13040 ER17043 ER21042 ER25028 ER36028 ER42029 ER47329 ER53029;
 * home value, 1968 to 2013;
 %let hmval = V5 V449 V1122 V1823 V2423 V3021 V3417 V3817 V4318 V5217 V5717 V6319 V6917 V7517 V8217 V8817 V10018 V11125 V12524 V13724 V14824 V16324 V17724 V19024 V20324 V21610 ER2033 ER5032 ER7032 ER10036 ER13041 ER17044 ER21043 ER25029 ER36029 ER42030 ER47330 ER53030;
-
 *If didnt answer above explicitly, then asked follow up of whether home value in various value buckets for 2005 to 2013;
 *home value worth 100k+
 1 - yes
@@ -37,14 +36,18 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 9 - NA
 0 - does not own property;
 %let mortgage = V104 V594 V1265 V1968 V2567 V6480 V7085 V7676 V8975 V10438 V11619 V13024 V14127 V15141 V16642 V18073 V19373 V20673 V22428 ER2036 ER5035 ER7035 ER10039 ER13044 ER17049 ER21048 ER25039 ER36039 ER42040 ER47345 ER53045;
-
 *Whether have second mortgage (HELOC + HEL)
 1 - yes
 5 - no
 8 - DK
 9 - NA, refused;
 %let secMtg = V595 V1266 V1971 V2570 V6482 V7087 V7678 V8977 V10440 V11621 V13026 V14129 V15142 V16643 V18075 V19375 V20675 V22430 ER2045 ER5044 ER7110 ER10056 ER13053 ER17060 ER21059 ER25050 ER36051 ER42059 ER47366 ER53066;
-
+*whether sold main dwelling
+1 - yes
+5 - no
+8 - DK
+9 - NA, refused;
+%let soldHome = ER15046 ER19242 ER22637 ER26618 ER37636 ER43627 ER48972 ER54734;
 
 /**YEARS**/
 %let allyears = 1968 1969 1970 1971 1972 1973 1974 1975 1976 1977 1978 1979 1980 1981 1982 1983 1984 1985 1986 1987 1988 1989 1990 1991 1992 1993 1994 1995 1996 1997 1999 2001 2003 2005 2007 2009 2011 2013;
@@ -129,6 +132,7 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 				  %if &yr>2004 %then %do;
 					hmval100pl&yr. hmval200pl&yr. hmval25pl&yr. hmval400pl&yr. hmval75pl&yr. 
 				  %end;
+				  %if &yr.>1998 %then %do; soldHome&yr. %end;
 				  %if &yr<1994 OR &yr>2000 %then %do; hmvalaccuracycode&yr. %end;
 				  ;
 			by id&yr.;
@@ -148,8 +152,17 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 %rename(&y68to93. &aughts., &hmvalaccuracycode., hmvalaccuracycode)
 %rename(&y68to72. &y79to81. &y83to13., &mortgage., mortgage)
 %rename(&y69to72. &y79to81. &y83to13., &secMtg., secMtg)
-%merging(&allyears.)
+%rename(1999 &aughts.,&soldHome.,soldHome)
+%merging(&allyears.);
 
 data out.housing;
 	merge housing:;
+	*compute home value increase;
+	%macro hmvalchg;
+		%do yr=1997 %to 2013 %by 2;
+			%let yrs2back = %eval(&yr.-2);
+			if soldHome&yr.^=1 then hmvalchglast2yrs&yr. = hmval&yr. - hmval&yrs2back.;
+		%end;
+	%mend;
+	%hmvalchg;
 run;

@@ -18,12 +18,20 @@
 				 			financeveh1&y. financeveh2&y. financeveh3&y.)
 					out.head(keep=id&y. headmarital&y.  headedu&y.  headrace&y.  headstatus&y.  selfemploy&y.  famsize&y.  headocc&y.  headind&y. wgt&y.);
 			by id&y.;
+			if headrace&y. in (3, 4, 5, 6, 7) then headrace&y. = 3; 
+			format headrace&y. race.;
 		run;
 		proc sort data=temp&y.;
 			by pid;
 		run;
 	%end;
 %mend;
+
+proc format;
+	value race 1 = 'White'
+				2 = 'Black'
+				3 = 'Other';
+run;
 
 %merger;
 

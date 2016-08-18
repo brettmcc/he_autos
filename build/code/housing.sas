@@ -132,12 +132,14 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 				  %if &yr<1994 OR &yr>2000 %then %do; hmvalaccuracycode&yr. %end;
 				  ;
 			by id&yr.;
+			if hmval&yr. in (0,9999998,9999999) then hmval&yr.=.;
 		run;
 	%end;
 %mend;
 
 
-%rename(&allyears., &hmowner., hmowner)	%rename(&allyears., &hmval., hmval)
+%rename(&allyears., &hmowner., hmowner)	
+%rename(&allyears., &hmval., hmval)
 %rename(&lastFiveSurveys., &hmval100pl., hmval100pl)
 %rename(&lastFiveSurveys., &hmval200pl., hmval200pl)
 %rename(&lastFiveSurveys., &hmval400pl., hmval400pl)

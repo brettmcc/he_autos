@@ -156,7 +156,7 @@ Industry
 %mend;
 
 data headinfor1999;
-set psiddata.fam99;
+set in.fam99;
 id1999                        =                  ER13002            ;                        
 headage1999                   =                  ER13010            ;      
 headgender1999                =                  ER13011            ;      
@@ -167,11 +167,12 @@ headstatus1999                =                  ER13205            ;
 selfemploy1999                =                  ER13210            ;               
 famsize1999                   =                  ER13009            ;               
 headocc3digit1999             =                  ER13215            ;        
-headind3digit1999             =                  ER13216            ;        
-keep id1999 headage1999 headgender1999 headmarital1999 headrace1999 headedu1999 headstatus1999 selfemploy1999 famsize1999 headocc3digit1999 headind3digit1999; 
+headind3digit1999             =                  ER13216            ;
+WGT1999						  =					 ER16518 			;	 
+keep id1999 headage1999 headgender1999 WGT1999 headmarital1999 headrace1999 headedu1999 headstatus1999 selfemploy1999 famsize1999 headocc3digit1999 headind3digit1999; 
 
 data headinfor2001;
-set psiddata.fam01;
+set in.fam01;
 id2001                        =                  ER17002            ;                        
 headage2001                   =                  ER17013            ;      
 headgender2001                =                  ER17014            ;      
@@ -188,7 +189,7 @@ keep id2001 headage2001 headgender2001 WGT2001 headmarital2001 headrace2001 head
 
 
 data headinfor2003;
-set psiddata.fam03;
+set in.fam03;
 id2003                        =                  ER21002            ;                        
 headage2003                   =                  ER21017            ;      
 headgender2003                =                  ER21018            ;      
@@ -204,7 +205,7 @@ WGT2003                       =                  ER24179            ;
 keep id2003 headage2003 headgender2003 WGT2003 headmarital2003 headedu2003 headrace2003 headstatus2003 selfemploy2003 famsize2003 headocc3digit2003 headind3digit2003; 
 
 data headinfor2005;
-set psiddata.fam05;
+set in.fam05;
 id2005                        =                  ER25002            ;                        
 headage2005                   =                  ER25017            ;      
 headgender2005                =                  ER25018            ;      
@@ -220,7 +221,7 @@ WGT2005                       =                  ER28078            ;
 keep id2005 headage2005 headgender2005 WGT2005 headmarital2005 headedu2005 headrace2005 headstatus2005 selfemploy2005 famsize2005 headocc3digit2005 headind3digit2005; run;
 
 data headinfor2007;
-set psiddata.fam07;
+set in.fam07;
 id2007                        =                  ER36002            ;                        
 headage2007                   =                  ER36017            ;      
 headgender2007                =                  ER36018            ;      
@@ -236,7 +237,7 @@ WGT2007                       =                  ER41069            ;
 keep id2007 headage2007 headgender2007 WGT2007 headmarital2007 headedu2007 headrace2007 headstatus2007 selfemploy2007 famsize2007 headocc3digit2007 headind3digit2007; run;
  
 data headinfor2009;
-set psiddata.fam09;
+set in.fam09;
 id2009                        =                  ER42002            ;                        
 headage2009                   =                  ER42017            ;      
 headgender2009                =                  ER42018            ;      
@@ -252,7 +253,7 @@ WGT2009                       =                  ER47012            ;
 keep id2009 headage2009 headgender2009 WGT2009 headmarital2009 headedu2009 headrace2009 headstatus2009 selfemploy2009 famsize2009 headocc3digit2009 headind3digit2009; run;
 
 data headinfor2011;
-set psiddata.fam11;
+set in.fam11;
 id2011                        =                  ER47302			;
 headage2011					  =					 ER47317			;
 headgender2011                =                  ER47318            ;      
@@ -269,7 +270,7 @@ keep id2011 headage2011 headgender2011 WGT2011 headmarital2011 headedu2011 headr
 
 
 data headinfor2013;
-set psiddata.fam13;
+set in.fam13;
 id2013						  =     			 ER53002			;
 headage2013					  =					 ER53017			;
 headgender2013                =                  ER53018            ;      
@@ -285,7 +286,7 @@ WGT2013                       =                  ER58257            ;
 keep id2013 headage2013 headgender2013 WGT2013 headmarital2013 headedu2013 headrace2013 headstatus2013 selfemploy2013 famsize2013 headocc3digit2013 headind3digit2013; run;
 
 
-data PSIDDATA.head;
+data out.head;
 merge headinfor1999 headinfor2001 headinfor2003 headinfor2005 headinfor2007 headinfor2009 headinfor2011 headinfor2013;
 if    headage1999       > 120 then headage1999      =.   ;
 if    headage2001       > 120 then headage2001      =.   ;
@@ -653,7 +654,7 @@ id2011  headage2011  headgender2011   WGT2011  headmarital2011  headedu2011  hea
 id2013  headage2013  headgender2013   WGT2013  headmarital2013  headedu2013  headrace2013  headstatus2013  selfemploy2013  famsize2013  headocc3digit2013  headind3digit2013  headocc2013  headind2013  originalheadedu2013 ;
 run;
 
-proc freq data = psiddata.head;
+proc freq data = out.head;
 tables 
 headmarital1999  headedu1999  headrace1999  headstatus1999  selfemploy1999  famsize1999  headocc1999  headind1999  
 headmarital2001  headedu2001  headrace2001  headstatus2001  selfemploy2001  famsize2001  headocc2001  headind2001  
@@ -679,7 +680,7 @@ run;
 
 %macro vrace(year);
 data vrace&year;
-set psiddata.head;
+set out.head;
 if id&year ne . and headrace&year ne .; 
 w = &year;
 headrace = headrace&year;
@@ -688,7 +689,7 @@ proc sort data = vrace&year;
 by id&year;
 
 data person;
-set psiddata.person;
+set out.person;
 %if &year = 1968 %then %do; if rel&year = 1; %end;
 %else %if &year le 1982 %then %do; if rel&year = 1 and seqno&year = 1; %end;
 %else %do; if rel&year = 10 and seqno&year =1; %end;
@@ -713,7 +714,7 @@ run;
 
 %macro race(year);
 data race&year;
-set psiddata.head;
+set out.head;
 if id&year ne . and headrace&year = .; 
 w = &year;
 keep id&year w;
@@ -721,7 +722,7 @@ proc sort data = race&year;
 by id&year;
 
 data person;
-set psiddata.person;
+set out.person;
 %if &year = 1968 %then %do; if rel&year = 1; %end;
 %else %if &year = 1969 %then %do; if rel&year = 1 and seqno&year = 1; %end;
 %else %do; if rel&year = 10 and seqno&year =1; %end;
@@ -748,15 +749,15 @@ run;
 %race(1999) %race(2001) %race(2003) %race(2005) %race(2007) %race(2009) %race(2011) %race(2013)
 
 %macro crace(year);
-proc sort data = psiddata.head;
+proc sort data = out.head;
 by id&year;
-data psiddata.head;
-merge psiddata.head race&year;
+data out.head;
+merge out.head race&year;
 by id&year;
 if headrace ne . then headrace&year = headrace;
 run;
 data u;
-set psiddata.head;
+set out.head;
 if id&year ne .;
 proc freq data = u;
 tables headrace&year;
@@ -773,7 +774,7 @@ run;
 
 %macro vedu(year);
 data vedu&year;
-set psiddata.head;
+set out.head;
 if id&year ne . and headedu&year ne .; 
 w = &year;
 headedu = headedu&year;
@@ -782,7 +783,7 @@ proc sort data = vedu&year;
 by id&year;
 
 data person;
-set psiddata.person;
+set out.person;
 %if &year = 1968 %then %do; if rel&year = 1; %end;
 %else %if &year le 1982 %then %do; if rel&year = 1 and seqno&year = 1; %end;
 %else %do; if rel&year = 10 and seqno&year =1; %end;
@@ -879,7 +880,7 @@ run;
 
 %macro edu(year);
 data edu&year;
-set psiddata.head;
+set out.head;
 if id&year ne . and headedu&year = .; 
 w = &year;
 keep id&year w;
@@ -887,7 +888,7 @@ proc sort data = edu&year;
 by id&year;
 
 data person;
-set psiddata.person;
+set out.person;
 %if &year = 1968 %then %do; if rel&year = 1; %end;
 %else %if &year le 1982 %then %do; if rel&year = 1 and seqno&year = 1; %end;
 %else %do; if rel&year = 10 and seqno&year =1; %end;
@@ -916,15 +917,15 @@ run;
 %edu(1999) %edu(2001) %edu(2003) %edu(2005) %edu(2007) %edu(2009) %edu(2011) %edu(2013)
 
 %macro cedu(year);
-proc sort data = psiddata.head;
+proc sort data = out.head;
 by id&year;
-data psiddata.head;
-merge psiddata.head edu&year;
+data out.head;
+merge out.head edu&year;
 by id&year;
 if headedu ne . then headedu&year = headedu;
 run;
 data u;
-set psiddata.head;
+set out.head;
 if id&year ne .;
 proc freq data = u;
 tables headedu&year;
@@ -934,7 +935,7 @@ run;
 
 
 *******************************************************;
-proc freq data = psiddata.head;                                                                                                    
+proc freq data = out.head;                                                                                                    
 tables                                                                                                                             
 headmarital1999   headgender1999      headedu1999       headrace1999    headstatus1999    selfemploy1999      famsize1999   headocc1999    headind1999 
 headmarital2001   headgender2001      headedu2001       headrace2001    headstatus2001    selfemploy2001      famsize2001   headocc2001    headind2001 
@@ -948,7 +949,7 @@ run;
 
 %macro freq(year);
 data u;
-set psiddata.head;
+set out.head;
 if id&year ne .;
 proc freq data = u;
 tables headmarital&year headedu&year headgender&year headrace&year headstatus&year selfemploy&year famsize&year headocc&year headind&year;

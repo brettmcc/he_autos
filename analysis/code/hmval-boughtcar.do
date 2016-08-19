@@ -5,21 +5,17 @@
 set more off
 clear all
 
-use "W:\psid_data\mrgdpsid.dta", clear
-local vars = "vehboughtinlast2yrs hmvalchglast2yrs headrace hmvalincrlast2yrs hmvalincrlast2yrs_gt2pct headmarital WGT headedu famsize"
-reshape long `vars', i(pid) j(year)
-keep pid year `vars'
-*drop from 2013 since it has an anomonously lower rate of bought car in last 2 years
-drop if year==2013
+use "W:\BM-HE-Autos\build\output\mrgdPsid.dta"
 
-/*
-reg vehboughtinlast2yrs hmvalchglast2yrs i.year [iweight=WGT]
-reg vehboughtinlast2yrs hmvalchglast2yrs i.year i.headrace [iweight=WGT]
+reg vehboughtinlast2yrs hmvalchg2yrsback i.year [aweight=WGT]
+reg vehboughtinlast2yrs hmvalchg2yrsback i.year i.headrace [aweight=WGT]
+reg vehboughtinlast2yrs hmvalchg2yrsback i.year i.headrace i. headmarital i.headedu famsize [aweight=WGT]
 
-reg vehboughtinlast2yrs hmvalincrlast2yrs i.year [iweight=WGT]
-reg vehboughtinlast2yrs hmvalincrlast2yrs i.year i.headrace [iweight=WGT]
-*/
+reg vehboughtinlast2yrs hmvalincr2yrsback i.year [aweight=WGT]
+reg vehboughtinlast2yrs hmvalincr2yrsback i.year i.headrace [aweight=WGT]
+reg vehboughtinlast2yrs hmvalincr2yrsback i.year i.headrace i. headmarital i.headedu famsize [aweight=WGT]
 
-reg vehboughtinlast2yrs hmvalincrlast2yrs_gt2pct i.year [iweight=WGT]
-reg vehboughtinlast2yrs hmvalincrlast2yrs_gt2pct i.year i.headrace [iweight=WGT]
-reg vehboughtinlast2yrs hmvalincrlast2yrs_gt2pct i.year i.headrace i. headmarital i.headedu famsize [iweight=WGT]
+reg vehboughtinlast2yrs hmvalincr2yrsback_gt2pct i.year [aweight=WGT]
+reg vehboughtinlast2yrs hmvalincr2yrsback_gt2pct i.year i.headrace [aweight=WGT]
+reg vehboughtinlast2yrs hmvalincr2yrsback_gt2pct i.year i.headrace i. headmarital i.headedu famsize [aweight=WGT]
+

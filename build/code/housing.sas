@@ -157,14 +157,4 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 
 data out.housing;
 	merge housing:;
-	*compute home value increase;
-	%macro hmvalchg;
-		%do yr=1999 %to 2013 %by 2;
-			%let yrs2back = %eval(&yr.-2);
-			if soldHome&yr.^=1 & soldHome&yr.^=. & hmval&yr.^=. & hmval&yrs2back.^=. then hmvalchglast2yrs&yr. = hmval&yr. - hmval&yrs2back.;
-			if hmvalchglast2yrs&yr.^=. then hmvalincrlast2yrs&yr. = (hmvalchglast2yrs&yr.>0);
-			if (hmvalchglast2yrs&yr./hmval&yrs2back.-1)^=. then hmvalincrlast2yrs_gt2pct&yr. = ((hmvalchglast2yrs&yr./hmval&yrs2back.-1)>.02);
-		%end;
-	%mend;
-	%hmvalchg;
 run;

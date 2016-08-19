@@ -1,0 +1,36 @@
+* Brett McCully, August 2016
+* Finish prepping PSID dataset for analysis
+
+set more off
+clear all
+
+use "W:\BM-HE-Autos\build\temp\mrgdpsid.dta", clear
+forval y = 2001(2)2013 {
+	local y2back = `y' - 2
+	gen hmvalchg2yrsback`y' = hmval`y' - hmval`y2back' if soldHome`y'!=. & soldHome`y'!=1
+	gen hmvalincr2yrsback`y' = (hmvalchg2yrsback`y'>0) if hmvalchg2yrsback`y'!=.
+	gen hmvalincr2yrsback_gt2pct`y' = (((hmval`y' - hmval`y2back')/hmval`y2back'-1)>.02) if ((hmval`y' - hmval`y2back')/hmval`y2back'-1)!=.
+}
+
+local vars = "hmowner secMtg vehboughtinlast2yrs headrace hmvalchg2yrsback headmarital WGT headedu famsize hmvalincr2yrsback hmvalincr2yrsback_gt2pct"
+reshape long `vars', i(pid) j(year)
+keep pid year `vars'
+*drop from 2013 since it has an anomonously lower rate of bought car in last 2 years
+drop if year==2013
+
+*make second mortgage variable a dummy for whether or not individual has one, assuming dont know or 
+*refused responses indicate the respondent doesnt have one;
+gen mtg2 = (secMtg==1) if hmowner==1
+drop secMtg
+
+
+label define race 1 "White" 2 "Black" 3 "Other"
+label define marital 1 "Married" 2 "Single" 3 "Widowed" 4 "Divorced" 5 "Separated"
+label define edu 1 "high school dropout" 2 "high school grad" 3 "Some college" 4 "college grad or more"
+label define hmown 1 "Homeowner" 5 "Rents" 8 "Neither owns/rents"
+label values headrace race
+label values headmarital marital
+label values headedu edu
+label values hmowner hmown
+
+save "W:\BM-HE-Autos\build\output\mrgdPsid.dta", replace

@@ -675,9 +675,10 @@ run;
 %freq(2003); %freq(2005); %freq(2007); %freq(2009); %freq(2011); %freq(2013); 
 
 ******************************************************************************************************************
-*****Each year there are some invalid observations of education and race of PSID head and wife, valid information*
-*****may be located in other waves, we mapped them cross waves to maximize the number of valid observations******;
+*****Each year there are some missing observations of education and race of PSID head and wife, valid information*
+*****may be located in other waves, we mapped them cross waves to maximize the number of non-missing observations*;
 
+*vrace takes race from each year and puts it in the vraceYEAR dataset;
 %macro vrace(year);
 data vrace&year;
 set out.head;
@@ -690,9 +691,7 @@ by id&year;
 
 data person;
 set out.person;
-%if &year = 1968 %then %do; if rel&year = 1; %end;
-%else %if &year le 1982 %then %do; if rel&year = 1 and seqno&year = 1; %end;
-%else %do; if rel&year = 10 and seqno&year =1; %end;
+if rel&year = 10 and seqno&year =1;
 keep id&year pid;
 proc sort data = person;
 by id&year;
@@ -708,6 +707,7 @@ run;
 
 data vrace;
 set vrace1999 vrace2001 vrace2003 vrace2005 vrace2007 vrace2009 vrace2011 vrace2013;
+run;
 proc sort data = vrace nodupkey;
 by pid;
 run;
@@ -723,9 +723,7 @@ by id&year;
 
 data person;
 set out.person;
-%if &year = 1968 %then %do; if rel&year = 1; %end;
-%else %if &year = 1969 %then %do; if rel&year = 1 and seqno&year = 1; %end;
-%else %do; if rel&year = 10 and seqno&year =1; %end;
+if rel&year = 10 and seqno&year =1;
 keep id&year pid;
 proc sort data = person;
 by id&year;
@@ -736,6 +734,10 @@ by id&year;
 if in1;
 proc sort data = race&year;
 by pid;
+run;
+
+*merge timeless race dataset (vrace) with yearly raceYEAR datasets filled with the observations
+ having empty headraceYEAR values to replace missing values with race vals from other years;
 data race&year;
 merge race&year(in = in1) vrace(in = in2);
 by pid;

@@ -12,9 +12,19 @@ forval y = 2001(2)2013 {
 	gen hmvalincr2yrsback_gt2pct`y' = (((hmval`y' - hmval`y2back')/hmval`y2back'-1)>.02) if ((hmval`y' - hmval`y2back')/hmval`y2back'-1)!=.
 }
 
-local vars = "hmowner secMtg vehboughtinlast2yrs headrace hmvalchg2yrsback headmarital WGT headedu famsize hmvalincr2yrsback hmvalincr2yrsback_gt2pct"
+local vars = "hmowner secMtg hmval vehboughtinlast2yrs headrace hmvalchg2yrsback headmarital WGT headedu famsize hmvalincr2yrsback hmvalincr2yrsback_gt2pct"
 reshape long `vars', i(pid) j(year)
 keep pid year `vars'
+gen hmvalchg2yrsback_lag1 = hmvalchg2yrsback[_n-1]
+gen hmvalincr2yrsback_lag1 = hmvalincr2yrsback[_n-1]
+gen hmvalincr2yrsback_gt2pct_lag1 = hmvalincr2yrsback_gt2pct[_n-1]
+
+/*Individuals cannot change race or get less educated*/
+count if headrace!=headrace[_n-1] & headrace!=. & headrace[_n-1]!=. & pid==pid[_n-1]
+count if headrace!=headrace[_n+1] & headrace!=. & headrace[_n+1]!=. & pid==pid[_n+1]
+count if headedu<headedu[_n-1] & headedu!=. & headedu[_n-1]!=. & pid==pid[_n-1]
+count if headedu>headedu[_n+1] & headedu!=. & headedu[_n+1]!=. & pid==pid[_n+1]
+
 *drop from 2013 since it has an anomonously lower rate of bought car in last 2 years
 drop if year==2013
 

@@ -16,23 +16,17 @@
 							veh1price&y. veh2price&y. veh3price&y. howacqveh1&y. howacqveh2&y. howacqveh3&y.
 				 			%if &y.^=2013 %then %do; neworusedveh1&y. neworusedveh2&y. neworusedveh3&y. %end;
 				 			financeveh1&y. financeveh2&y. financeveh3&y.)
-					out.head(keep=id&y. headmarital&y.  headedu&y.  headrace&y.  headstatus&y.  selfemploy&y.  famsize&y.  headocc&y.  headind&y. wgt&y.);
+					out.head(keep=id&y. headmarital&y.  headedu&y.  headrace&y.  headstatus&y.  selfemploy&y.  famsize&y.  headocc&y.  headind&y. wgt&y.)
+					out.incomewealth;
 			by id&y.;
 			if headrace&y. in (3, 4, 5, 6, 7) then headrace&y. = 3; 
 			if headrace&y. = 0 then headrace&y. = .;
-			format headrace&y. race.;
 		run;
 		proc sort data=temp&y.;
 			by pid;
 		run;
 	%end;
 %mend;
-
-proc format;
-	value race 1 = 'White'
-				2 = 'Black'
-				3 = 'Other';
-run;
 
 %merger;
 

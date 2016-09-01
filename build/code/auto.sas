@@ -81,13 +81,16 @@ options mprint;
 			neworusedveh1&yr. = %scan(&neworusedveh1.,&i.);
 			neworusedveh2&yr. = %scan(&neworusedveh2.,&i.);
 			neworusedveh3&yr. = %scan(&neworusedveh3.,&i.);
+			*counts number of new vehicles purchased in the last 2 years;
+			newvehboughtinlast2yrs&yr. = (veh1boughtinlast2yrs&yr.=1 AND neworusedveh1&yr.=1) + (veh2boughtinlast2yrs&yr.=1 AND neworusedveh2&yr.=1) + (veh3boughtinlast2yrs&yr.=1 AND neworusedveh3&yr.=1);
 			%end;
 			financeveh1&yr. = %scan(&financeveh1.,&i.);
 			financeveh2&yr. = %scan(&financeveh2.,&i.);
 			financeveh3&yr. = %scan(&financeveh3.,&i.);
 			keep id&yr. vehboughtinlast2yrs&yr. veh1boughtinlast2yrs&yr. veh2boughtinlast2yrs&yr. veh3boughtinlast2yrs&yr.
 				 veh1price&yr. veh2price&yr. veh3price&yr. howacqveh1&yr. howacqveh2&yr. howacqveh3&yr.
-				 %if &yr.^=2013 %then %do; neworusedveh1&yr. neworusedveh2&yr. neworusedveh3&yr. %end;
+				 %if &yr.^=2013 %then %do; neworusedveh1&yr. neworusedveh2&yr. neworusedveh3&yr. 
+										newvehboughtinlast2yrs&yr. %end;
 				 financeveh1&yr. financeveh2&yr. financeveh3&yr.;
 		run;
 	%end;

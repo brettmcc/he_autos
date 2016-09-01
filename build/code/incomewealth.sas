@@ -1,7 +1,7 @@
 * Brett McCully, August 2016;
 * Rename and organize income and wealth-related variables;
 
-options mprint on;
+options mprint spool;
 
 %let faminc = ER16462 ER20456 ER24099 ER28037 ER41027 ER46935 ER52343 ER58152;
 *have stock
@@ -15,23 +15,25 @@ options mprint on;
 %macro rename(yrs);
 	%let max = %sysfunc(countw(&yrs));
 	%do i=1 %to &max;
+		%put &i.;
 		%let yr = %scan(&yrs,&i);
 		%let twodigyr = %substr(&yr,3);
-		/*match year to ID variable*/
-		%if &yr. = 1999 %then %let idvar = ER13002;
-		%else %if &yr. = 2001 %then %let idvar = ER17002;
-		%else %if &yr. = 2003 %then %let idvar = ER21002;
-		%else %if &yr. = 2005 %then %let idvar = ER25002;
-		%else %if &yr. = 2007 %then %let idvar = ER36002;
-		%else %if &yr. = 2009 %then %let idvar = ER42002;
-		%else %if &yr. = 2011 %then %let idvar = ER47302;
-		%else %if &yr. = 2013 %then %let idvar = ER53002;
+		/*match year to ID variable and chained CPI value with base year 1999*/
+		%if &yr. = 1999 %then %do; %let idvar = ER13002; %let cpi = 100; %end;
+		%if &yr. = 2001 %then %do; %let idvar = ER17002; %let cpi = 104.3; %end;
+		%if &yr. = 2003 %then %do; %let idvar = ER21002; %let cpi = 107.8; %end;
+		%if &yr. = 2005 %then %do; %let idvar = ER25002; %let cpi = 113.7; %end;
+		%if &yr. = 2007 %then %do; %let idvar = ER36002; %let cpi = 119.957; %end;
+		%if &yr. = 2009 %then %do; %let idvar = ER42002; %let cpi = 123.850; %end;
+		%if &yr. = 2011 %then %do; %let idvar = ER47302; %let cpi = 129.453; %end;
+		*unsure of 2013 number;
+		%if &yr. = 2013 %then %do; %let idvar = ER53002; %let cpi = 130; %end;
 
 		data incomewealth&yr.;
-			set in.fam&twodigyr.;
+			set in.fam&twodigyr.(keep=&idvar. %scan(&faminc.,&i.) %scan(&have_stock.,&i.));
 			id&yr. = &idvar.;
-			faminc&yr. = %scan(&faminc.,&yrs.);
-			stock&yr. = %scan(&have_stock.,&yrs.);
+			faminc&yr. = %scan(&faminc.,&i.)*&cpi./100;
+			stock&yr. = %scan(&have_stock.,&i.);
 			have_stock&yr. = (stock&yr.=1);
 
 			keep id&yr. faminc&yr. have_stock&yr.;

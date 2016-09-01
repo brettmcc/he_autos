@@ -31,6 +31,7 @@ drop if year==2013
 *make second mortgage variable a dummy for whether or not individual has one, assuming dont know or 
 *refused responses indicate the respondent doesnt have one;
 gen mtg2 = (secMtg==1) if hmowner==1
+gen newvehboughtinlast2yrs_dummy = (newvehboughtinlast2yrs >0 & newvehboughtinlast2yrs != . )
 drop secMtg
 
 

@@ -1,6 +1,8 @@
 * Brett McCully, August 2016
 * Finish prepping PSID dataset for analysis
 
+log using "W:\he_autos-master\build\temp\finaltouches.log", replace
+
 set more off
 clear all
 
@@ -45,3 +47,5 @@ label values headedu edu
 label values hmowner hmown
 
 save "W:\BM-HE-Autos\build\output\mrgdPsid.dta", replace
+
+log close

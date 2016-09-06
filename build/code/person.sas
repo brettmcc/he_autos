@@ -1,5 +1,5 @@
 
-data out.person;
+data temphe.person;
 set in.inperson;
 id1968       =      ER30001;
 id1969       =      ER30020;

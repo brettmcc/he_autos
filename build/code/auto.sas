@@ -3,6 +3,9 @@
 
 options mprint;
 
+libname in "W:\rawpsid";
+libname tmphe "W:\he_autos-master\build\temp";
+
 /**VARIABLE LISTS**/
 %let idvars99to13 = ER13002 ER17002 ER21002 ER25002 ER36002 ER42002 ER47302 ER53002;
 
@@ -98,7 +101,7 @@ options mprint;
 
 %rename(1999 2001 2003 2005 2007 2009 2011 2013);
 
-data out.auto;
+data tmphe.auto;
 	merge auto:;
 run;
 	

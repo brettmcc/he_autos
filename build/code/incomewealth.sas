@@ -43,6 +43,6 @@ options mprint spool;
 
 %rename(1999 2001 2003 2005 2007 2009 2011 2013);
 
-data out.incomewealth;
+data tmphe.incomewealth;
 	merge incomewealth:;
 run;

@@ -100,6 +100,10 @@ Industry
 ***********************************************************************************************************************
 ***********************************************************************************************************************
 ***********************************************************************************************************************;
+
+libname in "W:\rawpsid";
+libname tmphe "W:\he_autos-master\build\temp";
+
 *this macro produces the if-then-else statements to make the employment status variable consistent over time. 
  It should be used for 1976 to 1986;
 %macro empStatus(var,year);
@@ -286,7 +290,7 @@ WGT2013                       =                  ER58257            ;
 keep id2013 headage2013 headgender2013 WGT2013 headmarital2013 headedu2013 headrace2013 headstatus2013 selfemploy2013 famsize2013 headocc3digit2013 headind3digit2013; run;
 
 
-data out.head;
+data tmphehead;
 merge headinfor1999 headinfor2001 headinfor2003 headinfor2005 headinfor2007 headinfor2009 headinfor2011 headinfor2013;
 if    headage1999       > 120 then headage1999      =.   ;
 if    headage2001       > 120 then headage2001      =.   ;
@@ -654,7 +658,7 @@ id2011  headage2011  headgender2011   WGT2011  headmarital2011  headedu2011  hea
 id2013  headage2013  headgender2013   WGT2013  headmarital2013  headedu2013  headrace2013  headstatus2013  selfemploy2013  famsize2013  headocc3digit2013  headind3digit2013  headocc2013  headind2013  originalheadedu2013 ;
 run;
 
-proc freq data = out.head;
+proc freq data = tmphehead;
 tables 
 headmarital1999  headedu1999  headrace1999  headstatus1999  selfemploy1999  famsize1999  headocc1999  headind1999  
 headmarital2001  headedu2001  headrace2001  headstatus2001  selfemploy2001  famsize2001  headocc2001  headind2001  
@@ -681,7 +685,7 @@ run;
 *vrace takes race from each year and puts it in the vraceYEAR dataset;
 %macro vrace(year);
 data vrace&year;
-set out.head;
+set tmphehead;
 if id&year ne . and headrace&year ne .; 
 w = &year;
 headrace = headrace&year;
@@ -690,7 +694,7 @@ proc sort data = vrace&year;
 by id&year;
 
 data person;
-set out.person;
+set tmpheperson;
 if rel&year = 10 and seqno&year =1;
 keep id&year pid;
 proc sort data = person;
@@ -714,7 +718,7 @@ run;
 
 %macro race(year);
 data race&year;
-set out.head;
+set tmphehead;
 if id&year ne . and headrace&year = .; 
 w = &year;
 keep id&year w;
@@ -722,7 +726,7 @@ proc sort data = race&year;
 by id&year;
 
 data person;
-set out.person;
+set tmpheperson;
 if rel&year = 10 and seqno&year =1;
 keep id&year pid;
 proc sort data = person;
@@ -751,15 +755,15 @@ run;
 %race(1999) %race(2001) %race(2003) %race(2005) %race(2007) %race(2009) %race(2011) %race(2013)
 
 %macro crace(year);
-proc sort data = out.head;
+proc sort data = tmphehead;
 by id&year;
-data out.head;
-merge out.head race&year;
+data tmphehead;
+merge tmphehead race&year;
 by id&year;
 if headrace ne . then headrace&year = headrace;
 run;
 data u;
-set out.head;
+set tmphehead;
 if id&year ne .;
 proc freq data = u;
 tables headrace&year;
@@ -776,7 +780,7 @@ run;
 
 %macro vedu(year);
 data vedu&year;
-set out.head;
+set tmphehead;
 if id&year ne . and headedu&year ne .; 
 w = &year;
 headedu = headedu&year;
@@ -785,7 +789,7 @@ proc sort data = vedu&year;
 by id&year;
 
 data person;
-set out.person;
+set tmpheperson;
 %if &year = 1968 %then %do; if rel&year = 1; %end;
 %else %if &year le 1982 %then %do; if rel&year = 1 and seqno&year = 1; %end;
 %else %do; if rel&year = 10 and seqno&year =1; %end;
@@ -882,7 +886,7 @@ run;
 
 %macro edu(year);
 data edu&year;
-set out.head;
+set tmphehead;
 if id&year ne . and headedu&year = .; 
 w = &year;
 keep id&year w;
@@ -890,7 +894,7 @@ proc sort data = edu&year;
 by id&year;
 
 data person;
-set out.person;
+set tmpheperson;
 %if &year = 1968 %then %do; if rel&year = 1; %end;
 %else %if &year le 1982 %then %do; if rel&year = 1 and seqno&year = 1; %end;
 %else %do; if rel&year = 10 and seqno&year =1; %end;
@@ -919,15 +923,15 @@ run;
 %edu(1999) %edu(2001) %edu(2003) %edu(2005) %edu(2007) %edu(2009) %edu(2011) %edu(2013)
 
 %macro cedu(year);
-proc sort data = out.head;
+proc sort data = tmphehead;
 by id&year;
-data out.head;
-merge out.head edu&year;
+data tmphehead;
+merge tmphehead edu&year;
 by id&year;
 if headedu ne . then headedu&year = headedu;
 run;
 data u;
-set out.head;
+set tmphehead;
 if id&year ne .;
 proc freq data = u;
 tables headedu&year;
@@ -937,7 +941,7 @@ run;
 
 
 *******************************************************;
-proc freq data = out.head;                                                                                                    
+proc freq data = tmphehead;                                                                                                    
 tables                                                                                                                             
 headmarital1999   headgender1999      headedu1999       headrace1999    headstatus1999    selfemploy1999      famsize1999   headocc1999    headind1999 
 headmarital2001   headgender2001      headedu2001       headrace2001    headstatus2001    selfemploy2001      famsize2001   headocc2001    headind2001 
@@ -951,7 +955,7 @@ run;
 
 %macro freq(year);
 data u;
-set out.head;
+set tmphehead;
 if id&year ne .;
 proc freq data = u;
 tables headmarital&year headedu&year headgender&year headrace&year headstatus&year selfemploy&year famsize&year headocc&year headind&year;

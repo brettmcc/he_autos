@@ -1,5 +1,7 @@
 * Brett McCully, August 2016;
 * Rename and organize income and wealth-related variables;
+proc printto log='W:\he_autos-master\build\temp\incomewealth.log' new;
+run;
 
 options mprint spool;
 
@@ -45,4 +47,7 @@ options mprint spool;
 
 data tmphe.incomewealth;
 	merge incomewealth:;
+run;
+
+proc printto;
 run;

@@ -1,3 +1,5 @@
+proc printto log='W:\he_autos-master\build\temp\person.log' new;
+run;
 
 data temphe.person;
 set in.inperson;
@@ -120,4 +122,7 @@ pid = ER30001 * 1000 + ER30002;
 keep id1968 - id1997 id1999 id2001 id2003 id2005 id2007 id2009 id2011 id2013
      seqno1969 - seqno1997 seqno1999 seqno2001 seqno2003 seqno2005 seqno2007 seqno2009 seqno2011 seqno2013
 	 rel1968 - rel1997 rel1999 rel2001 rel2003 rel2005 rel2007 rel2009 rel2011 rel2013 pid;
+run;
+
+proc printto;
 run;

@@ -1,5 +1,7 @@
 * auto.sas;
 * August 2016, Brett McCully;
+proc printto log='W:\he_autos-master\build\temp\auto.log' new;
+run;
 
 options mprint;
 
@@ -105,3 +107,5 @@ data tmphe.auto;
 	merge auto:;
 run;
 	
+proc printto;
+run;

@@ -2,6 +2,8 @@
 * Brett McCully, August 2016;
 
 /*Merge together person, head, housing, and auto, keeping only the head-observation.*/
+proc printto log='W:\he_autos-master\build\temp\merge.log' new;
+run;
 
 libname tmphe "W:\he_autos-master\build\temp";
 
@@ -36,4 +38,7 @@ libname tmphe "W:\he_autos-master\build\temp";
 data tmphe.mrgdPsid(drop=id: where=(pid^=.));
 	merge temp:;
 	by pid;
+run;
+
+proc printto;
 run;

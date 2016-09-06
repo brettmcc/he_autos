@@ -1,6 +1,9 @@
 * Housing.sas
 * Brett McCully, August 2016;
 
+proc printto log='W:\he_autos-master\build\temp\housing.log' new;
+run;
+
 *clear out any remaining work files;
 proc datasets lib=work kill memtype=data nolist;
 run;
@@ -159,4 +162,7 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 
 data tmphe.housing;
 	merge housing:;
+run;
+
+proc printto;
 run;

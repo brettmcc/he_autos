@@ -4,6 +4,8 @@
 *clear out any remaining work files;
 proc datasets lib=work kill memtype=data nolist;
 run;
+libname in "W:\rawpsid";
+libname tmphe "W:\he_autos-master\build\temp";
 
 /**VARIABLES**/
 *id, 1968-2013;
@@ -155,6 +157,6 @@ from 2001 to 2013 is 1 if value imputed and 0 otherwise;
 %rename(1999 &aughts.,&soldHome.,soldHome)
 %merging(&allyears.);
 
-data out.housing;
+data tmphe.housing;
 	merge housing:;
 run;

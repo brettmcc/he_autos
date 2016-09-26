@@ -1,0 +1,3719 @@
+1                                       The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: Copyright (c) 2002-2012 by SAS Institute Inc., Cary, NC, USA. 
+NOTE: SAS (r) Proprietary Software 9.4 (TS1M3 MBCS3170) 
+      Licensed to UNIVERSITY OF CALIFORNIA SYSTEM-SFA-T&R, Site 70081229.
+NOTE: This session is executing on the X64_8PRO  platform.
+
+
+
+NOTE: Updated analytical products:
+      
+      SAS/STAT 14.1
+      SAS/ETS 14.1
+      SAS/IML 14.1
+      SAS/QC 14.1
+
+WARNING: Your system is scheduled to expire on September 28, 2016, which is 3 days from now. 
+         The SAS System will no longer function on or after that date. Please contact your SAS 
+         Installation Representative to obtain your updated SAS Installation Data (SID) file, 
+         which includes SETINIT information.
+To locate the name of your SAS Installation Representative go to 
+http://support.sas.com/repfinder and provide your site number 70081229 and company name as 
+UNIVERSITY OF CALIFORNIA SYSTEM-SFA-T&R. On the SAS REP list provided, locate the REP for 
+operating system Windows.
+NOTE: Additional host information:
+
+ X64_8PRO WIN 6.2.9200  Workstation
+
+NOTE: SAS initialization used:
+      real time           0.51 seconds
+      cpu time            0.23 seconds
+      
+1          ************************************************************************************
+1        ! ***********************************
+2          ************************************************************************************
+2        ! ***********************************
+3          ***********************************************PSID HEAD
+3        ! INFORMATION***************************************************
+4          ************************************************************************************
+4        ! ***********************************
+5          ************************************************************************************
+5        ! ***********************************
+6          ************************************************************************************
+6        ! ***********************************
+7          ************************************************************************************
+7        ! **********************************;
+8          
+9          
+10         ***Include Head AGE, RACE, MARITAL STATUS, EDUCATION, FAMILY SIZE, Whether
+10       ! Self-Employed and Occupation;
+11         
+12         ************************************************************************************
+12       ! ***********************************
+13         ************************************************************************************
+13       ! ***********************************
+14         ************************************************************************************
+14       ! ***********************************
+15         ******Headedu 1968 - 1990
+2                                       The SAS System         14:25 Sunday, September 25, 2016
+
+16         0 0 - 5 grades and has difficulty reading
+17         1 0 - 5 grades, no difficulty reading
+18         2 6 - 8 grades
+19         3 9 - 11 grades
+20         4 12 grades (completed high school)
+21         5 12 grades plus non-academic training
+22         6 College, no degree
+23         7 College, bachelors degree (A.B., B.S., etc.)
+24         8 College, advanced or professional degrees (M.A., Ph.D., LLB, BD, M.S., etc.)
+25         9 N.A., D.K.
+26         1991 - 2005, years completed,
+27         Education questions were not asked again since 1985 for old heads.
+28         ******HeadMarital
+29         1 Married
+30         2 Single
+31         3 Widowed
+32         4 Divorced
+33         5 Separated;
+34         
+35         ******Headrace
+36         1 White
+37         2 Black
+38         3 American Indian, Aleut, Eskimo
+39         4 Asian, Pacific Islander
+40         5 Mentions Latino origin or descent
+41         6 Mentions color other than black or white
+42         7 Other
+43         9 NA DK;
+44         
+45         ******Work Status
+46         1 Working now
+47         2 Only temporarily laid off, sick leave or maternity leave
+48         3 Looking for work, unemployed
+49         4 Retired
+50         5 Permanently disabled temporarily disabled
+51         6 Keeping house
+52         7 Student
+53         8 Other;
+54         
+55         ******Selfemploy
+56         1 Someone else only
+57         2 Both someone else and self
+58         3 Self-employed only
+59         9 NA DK
+60         0 Inap.: not working for money now;
+61         
+62         ******Industry and Occupation
+63         Occupation code in family data had 1 digit in 1968 - 1975 and 2 digits in 1976 -
+63       ! 1980
+64         Inducstry code in family data had 2 digits in 1971 - 1980
+65         We use the retrospective 3-digit industry and occupation code provide by PSID.
+66         1981 - 1993 1999 - 2001 3 digits   1994 - 1997 income data 3 digits
+67         1968 - 2001 (1970 census)
+68         2003 and 2005 (2000 census) we do not have a good way to map it to the 1 digit.
+69         We try our best to map the industry code between 1970 and 2000 census
+70         Occupation
+3                                       The SAS System         14:25 Sunday, September 25, 2016
+
+71         0                   Not in labor force at all, retired (includes students and
+71       ! housewives who did no work last year and
+72                             are not working). Permanently disabled or not in labor force and
+72       !  did no work last year.
+73         1         1   - 195 Professional, Technical, and Kindred Workers
+74         2         201 - 245 Managers and Administrators, except Farm
+75         3         260 - 285 Sales Workers
+76         4         301 - 395 Clerical and Kindred Workers
+77         5         401 - 600 Craftsman and Kindred Workers
+78         6         601 - 695 Operatives, except Transport
+79         7         701 - 715 Transport Equipment Operatives
+80         8         740 - 785 Laborers, except Farm
+81         9         801 - 802 Farmers and Farm Managers
+82         10        821 - 824 Farm Laborers and Farm Foremen
+83         11        901 - 965 Service Workers, except Private Household
+84         12        980 - 984 Private Household Workers
+85         Industry
+86         0                   Inap. unemployed, retired, permanently disabled, housewife,
+86       ! student, other (V9005=3-8)
+87         1         17 - 28   Agriculture, Forestry, and Fisheries
+88         2         47 - 57   Mining
+89         3         67 - 77   Construction
+90         4         107 - 398 Manufacturing
+91         5         407 - 479 Transportation, Communications, and Other Public Utilities
+92         6         507 - 698 Wholesale and Retail Trade
+93         7         707 - 718 Finance, Insurance, and Real Estate
+94         8         727 - 759 Business and Repair Services
+95         9         769 - 798 Personal Services
+96         10        807 - 809 Entertainment and Recreation Services
+97         11        828 - 897 Professional and Related Services
+98         12        907 - 937 Public Administration;
+99         
+100        ************************************************************************************
+100      ! ***********************************
+101        ************************************************************************************
+101      ! ***********************************
+102        ************************************************************************************
+102      ! ***********************************;
+103        %include 'setlibraries.sas';
+NOTE: Libref IN was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\rawpsid
+NOTE: Libref TMPHE was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\he_autos\build\temp
+NOTE: Libref OUT was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\he_autos\build\output
+110        
+111        
+112        *this macro produces the if-then-else statements to make the employment status
+112      ! variable consistent over time.
+113         It should be used for 1976 to 1986;
+114        %macro empStatus(var,year);
+115        	if &var in (1,2) then headstatus&year=1;
+116        	else if &var=3 then headstatus&year=2;
+4                                       The SAS System         14:25 Sunday, September 25, 2016
+
+117        	else if &var in (4,5) then headstatus&year=3;
+118        	else if &var=6 then headstatus&year=4;
+119        	else if &var=7 then headstatus&year=5;
+120        	else if &var=8 then headstatus&year=6;
+121        	*else %put no dice;
+122        %mend;
+123        /*%macro headocc(year);
+124        	if &year>=1976 and &year<=1980 then do;
+125        		if headocc3digit&year in (10:19) then headocc&year = 1;
+126        		else if headocc3digit&year in (20:29) then headocc&year = 2;
+127        		else if headocc3digit&year in (30:39) then headocc&year = 3;
+128        		else if headocc3digit&year in (40:49) then headocc&year = 4;
+129        		else if headocc3digit&year in (50:51) then headocc&year = 5;
+130        		else if headocc3digit&year in (52,55,99) then headocc&year = 9;
+131        		else if headocc3digit&year in (60:69) then headocc&year = 6;
+132        		else if headocc3digit&year in (70:79) then headocc&year = 7;
+133        		else if headocc3digit&year = 80 then headocc&year = 8;
+134        		else if headocc3digit&year =  .   then headocc&year = .;
+135        		else if headocc3digit&year =  0 then headocc&year = 0;
+136        	end;
+137        	*later years combine self employed and non-self-employed managers into one category
+137      ! ;
+138        	if &year<=1980 & headocc3digit&year = 3 then headocc&year =2;
+139        	*later years also mix up farmers, farm laborers, and service workers;
+140        	if &year<=1980 & headocc3digit&year = 8 then headocc&year = 7;
+141        	else if year>=1981 then do;
+142        		if headocc3digit&year =  .   then do; headocc&year = .; end;
+143        	   else if headocc3digit&year =  999 then do; headocc&year = 9; end;
+144        	   else if headocc3digit&year =  0   then do; headocc&year = 0; end;
+145        	   * 	Professional, Technical, and Kindred Workers;
+146        	   else if headocc3digit&year le 195 then do; headocc&year = 1; end;
+147        	   *Managers and Administrators, except Farm;
+148        	   else if headocc3digit&year le 245 and headocc3digit&year ge 195 then do;
+148      ! headocc&year = 2; end;
+149        	   * 	Sales, Clerical and Kindred Workers;
+150        	   else if headocc3digit&year le 395 and headocc3digit&year ge 245 then do;
+150      ! headocc&year = 4; end;
+151        	   *Craftsman and Kindred Workers;
+152        	   else if headocc3digit&year le 600 and headocc3digit&year ge 401 then do;
+152      ! headocc&year = 5; end;
+153        		*Operatives;
+154        	   else if headocc3digit&year le 715 and headocc3digit&year ge 601 then do;
+154      ! headocc&year = 6; end;
+155        	   * 	Laborers, and service workers, farm laborers;
+156        	   else if headocc3digit&year le 984 and headocc3digit&year ge 716 then do;
+156      ! headocc&year = 7; end;
+157        	end;
+158        %mend;*/
+159        %macro loopOcc;
+160        	%do y=1968 %to 1997;
+161        		%headocc(&y);
+162        	%end;
+163        	%headocc(1999);
+164        	%headocc(2001);
+165        %mend;
+166        
+5                                       The SAS System         14:25 Sunday, September 25, 2016
+
+167        data headinfor1999;
+WARNING: The Base SAS Software product with which DATASTEP is associated will be expiring 
+         soon, and is currently in warning mode to indicate this upcoming expiration. Please 
+         run PROC SETINIT to obtain more information on your warning period.
+168        set in.fam99;
+NOTE: Data file IN.FAM99.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+169        id1999                        =                  ER13002            ;
+170        headage1999                   =                  ER13010            ;
+171        headgender1999                =                  ER13011            ;
+172        headmarital1999               =                  ER16423            ;
+173        headrace1999                  =                  ER15928            ;
+174        headedu1999					  =					 ER16516 			;
+175        headstatus1999                =                  ER13205            ;
+176        selfemploy1999                =                  ER13210            ;
+177        famsize1999                   =                  ER13009            ;
+178        headocc3digit1999             =                  ER13215            ;
+179        headind3digit1999             =                  ER13216            ;
+180        WGT1999						  =					 ER16518 			;	
+181        keep id1999 headage1999 headgender1999 WGT1999 headmarital1999 headrace1999
+181      ! headedu1999 headstatus1999 selfemploy1999 famsize1999 headocc3digit1999
+181      ! headind3digit1999;
+182        
+
+NOTE: There were 6997 observations read from the data set IN.FAM99.
+NOTE: The data set WORK.HEADINFOR1999 has 6997 observations and 12 variables.
+NOTE: DATA statement used (Total process time):
+      real time           2.09 seconds
+      cpu time            0.20 seconds
+      
+
+183        data headinfor2001;
+184        set in.fam01;
+NOTE: Data file IN.FAM01.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+185        id2001                        =                  ER17002            ;
+186        headage2001                   =                  ER17013            ;
+187        headgender2001                =                  ER17014            ;
+188        headmarital2001               =                  ER20369            ;
+189        headrace2001                  =                  ER19989            ;
+190        headedu2001					  =					 ER20457 			;
+191        headstatus2001                =                  ER17216            ;
+192        selfemploy2001                =                  ER17221            ;
+193        famsize2001                   =                  ER17012            ;
+194        headocc3digit2001             =                  ER17226            ;
+195        headind3digit2001             =                  ER17227            ;
+196        WGT2001                       =                  ER20394            ;
+197        keep id2001 headage2001 headgender2001 WGT2001 headmarital2001 headrace2001
+197      ! headedu2001 headstatus2001 selfemploy2001 famsize2001 headocc3digit2001
+197      ! headind3digit2001;
+198        
+199        
+
+NOTE: There were 7406 observations read from the data set IN.FAM01.
+6                                       The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: The data set WORK.HEADINFOR2001 has 7406 observations and 12 variables.
+NOTE: DATA statement used (Total process time):
+      real time           1.83 seconds
+      cpu time            0.12 seconds
+      
+
+200        data headinfor2003;
+201        set in.fam03;
+NOTE: Data file IN.FAM03.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+202        id2003                        =                  ER21002            ;
+203        headage2003                   =                  ER21017            ;
+204        headgender2003                =                  ER21018            ;
+205        headedu2003                   =                  ER24148            ;
+206        headmarital2003               =                  ER24150            ;
+207        headrace2003                  =                  ER23426            ;
+208        headstatus2003                =                  ER21123            ;
+209        selfemploy2003                =                  ER21147            ;
+210        famsize2003                   =                  ER21016            ;
+211        headocc3digit2003             =                  ER21145            ;
+212        headind3digit2003             =                  ER21146            ;
+213        WGT2003                       =                  ER24179            ;
+214        keep id2003 headage2003 headgender2003 WGT2003 headmarital2003 headedu2003
+214      ! headrace2003 headstatus2003 selfemploy2003 famsize2003 headocc3digit2003
+214      ! headind3digit2003;
+215        
+
+NOTE: There were 7822 observations read from the data set IN.FAM03.
+NOTE: The data set WORK.HEADINFOR2003 has 7822 observations and 12 variables.
+NOTE: DATA statement used (Total process time):
+      real time           2.02 seconds
+      cpu time            0.28 seconds
+      
+
+216        data headinfor2005;
+217        set in.fam05;
+NOTE: Data file IN.FAM05.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+218        id2005                        =                  ER25002            ;
+219        headage2005                   =                  ER25017            ;
+220        headgender2005                =                  ER25018            ;
+221        headedu2005                   =                  ER28047            ;
+222        headmarital2005               =                  ER28049            ;
+223        headrace2005                  =                  ER27393            ;
+224        headstatus2005                =                  ER25104            ;
+225        selfemploy2005                =                  ER25129            ;
+226        famsize2005                   =                  ER25016            ;
+227        headocc3digit2005             =                  ER25127            ;
+228        headind3digit2005             =                  ER25128            ;
+229        WGT2005                       =                  ER28078            ;
+230        keep id2005 headage2005 headgender2005 WGT2005 headmarital2005 headedu2005
+230      ! headrace2005 headstatus2005 selfemploy2005 famsize2005 headocc3digit2005
+230      ! headind3digit2005; run;
+
+7                                       The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 8002 observations read from the data set IN.FAM05.
+NOTE: The data set WORK.HEADINFOR2005 has 8002 observations and 12 variables.
+NOTE: DATA statement used (Total process time):
+      real time           2.14 seconds
+      cpu time            0.12 seconds
+      
+
+231        
+232        data headinfor2007;
+233        set in.fam07;
+NOTE: Data file IN.FAM07.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+234        id2007                        =                  ER36002            ;
+235        headage2007                   =                  ER36017            ;
+236        headgender2007                =                  ER36018            ;
+237        headedu2007                   =                  ER41037            ;
+238        headmarital2007               =                  ER41039            ;
+239        headrace2007                  =                  ER40565            ;
+240        headstatus2007                =                  ER36109            ;
+241        selfemploy2007                =                  ER36134            ;
+242        famsize2007                   =                  ER36016            ;
+243        headocc3digit2007             =                  ER36132            ;
+244        headind3digit2007             =                  ER36133            ;
+245        WGT2007                       =                  ER41069            ;
+246        keep id2007 headage2007 headgender2007 WGT2007 headmarital2007 headedu2007
+246      ! headrace2007 headstatus2007 selfemploy2007 famsize2007 headocc3digit2007
+246      ! headind3digit2007; run;
+
+NOTE: There were 8289 observations read from the data set IN.FAM07.
+NOTE: The data set WORK.HEADINFOR2007 has 8289 observations and 12 variables.
+NOTE: DATA statement used (Total process time):
+      real time           3.49 seconds
+      cpu time            0.37 seconds
+      
+
+247        
+248        data headinfor2009;
+249        set in.fam09;
+NOTE: Data file IN.FAM09.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+250        id2009                        =                  ER42002            ;
+251        headage2009                   =                  ER42017            ;
+252        headgender2009                =                  ER42018            ;
+253        headedu2009                   =                  ER46981            ;
+254        headmarital2009               =                  ER46983            ;
+255        headrace2009                  =                  ER46543            ;
+256        headstatus2009                =                  ER42140            ;
+257        selfemploy2009                =                  ER42169            ;
+258        famsize2009                   =                  ER42016            ;
+259        headocc3digit2009             =                  ER42167            ;
+260        headind3digit2009             =                  ER42168            ;
+261        WGT2009                       =                  ER47012            ;
+262        keep id2009 headage2009 headgender2009 WGT2009 headmarital2009 headedu2009
+262      ! headrace2009 headstatus2009 selfemploy2009 famsize2009 headocc3digit2009
+8                                       The SAS System         14:25 Sunday, September 25, 2016
+
+262      ! headind3digit2009; run;
+
+NOTE: There were 8690 observations read from the data set IN.FAM09.
+NOTE: The data set WORK.HEADINFOR2009 has 8690 observations and 12 variables.
+NOTE: DATA statement used (Total process time):
+      real time           3.13 seconds
+      cpu time            0.20 seconds
+      
+
+263        
+264        data headinfor2011;
+265        set in.fam11;
+NOTE: Data file IN.FAM11.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+266        id2011                        =                  ER47302			;
+267        headage2011					  =					 ER47317			;
+268        headgender2011                =                  ER47318            ;
+269        headedu2011                   =                  ER52405            ;
+270        headmarital2011               =                  ER52407            ;
+271        headrace2011                  =                  ER51904            ;
+272        headstatus2011                =                  ER47448            ;
+273        selfemploy2011                =                  ER47482            ;
+274        famsize2011                   =                  ER47316            ;
+275        headocc3digit2011             =                  ER47479            ;
+276        headind3digit2011             =                  ER47480            ;
+277        WGT2011                       =                  ER52436            ;
+278        keep id2011 headage2011 headgender2011 WGT2011 headmarital2011 headedu2011
+278      ! headrace2011 headstatus2011 selfemploy2011 famsize2011 headocc3digit2011
+278      ! headind3digit2011; run;
+
+NOTE: There were 8907 observations read from the data set IN.FAM11.
+NOTE: The data set WORK.HEADINFOR2011 has 8907 observations and 12 variables.
+NOTE: DATA statement used (Total process time):
+      real time           3.64 seconds
+      cpu time            0.43 seconds
+      
+
+279        
+280        
+281        data headinfor2013;
+282        set in.fam13;
+NOTE: Data file IN.FAM13.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+283        id2013						  =     			 ER53002			;
+284        headage2013					  =					 ER53017			;
+285        headgender2013                =                  ER53018            ;
+286        headedu2013                   =                  ER58223            ;
+287        headmarital2013               =                  ER58225            ;
+288        headrace2013                  =                  ER57659            ;
+289        headstatus2013                =                  ER53148            ;
+290        selfemploy2013                =                  ER53182            ;
+291        famsize2013                   =                  ER53016            ;
+292        headocc3digit2013             =                  ER53179            ;
+293        headind3digit2013             =                  ER53180            ;
+9                                       The SAS System         14:25 Sunday, September 25, 2016
+
+294        WGT2013                       =                  ER58257            ;
+295        keep id2013 headage2013 headgender2013 WGT2013 headmarital2013 headedu2013
+295      ! headrace2013 headstatus2013 selfemploy2013 famsize2013 headocc3digit2013
+295      ! headind3digit2013; run;
+
+NOTE: There were 9063 observations read from the data set IN.FAM13.
+NOTE: The data set WORK.HEADINFOR2013 has 9063 observations and 12 variables.
+NOTE: DATA statement used (Total process time):
+      real time           3.00 seconds
+      cpu time            0.59 seconds
+      
+
+296        
+297        
+298        data tmphe.head;
+299        merge headinfor1999 headinfor2001 headinfor2003 headinfor2005 headinfor2007
+299      ! headinfor2009 headinfor2011 headinfor2013;
+300        if    headage1999       > 120 then headage1999      =.   ;
+301        if    headage2001       > 120 then headage2001      =.   ;
+302        if    headage2003       > 120 then headage2003      =.   ;
+303        if    headage2005       > 120 then headage2005      =.   ;
+304        if    headage2007       > 120 then headage2007      =.   ;
+305        if    headage2009       > 120 then headage2009      =.   ;
+306        if    headage2011       > 120 then headage2011      =.   ;
+307        if    headage2013       > 120 then headage2013      =.   ;
+308        
+309        if    headrace1999      > 7   then headrace1999     =.   ;
+310        if    headrace2001      > 7   then headrace2001     =.   ;
+311        if    headrace2003      > 7   then headrace2003     =.   ;
+312        if    headrace2005      > 7   then headrace2005     =.   ;
+313        if    headrace2007      > 7   then headrace2007     =.   ;
+314        if    headrace2009      > 7   then headrace2009     =.   ;
+315        if    headrace2011      > 7   then headrace2011     =.   ;
+316        if    headrace2013      > 7   then headrace2013     =.   ;
+317        
+318        if    headmarital1999   > 7   then headmarital1999  =.   ;
+319        if    headmarital2001   > 7   then headmarital2001  =.   ;
+320        if    headmarital2003   > 7   then headmarital2003  =.   ;
+321        if    headmarital2005   > 7   then headmarital2005  =.   ;
+322        if    headmarital2007   > 7   then headmarital2007  =.   ;
+323        if    headmarital2009   > 7   then headmarital2009  =.   ;
+324        if    headmarital2011   > 7   then headmarital2011  =.   ;
+325        if    headmarital2013   > 7   then headmarital2013  =.   ;
+326        
+327        if    selfemploy1999    > 7   then selfemploy1999   =.   ;
+328        if    selfemploy2001    > 7   then selfemploy2001   =.   ;
+329        if    selfemploy2003    > 7   then selfemploy2003   =.   ;
+330        if    selfemploy2005    > 7   then selfemploy2005   =.   ;
+331        if    selfemploy2007    > 7   then selfemploy2007   =.   ;
+332        if    selfemploy2009    > 7   then selfemploy2009   =.   ;
+333        if    selfemploy2011    > 7   then selfemploy2011   =.   ;
+334        if    selfemploy2013    > 7   then selfemploy2013   =.   ;
+335        
+336        if    headstatus1999    > 10  then headstatus1999 = .;
+337        if    headstatus2001    > 10  then headstatus2001 = .;
+338        if    headstatus2003    > 10  then headstatus2003 = .;
+10                                      The SAS System         14:25 Sunday, September 25, 2016
+
+339        if    headstatus2005    > 10  then headstatus2005 = .;
+340        if    headstatus2007    > 10  then headstatus2007 = .;
+341        if    headstatus2009    > 10  then headstatus2009 = .;
+342        if    headstatus2011    > 10  then headstatus2011 = .;
+343        if    headstatus2013    > 10  then headstatus2013 = .;
+344        
+345        if    headedu1999       = 99  then    headedu1999   =   .;
+346        if    headedu2001       = 99  then    headedu2001   =   .;
+347        if    headedu2003       = 99  then    headedu2003   =   .;
+348        if    headedu2005       = 99  then    headedu2005   =   .;
+349        if    headedu2007       = 99  then    headedu2007   =   .;
+350        if    headedu2009       = 99  then    headedu2009   =   .;
+351        if    headedu2011       = 99  then    headedu2011   =   .;
+352        if    headedu2013       = 99  then    headedu2013   =   .;
+353        
+354        if    headedu1999       < 12  and  headedu1999 ne . then school1999   = 1;
+355        if    headedu2001       < 12  and  headedu2001 ne . then school2001   = 1;
+356        if    headedu2003       < 12  and  headedu2003 ne . then school2003   = 1;
+357        if    headedu2005       < 12  and  headedu2005 ne . then school2005   = 1;
+358        if    headedu2007       < 12  and  headedu2007 ne . then school2007   = 1;
+359        if    headedu2009       < 12  and  headedu2009 ne . then school2009   = 1;
+360        if    headedu2011       < 12  and  headedu2009 ne . then school2011   = 1;
+361        if    headedu2013       < 12  and  headedu2009 ne . then school2013   = 1;
+362        
+363        if    headedu1999       = 12 then school1999   = 2;
+364        if    headedu2001       = 12 then school2001   = 2;
+365        if    headedu2003       = 12 then school2003   = 2;
+366        if    headedu2005       = 12 then school2005   = 2;
+367        if    headedu2007       = 12 then school2007   = 2;
+368        if    headedu2009       = 12 then school2009   = 2;
+369        if    headedu2011       = 12 then school2011   = 2;
+370        if    headedu2013       = 12 then school2013   = 2;
+371        
+372        if    headedu1999       > 12 and headedu1999  < 16  then school1999   = 3;
+373        if    headedu2001       > 12 and headedu2001  < 16  then school2001   = 3;
+374        if    headedu2003       > 12 and headedu2003  < 16  then school2003   = 3;
+375        if    headedu2005       > 12 and headedu2005  < 16  then school2005   = 3;
+376        if    headedu2007       > 12 and headedu2007  < 16  then school2007   = 3;
+377        if    headedu2009       > 12 and headedu2009  < 16  then school2009   = 3;
+378        if    headedu2011       > 12 and headedu2011  < 16  then school2011   = 3;
+379        if    headedu2013       > 12 and headedu2013  < 16  then school2013   = 3;
+381        if    headedu1999       >= 16  and headedu1999<90 then school1999   = 4  ;
+382        if    headedu2001       >= 16  and headedu2001<90 then school2001   = 4  ;
+383        if    headedu2003       >= 16  and headedu2003<90 then school2003   = 4  ;
+384        if    headedu2005       >= 16  and headedu2005<90 then school2005   = 4  ;
+385        if    headedu2007       >= 16  and headedu2007<90 then school2007   = 4  ;
+386        if    headedu2009       >= 16  and headedu2009<90 then school2009   = 4  ;
+387        if    headedu2011       >= 16  and headedu2011<90 then school2011   = 4  ;
+388        if    headedu2013       >= 16  and headedu2013<90 then school2013   = 4  ;
+389        
+390        originalheadedu1999 = headedu1999;
+391        originalheadedu2001 = headedu2001;
+392        originalheadedu2003 = headedu2003;
+393        originalheadedu2005 = headedu2005;
+394        originalheadedu2007 = headedu2007;
+395        originalheadedu2009 = headedu2009;
+11                                      The SAS System         14:25 Sunday, September 25, 2016
+
+396        originalheadedu2011 = headedu2011;
+397        originalheadedu2013 = headedu2013;
+398        
+399        headedu1999   =   school1999;
+400        headedu2001   =   school2001;
+401        headedu2003   =   school2003;
+402        headedu2005   =   school2005;
+403        headedu2007   =   school2007;
+404        headedu2009   =   school2009;
+405        headedu2011   =   school2011;
+406        headedu2013   =   school2013;
+407        
+408        *%loopOcc;
+409        %macro occind(year);
+410                if headocc3digit&year =  .   then do; headocc&year = .; end;
+411           else if headocc3digit&year =  999 then do; headocc&year = .; end;
+412           else if headocc3digit&year =  0   then do; headocc&year = 0; end;
+413           else if headocc3digit&year le 195 then do; headocc&year = 1; end;
+414           else if headocc3digit&year le 245 then do; headocc&year = 2; end;
+415           else if headocc3digit&year le 285 then do; headocc&year = 3; end;
+416           else if headocc3digit&year le 395 then do; headocc&year = 4; end;
+417           else if headocc3digit&year le 600 then do; headocc&year = 5; end;
+418           else if headocc3digit&year le 695 then do; headocc&year = 6; end;
+419           else if headocc3digit&year le 715 then do; headocc&year = 7; end;
+420           else if headocc3digit&year le 785 then do; headocc&year = 8; end;
+421           else if headocc3digit&year le 802 then do; headocc&year = 9; end;
+422           else if headocc3digit&year le 824 then do; headocc&year = 10; end;
+423           else if headocc3digit&year le 965 then do; headocc&year = 11; end;
+424           else if headocc3digit&year le 984 then do; headocc&year = 12; end;
+425        
+426                if headind3digit&year =  .   then do; headind&year = .; end;
+427           else if headind3digit&year =  999 then do; headind&year = .; end;
+428           else if headind3digit&year =  0   then do; headind&year = 0; end;
+429           else if headind3digit&year le 28  then do; headind&year = 1; end;
+430           else if headind3digit&year le 57  then do; headind&year = 2; end;
+431           else if headind3digit&year le 77  then do; headind&year = 3; end;
+432           else if headind3digit&year le 398 then do; headind&year = 4; end;
+433           else if headind3digit&year le 479 then do; headind&year = 5; end;
+434           else if headind3digit&year le 698 then do; headind&year = 6; end;
+435           else if headind3digit&year le 718 then do; headind&year = 7; end;
+436           else if headind3digit&year le 759 then do; headind&year = 8; end;
+437           else if headind3digit&year le 798 then do; headind&year = 9; end;
+438           else if headind3digit&year le 809 then do; headind&year = 10; end;
+439           else if headind3digit&year le 897 then do; headind&year = 11; end;
+440           else if headind3digit&year le 937 then do; headind&year = 12; end;
+441        %mend;
+442        
+443        %occind(1999) %occind(2001)
+444        
+445        if headind3digit2003  =  .                                  then headind2003 = .;
+446        if headind3digit2003  =  999                                then headind2003 = .;
+447        if headind3digit2003  =  0                                  then headind2003 = 0;
+448        if headind3digit2003  > 0     and headind3digit2003 le 29   then headind2003 = 1;
+449        if headind3digit2003  ge 37   and headind3digit2003 le 49   then headind2003 = 2;
+450        if headind3digit2003  =  77                                 then headind2003 = 3;
+451        if headind3digit2003  ge 107  and headind3digit2003 le 399  then headind2003 = 4;
+12                                      The SAS System         14:25 Sunday, September 25, 2016
+
+452        if (headind3digit2003 ge 57   and headind3digit2003 le 69)
+453        or (headind3digit2003 ge 647  and headind3digit2003 le 679) then headind2003 = 5;
+454        if headind3digit2003  ge 407  and headind3digit2003 le 579  then headind2003 = 6;
+455        if headind3digit2003  ge 687  and headind3digit2003 le 719  then headind2003 = 7;
+456        if headind3digit2003  ge 757  and headind3digit2003 le 779  then headind2003 = 8;
+457        if headind3digit2003  ge 866  and headind3digit2003 le 869  then headind2003 = 9;
+458        if headind3digit2003  ge 856  and headind3digit2003 le 859  then headind2003 = 10;
+459        if (headind3digit2003 ge 727  and headind3digit2003 le 749)
+460        or (headind3digit2003 ge 786  and headind3digit2003 le 847)
+461        or (headind3digit2003 ge 877  and headind3digit2003 le 929) then headind2003 = 11;
+462        if headind3digit2003  ge 937  and headind3digit2003 le 987  then headind2003 = 12;
+463        
+464        if headind3digit2005  =  .                                  then headind2005 = .;
+465        if headind3digit2005  =  999                                then headind2005 = .;
+466        if headind3digit2005  =  0                                  then headind2005 = 0;
+467        if headind3digit2005  > 0     and headind3digit2005 le 29   then headind2005 = 1;
+468        if headind3digit2005  ge 37   and headind3digit2005 le 49   then headind2005 = 2;
+469        if headind3digit2005  =  77                                 then headind2005 = 3;
+470        if headind3digit2005  ge 107  and headind3digit2005 le 399  then headind2005 = 4;
+471        if (headind3digit2005 ge 57   and headind3digit2005 le 69)
+472        or (headind3digit2005 ge 647  and headind3digit2005 le 679) then headind2005 = 5;
+473        if headind3digit2005  ge 407  and headind3digit2005 le 579  then headind2005 = 6;
+474        if headind3digit2005  ge 687  and headind3digit2005 le 719  then headind2005 = 7;
+475        if headind3digit2005  ge 757  and headind3digit2005 le 779  then headind2005 = 8;
+476        if headind3digit2005  ge 866  and headind3digit2005 le 869  then headind2005 = 9;
+477        if headind3digit2005  ge 856  and headind3digit2005 le 859  then headind2005 = 10;
+478        if (headind3digit2005 ge 727  and headind3digit2005 le 749)
+479        or (headind3digit2005 ge 786  and headind3digit2005 le 847)
+480        or (headind3digit2005 ge 877  and headind3digit2005 le 929) then headind2005 = 11;
+481        if headind3digit2005  ge 937  and headind3digit2005 le 987  then headind2005 = 12;
+482        
+483        if headind3digit2007  =  .                                  then headind2007 = .;
+484        if headind3digit2007  =  999                                then headind2007 = .;
+485        if headind3digit2007  =  0                                  then headind2007 = 0;
+486        if headind3digit2007  > 0     and headind3digit2007 le 29   then headind2007 = 1;
+487        if headind3digit2007  ge 37   and headind3digit2007 le 49   then headind2007 = 2;
+488        if headind3digit2007  =  77                                 then headind2007 = 3;
+489        if headind3digit2007  ge 107  and headind3digit2007 le 399  then headind2007 = 4;
+490        if (headind3digit2007 ge 57   and headind3digit2007 le 69)
+491        or (headind3digit2007 ge 647  and headind3digit2007 le 679) then headind2007 = 5;
+492        if headind3digit2007  ge 407  and headind3digit2007 le 579  then headind2007 = 6;
+493        if headind3digit2007  ge 687  and headind3digit2007 le 719  then headind2007 = 7;
+494        if headind3digit2007  ge 757  and headind3digit2007 le 779  then headind2007 = 8;
+495        if headind3digit2007  ge 866  and headind3digit2007 le 869  then headind2007 = 9;
+496        if headind3digit2007  ge 856  and headind3digit2007 le 859  then headind2007 = 10;
+497        if (headind3digit2007 ge 727  and headind3digit2007 le 749)
+498        or (headind3digit2007 ge 786  and headind3digit2007 le 847)
+499        or (headind3digit2007 ge 877  and headind3digit2007 le 929) then headind2007 = 11;
+500        if headind3digit2007  ge 937  and headind3digit2007 le 987  then headind2007 = 12;
+501        
+502        if headind3digit2009  =  .                                  then headind2009 = .;
+503        if headind3digit2009  =  999                                then headind2009 = .;
+504        if headind3digit2009  =  0                                  then headind2009 = 0;
+505        if headind3digit2009  > 0     and headind3digit2009 le 29   then headind2009 = 1;
+506        if headind3digit2009  ge 37   and headind3digit2009 le 49   then headind2009 = 2;
+507        if headind3digit2009  =  77                                 then headind2009 = 3;
+13                                      The SAS System         14:25 Sunday, September 25, 2016
+
+508        if headind3digit2009  ge 107  and headind3digit2009 le 399  then headind2009 = 4;
+509        if (headind3digit2009 ge 57   and headind3digit2009 le 69)
+510        or (headind3digit2009 ge 647  and headind3digit2009 le 679) then headind2009 = 5;
+511        if headind3digit2009  ge 407  and headind3digit2009 le 579  then headind2009 = 6;
+512        if headind3digit2009  ge 687  and headind3digit2009 le 719  then headind2009 = 7;
+513        if headind3digit2009  ge 757  and headind3digit2009 le 779  then headind2009 = 8;
+514        if headind3digit2009  ge 866  and headind3digit2009 le 869  then headind2009 = 9;
+515        if headind3digit2009  ge 856  and headind3digit2009 le 859  then headind2009 = 10;
+516        if (headind3digit2009 ge 727  and headind3digit2009 le 749)
+517        or (headind3digit2009 ge 786  and headind3digit2009 le 847)
+518        or (headind3digit2009 ge 877  and headind3digit2009 le 929) then headind2009 = 11;
+519        if headind3digit2009  ge 937  and headind3digit2009 le 987  then headind2009 = 12;
+520        
+521        if headind3digit2011  =  .                                  then headind2011 = .;
+522        if headind3digit2011  =  999                                then headind2011 = .;
+523        if headind3digit2011  =  0                                  then headind2011 = 0;
+524        if headind3digit2011  > 0     and headind3digit2011 le 29   then headind2011 = 1;
+525        if headind3digit2011  ge 37   and headind3digit2011 le 49   then headind2011 = 2;
+526        if headind3digit2011  =  77                                 then headind2011 = 3;
+527        if headind3digit2011  ge 107  and headind3digit2011 le 399  then headind2011 = 4;
+528        if (headind3digit2011 ge 57   and headind3digit2011 le 69)
+529        or (headind3digit2011 ge 647  and headind3digit2011 le 679) then headind2011 = 5;
+530        if headind3digit2011  ge 407  and headind3digit2011 le 579  then headind2011 = 6;
+531        if headind3digit2011  ge 687  and headind3digit2011 le 719  then headind2011 = 7;
+532        if headind3digit2011  ge 757  and headind3digit2011 le 779  then headind2011 = 8;
+533        if headind3digit2011  ge 866  and headind3digit2011 le 869  then headind2011 = 9;
+534        if headind3digit2011  ge 856  and headind3digit2011 le 859  then headind2011 = 10;
+535        if (headind3digit2011 ge 727  and headind3digit2011 le 749)
+536        or (headind3digit2011 ge 786  and headind3digit2011 le 847)
+537        or (headind3digit2011 ge 877  and headind3digit2011 le 929) then headind2011 = 11;
+538        if headind3digit2011  ge 937  and headind3digit2011 le 987  then headind2011 = 12;
+539        
+540        if headind3digit2013  =  .                                  then headind2013 = .;
+541        if headind3digit2013  =  999                                then headind2013 = .;
+542        if headind3digit2013  =  0                                  then headind2013 = 0;
+543        if headind3digit2013  > 0     and headind3digit2013 le 29   then headind2013 = 1;
+544        if headind3digit2013  ge 37   and headind3digit2013 le 49   then headind2013 = 2;
+545        if headind3digit2013  =  77                                 then headind2013 = 3;
+546        if headind3digit2013  ge 107  and headind3digit2013 le 399  then headind2013 = 4;
+547        if (headind3digit2013 ge 57   and headind3digit2013 le 69)
+548        or (headind3digit2013 ge 647  and headind3digit2013 le 679) then headind2013 = 5;
+549        if headind3digit2013  ge 407  and headind3digit2013 le 579  then headind2013 = 6;
+550        if headind3digit2013  ge 687  and headind3digit2013 le 719  then headind2013 = 7;
+551        if headind3digit2013  ge 757  and headind3digit2013 le 779  then headind2013 = 8;
+552        if headind3digit2013  ge 866  and headind3digit2013 le 869  then headind2013 = 9;
+553        if headind3digit2013  ge 856  and headind3digit2013 le 859  then headind2013 = 10;
+554        if (headind3digit2013 ge 727  and headind3digit2013 le 749)
+555        or (headind3digit2013 ge 786  and headind3digit2013 le 847)
+556        or (headind3digit2013 ge 877  and headind3digit2013 le 929) then headind2013 = 11;
+557        if headind3digit2013  ge 937  and headind3digit2013 le 987  then headind2013 = 12;
+558        
+559        if headocc3digit2003 =  .                                  then headocc2003 = .;
+560        if headocc3digit2003 =  999                                then headocc2003 = .;
+561        if headocc3digit2003 =  0                                  then headocc2003 = 0;
+562        if (headocc3digit2003 ge 80  and headocc3digit2003 le 196)
+563        or (headocc3digit2003 ge 210 and headocc3digit2003 le 365) then headocc2003 = 1;
+14                                      The SAS System         14:25 Sunday, September 25, 2016
+
+564        if (headocc3digit2003 ge 1   and headocc3digit2003 le 73)  then headocc2003 = 2;
+565        if (headocc3digit2003 ge 200 and headocc3digit2003 le 206)
+566        or (headocc3digit2003 ge 470 and headocc3digit2003 le 496) then headocc2003 = 3;
+567        if headocc3digit2003 ge 500  and headocc3digit2003 le 593  then headocc2003 = 4;
+568        if headocc3digit2003 ge 700  and headocc3digit2003 le 896  then headocc2003 = 5;
+569        if headocc3digit2003 ge 900  and headocc3digit2003 le 975  then headocc2003 = 7;
+570        if headocc3digit2003 ge 620  and headocc3digit2003 le 694  then headocc2003 = 8;
+571        if headocc3digit2003 ge 600  and headocc3digit2003 le 613  then headocc2003 = 10;
+572        if (headocc3digit2003 ge 370 and headocc3digit2003 le 465)
+573        or (headocc3digit2003 ge 980 and headocc3digit2003 le 983) then headocc2003 = 11;
+574        
+575        if headocc3digit2005 =  .                                  then headocc2005 = .;
+576        if headocc3digit2005 =  999                                then headocc2005 = .;
+577        if headocc3digit2005 =  0                                  then headocc2005 = 0;
+578        if (headocc3digit2005 ge 80  and headocc3digit2005 le 196)
+579        or (headocc3digit2005 ge 210 and headocc3digit2005 le 365) then headocc2005 = 1;
+580        if (headocc3digit2005 ge 1   and headocc3digit2005 le 73)  then headocc2005 = 2;
+581        if (headocc3digit2005 ge 200 and headocc3digit2005 le 206)
+582        or (headocc3digit2005 ge 470 and headocc3digit2005 le 496) then headocc2005 = 3;
+583        if headocc3digit2005 ge 500  and headocc3digit2005 le 593  then headocc2005 = 4;
+584        if headocc3digit2005 ge 700  and headocc3digit2005 le 896  then headocc2005 = 5;
+585        if headocc3digit2005 ge 900  and headocc3digit2005 le 975  then headocc2005 = 7;
+586        if headocc3digit2005 ge 620  and headocc3digit2005 le 694  then headocc2005 = 8;
+587        if headocc3digit2005 ge 600  and headocc3digit2005 le 613  then headocc2005 = 10;
+588        if (headocc3digit2005 ge 370 and headocc3digit2005 le 465)
+589        or (headocc3digit2005 ge 980 and headocc3digit2005 le 983) then headocc2005 = 11;
+590        
+591        if headocc3digit2007 =  .                                  then headocc2007 = .;
+592        if headocc3digit2007 =  999                                then headocc2007 = .;
+593        if headocc3digit2007 =  0                                  then headocc2007 = 0;
+594        if (headocc3digit2007 ge 80  and headocc3digit2007 le 196)
+595        or (headocc3digit2007 ge 210 and headocc3digit2007 le 365) then headocc2007 = 1;
+596        if (headocc3digit2007 ge 1   and headocc3digit2007 le 73)  then headocc2007 = 2;
+597        if (headocc3digit2007 ge 200 and headocc3digit2007 le 206)
+598        or (headocc3digit2007 ge 470 and headocc3digit2007 le 496) then headocc2007 = 3;
+599        if headocc3digit2007 ge 500  and headocc3digit2007 le 593  then headocc2007 = 4;
+600        if headocc3digit2007 ge 700  and headocc3digit2007 le 896  then headocc2007 = 5;
+601        if headocc3digit2007 ge 900  and headocc3digit2007 le 975  then headocc2007 = 7;
+602        if headocc3digit2007 ge 620  and headocc3digit2007 le 694  then headocc2007 = 8;
+603        if headocc3digit2007 ge 600  and headocc3digit2007 le 613  then headocc2007 = 10;
+604        if (headocc3digit2007 ge 370 and headocc3digit2007 le 465)
+605        or (headocc3digit2007 ge 980 and headocc3digit2007 le 983) then headocc2007 = 11;
+606        
+607        if headocc3digit2009 =  .                                  then headocc2009 = .;
+608        if headocc3digit2009 =  999                                then headocc2009 = .;
+609        if headocc3digit2009 =  0                                  then headocc2009 = 0;
+610        if (headocc3digit2009 ge 80  and headocc3digit2009 le 196)
+611        or (headocc3digit2009 ge 210 and headocc3digit2009 le 365) then headocc2009 = 1;
+612        if (headocc3digit2009 ge 1   and headocc3digit2009 le 73)  then headocc2009 = 2;
+613        if (headocc3digit2009 ge 200 and headocc3digit2009 le 206)
+614        or (headocc3digit2009 ge 470 and headocc3digit2009 le 496) then headocc2009 = 3;
+615        if headocc3digit2009 ge 500  and headocc3digit2009 le 593  then headocc2009 = 4;
+616        if headocc3digit2009 ge 700  and headocc3digit2009 le 896  then headocc2009 = 5;
+617        if headocc3digit2009 ge 900  and headocc3digit2009 le 975  then headocc2009 = 7;
+618        if headocc3digit2009 ge 620  and headocc3digit2009 le 694  then headocc2009 = 8;
+619        if headocc3digit2009 ge 600  and headocc3digit2009 le 613  then headocc2009 = 10;
+15                                      The SAS System         14:25 Sunday, September 25, 2016
+
+620        if (headocc3digit2009 ge 370 and headocc3digit2009 le 465)
+621        or (headocc3digit2009 ge 980 and headocc3digit2009 le 983) then headocc2009 = 11;
+622        
+623        if headocc3digit2011 =  .                                  then headocc2011 = .;
+624        if headocc3digit2011 =  999                                then headocc2011 = .;
+625        if headocc3digit2011 =  0                                  then headocc2011 = 0;
+626        if (headocc3digit2011 ge 80  and headocc3digit2011 le 196)
+627        or (headocc3digit2011 ge 210 and headocc3digit2011 le 365) then headocc2011 = 1;
+628        if (headocc3digit2011 ge 1   and headocc3digit2011 le 73)  then headocc2011 = 2;
+629        if (headocc3digit2011 ge 200 and headocc3digit2011 le 206)
+630        or (headocc3digit2011 ge 470 and headocc3digit2011 le 496) then headocc2011 = 3;
+631        if headocc3digit2011 ge 500  and headocc3digit2011 le 593  then headocc2011 = 4;
+632        if headocc3digit2011 ge 700  and headocc3digit2011 le 896  then headocc2011 = 5;
+633        if headocc3digit2011 ge 900  and headocc3digit2011 le 975  then headocc2011 = 7;
+634        if headocc3digit2011 ge 620  and headocc3digit2011 le 694  then headocc2011 = 8;
+635        if headocc3digit2011 ge 600  and headocc3digit2011 le 613  then headocc2011 = 10;
+636        if (headocc3digit2011 ge 370 and headocc3digit2011 le 465)
+637        or (headocc3digit2011 ge 980 and headocc3digit2011 le 983) then headocc2011 = 11;
+638        
+639        if headocc3digit2013 =  .                                  then headocc2013 = .;
+640        if headocc3digit2013 =  999                                then headocc2013 = .;
+641        if headocc3digit2013 =  0                                  then headocc2013 = 0;
+642        if (headocc3digit2013 ge 80  and headocc3digit2013 le 196)
+643        or (headocc3digit2013 ge 210 and headocc3digit2013 le 365) then headocc2013 = 1;
+644        if (headocc3digit2013 ge 1   and headocc3digit2013 le 73)  then headocc2013 = 2;
+645        if (headocc3digit2013 ge 200 and headocc3digit2013 le 206)
+646        or (headocc3digit2013 ge 470 and headocc3digit2013 le 496) then headocc2013 = 3;
+647        if headocc3digit2013 ge 500  and headocc3digit2013 le 593  then headocc2013 = 4;
+648        if headocc3digit2013 ge 700  and headocc3digit2013 le 896  then headocc2013 = 5;
+649        if headocc3digit2013 ge 900  and headocc3digit2013 le 975  then headocc2013 = 7;
+650        if headocc3digit2013 ge 620  and headocc3digit2013 le 694  then headocc2013 = 8;
+651        if headocc3digit2013 ge 600  and headocc3digit2013 le 613  then headocc2013 = 10;
+652        if (headocc3digit2013 ge 370 and headocc3digit2013 le 465)
+653        or (headocc3digit2013 ge 980 and headocc3digit2013 le 983) then headocc2013 = 11;
+654        
+655        keep
+656        id1999  headage1999  headgender1999   WGT1999  headmarital1999  headedu1999
+656      ! headrace1999  headstatus1999  selfemploy1999  famsize1999  headocc3digit1999
+656      ! headind3digit1999  headocc1999  headind1999  originalheadedu1999
+657        id2001  headage2001  headgender2001   WGT2001  headmarital2001  headedu2001
+657      ! headrace2001  headstatus2001  selfemploy2001  famsize2001  headocc3digit2001
+657      ! headind3digit2001  headocc2001  headind2001  originalheadedu2001
+658        id2003  headage2003  headgender2003   WGT2003  headmarital2003  headedu2003
+658      ! headrace2003  headstatus2003  selfemploy2003  famsize2003  headocc3digit2003
+658      ! headind3digit2003  headocc2003  headind2003  originalheadedu2003
+659        id2005  headage2005  headgender2005   WGT2005  headmarital2005  headedu2005
+659      ! headrace2005  headstatus2005  selfemploy2005  famsize2005  headocc3digit2005
+659      ! headind3digit2005  headocc2005  headind2005  originalheadedu2005
+660        id2007  headage2007  headgender2007   WGT2007  headmarital2007  headedu2007
+660      ! headrace2007  headstatus2007  selfemploy2007  famsize2007  headocc3digit2007
+660      ! headind3digit2007  headocc2007  headind2007  originalheadedu2007
+661        id2009  headage2009  headgender2009   WGT2009  headmarital2009  headedu2009
+661      ! headrace2009  headstatus2009  selfemploy2009  famsize2009  headocc3digit2009
+661      ! headind3digit2009  headocc2009  headind2009  originalheadedu2009
+662        id2011  headage2011  headgender2011   WGT2011  headmarital2011  headedu2011
+662      ! headrace2011  headstatus2011  selfemploy2011  famsize2011  headocc3digit2011
+16                                      The SAS System         14:25 Sunday, September 25, 2016
+
+662      ! headind3digit2011  headocc2011  headind2011  originalheadedu2011
+663        id2013  headage2013  headgender2013   WGT2013  headmarital2013  headedu2013
+663      ! headrace2013  headstatus2013  selfemploy2013  famsize2013  headocc3digit2013
+663      ! headind3digit2013  headocc2013  headind2013  originalheadedu2013 ;
+664        run;
+
+NOTE: There were 6997 observations read from the data set WORK.HEADINFOR1999.
+NOTE: There were 7406 observations read from the data set WORK.HEADINFOR2001.
+NOTE: There were 7822 observations read from the data set WORK.HEADINFOR2003.
+NOTE: There were 8002 observations read from the data set WORK.HEADINFOR2005.
+NOTE: There were 8289 observations read from the data set WORK.HEADINFOR2007.
+NOTE: There were 8690 observations read from the data set WORK.HEADINFOR2009.
+NOTE: There were 8907 observations read from the data set WORK.HEADINFOR2011.
+NOTE: There were 9063 observations read from the data set WORK.HEADINFOR2013.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 120 variables.
+NOTE: DATA statement used (Total process time):
+      real time           1.10 seconds
+      cpu time            0.09 seconds
+      
+
+665        
+666        ************************************************************************************
+666      ! ******************************
+667        *****Each year there are some missing observations of education and race of PSID
+667      ! head and wife, valid information*
+668        *****may be located in other waves, we mapped them cross waves to maximize the
+668      ! number of non-missing observations*;
+669        
+670        *vrace takes race from each year and puts it in the vraceYEAR dataset;
+671        %macro vrace(year);
+672        data vrace&year;
+673        set tmphe.head;
+674        if id&year ne . and headrace&year ne .;
+675        w = &year;
+676        headrace = headrace&year;
+677        keep id&year headrace;
+678        proc sort data = vrace&year;
+679        by id&year;
+680        
+681        data person;
+682        set tmphe.person;
+683        if rel&year = 10 and seqno&year =1;
+684        keep id&year pid;
+685        proc sort data = person;
+686        by id&year;
+687        
+688        data vrace&year;
+689        merge vrace&year(in = in1) person;
+690        by id&year;
+691        keep headrace pid;
+692        if in1;
+693        run;
+694        %mend;
+695        %vrace(1999) %vrace(2001) %vrace(2003) %vrace(2005) %vrace(2007) %vrace(2009)
+695      ! %vrace(2011) %vrace(2013)
+
+17                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VRACE1999 has 6929 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+NOTE: There were 6929 observations read from the data set WORK.VRACE1999.
+NOTE: The data set WORK.VRACE1999 has 6929 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 6997 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.52 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 6997 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 6997 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 6929 observations read from the data set WORK.VRACE1999.
+NOTE: There were 6997 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VRACE1999 has 6929 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VRACE2001 has 7269 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+      
+
+NOTE: There were 7269 observations read from the data set WORK.VRACE2001.
+NOTE: The data set WORK.VRACE2001 has 7269 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+18                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: The data set WORK.PERSON has 7406 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 7406 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 7406 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 7269 observations read from the data set WORK.VRACE2001.
+NOTE: There were 7406 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VRACE2001 has 7269 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VRACE2003 has 7671 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 7671 observations read from the data set WORK.VRACE2003.
+NOTE: The data set WORK.VRACE2003 has 7671 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 7822 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 7822 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 7822 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 7671 observations read from the data set WORK.VRACE2003.
+19                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 7822 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VRACE2003 has 7671 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VRACE2005 has 7948 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 7948 observations read from the data set WORK.VRACE2005.
+NOTE: The data set WORK.VRACE2005 has 7948 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8002 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 8002 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8002 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 7948 observations read from the data set WORK.VRACE2005.
+NOTE: There were 8002 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VRACE2005 has 7948 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VRACE2007 has 8222 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 8222 observations read from the data set WORK.VRACE2007.
+20                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: The data set WORK.VRACE2007 has 8222 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8289 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 8289 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8289 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 8222 observations read from the data set WORK.VRACE2007.
+NOTE: There were 8289 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VRACE2007 has 8222 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VRACE2009 has 8614 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 8614 observations read from the data set WORK.VRACE2009.
+NOTE: The data set WORK.VRACE2009 has 8614 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8690 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 8690 observations read from the data set WORK.PERSON.
+21                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: The data set WORK.PERSON has 8690 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 8614 observations read from the data set WORK.VRACE2009.
+NOTE: There were 8690 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VRACE2009 has 8614 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VRACE2011 has 8820 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 8820 observations read from the data set WORK.VRACE2011.
+NOTE: The data set WORK.VRACE2011 has 8820 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8907 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 8907 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8907 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 8820 observations read from the data set WORK.VRACE2011.
+NOTE: There were 8907 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VRACE2011 has 8820 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+22                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VRACE2013 has 8985 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 8985 observations read from the data set WORK.VRACE2013.
+NOTE: The data set WORK.VRACE2013 has 8985 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 9063 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 9063 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 8985 observations read from the data set WORK.VRACE2013.
+NOTE: There were 9063 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VRACE2013 has 8985 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+696        
+697        data vrace;
+698        set vrace1999 vrace2001 vrace2003 vrace2005 vrace2007 vrace2009 vrace2011 vrace2013;
+699        run;
+
+NOTE: There were 6929 observations read from the data set WORK.VRACE1999.
+NOTE: There were 7269 observations read from the data set WORK.VRACE2001.
+NOTE: There were 7671 observations read from the data set WORK.VRACE2003.
+NOTE: There were 7948 observations read from the data set WORK.VRACE2005.
+NOTE: There were 8222 observations read from the data set WORK.VRACE2007.
+NOTE: There were 8614 observations read from the data set WORK.VRACE2009.
+NOTE: There were 8820 observations read from the data set WORK.VRACE2011.
+NOTE: There were 8985 observations read from the data set WORK.VRACE2013.
+NOTE: The data set WORK.VRACE has 64458 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+23                                      The SAS System         14:25 Sunday, September 25, 2016
+
+      
+
+700        proc sort data = vrace nodupkey;
+701        by pid;
+702        run;
+
+NOTE: There were 64458 observations read from the data set WORK.VRACE.
+NOTE: 50281 observations with duplicate key values were deleted.
+NOTE: The data set WORK.VRACE has 14177 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+      
+
+703        
+704        %macro race(year);
+705        data race&year;
+706        set tmphe.head;
+707        if id&year ne . and headrace&year = .;
+708        w = &year;
+709        keep id&year w;
+710        proc sort data = race&year;
+711        by id&year;
+712        
+713        data person;
+714        set tmphe.person;
+715        if rel&year = 10 and seqno&year =1;
+716        keep id&year pid;
+717        proc sort data = person;
+718        by id&year;
+719        
+720        data race&year;
+721        merge race&year(in = in1) person;
+722        by id&year;
+723        if in1;
+724        proc sort data = race&year;
+725        by pid;
+726        run;
+727        
+728        *merge timeless race dataset (vrace) with yearly raceYEAR datasets filled with the
+728      ! observations
+729         having empty headraceYEAR values to replace missing values with race vals from
+729      ! other years;
+730        data race&year;
+731        merge race&year(in = in1) vrace(in = in2);
+732        by pid;
+733        if in1 and in2;
+734        keep id&year headrace;
+735        proc sort data = race&year;
+736        by id&year;
+737        proc print data = race&year;
+738        run;
+739        %mend;
+740        %race(1999) %race(2001) %race(2003) %race(2005) %race(2007) %race(2009) %race(2011)
+740      ! %race(2013)
+
+24                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.RACE1999 has 68 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 68 observations read from the data set WORK.RACE1999.
+NOTE: The data set WORK.RACE1999 has 68 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 6997 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 6997 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 6997 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 68 observations read from the data set WORK.RACE1999.
+NOTE: There were 6997 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.RACE1999 has 68 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 68 observations read from the data set WORK.RACE1999.
+NOTE: The data set WORK.RACE1999 has 68 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 68 observations read from the data set WORK.RACE1999.
+NOTE: There were 14177 observations read from the data set WORK.VRACE.
+NOTE: The data set WORK.RACE1999 has 48 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+25                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 48 observations read from the data set WORK.RACE1999.
+NOTE: The data set WORK.RACE1999 has 48 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 48 observations read from the data set WORK.RACE1999.
+NOTE: The PROCEDURE PRINT printed page 1.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.RACE2001 has 137 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 137 observations read from the data set WORK.RACE2001.
+NOTE: The data set WORK.RACE2001 has 137 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 7406 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 7406 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 7406 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 137 observations read from the data set WORK.RACE2001.
+NOTE: There were 7406 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.RACE2001 has 137 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+26                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 137 observations read from the data set WORK.RACE2001.
+NOTE: The data set WORK.RACE2001 has 137 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 137 observations read from the data set WORK.RACE2001.
+NOTE: There were 14177 observations read from the data set WORK.VRACE.
+NOTE: The data set WORK.RACE2001 has 102 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 102 observations read from the data set WORK.RACE2001.
+NOTE: The data set WORK.RACE2001 has 102 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 102 observations read from the data set WORK.RACE2001.
+NOTE: The PROCEDURE PRINT printed pages 2-3.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.RACE2003 has 151 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 151 observations read from the data set WORK.RACE2003.
+NOTE: The data set WORK.RACE2003 has 151 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 7822 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.07 seconds
+      
+
+
+NOTE: There were 7822 observations read from the data set WORK.PERSON.
+27                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: The data set WORK.PERSON has 7822 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 151 observations read from the data set WORK.RACE2003.
+NOTE: There were 7822 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.RACE2003 has 151 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 151 observations read from the data set WORK.RACE2003.
+NOTE: The data set WORK.RACE2003 has 151 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 151 observations read from the data set WORK.RACE2003.
+NOTE: There were 14177 observations read from the data set WORK.VRACE.
+NOTE: The data set WORK.RACE2003 has 124 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 124 observations read from the data set WORK.RACE2003.
+NOTE: The data set WORK.RACE2003 has 124 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 124 observations read from the data set WORK.RACE2003.
+NOTE: The PROCEDURE PRINT printed pages 4-6.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.RACE2005 has 54 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 54 observations read from the data set WORK.RACE2005.
+28                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: The data set WORK.RACE2005 has 54 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8002 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.07 seconds
+      
+
+
+NOTE: There were 8002 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8002 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 54 observations read from the data set WORK.RACE2005.
+NOTE: There were 8002 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.RACE2005 has 54 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 54 observations read from the data set WORK.RACE2005.
+NOTE: The data set WORK.RACE2005 has 54 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 54 observations read from the data set WORK.RACE2005.
+NOTE: There were 14177 observations read from the data set WORK.VRACE.
+NOTE: The data set WORK.RACE2005 has 31 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 31 observations read from the data set WORK.RACE2005.
+NOTE: The data set WORK.RACE2005 has 31 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+29                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 31 observations read from the data set WORK.RACE2005.
+NOTE: The PROCEDURE PRINT printed page 7.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.RACE2007 has 67 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 67 observations read from the data set WORK.RACE2007.
+NOTE: The data set WORK.RACE2007 has 67 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8289 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 8289 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8289 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 67 observations read from the data set WORK.RACE2007.
+NOTE: There were 8289 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.RACE2007 has 67 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 67 observations read from the data set WORK.RACE2007.
+NOTE: The data set WORK.RACE2007 has 67 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+30                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 67 observations read from the data set WORK.RACE2007.
+NOTE: There were 14177 observations read from the data set WORK.VRACE.
+NOTE: The data set WORK.RACE2007 has 28 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 28 observations read from the data set WORK.RACE2007.
+NOTE: The data set WORK.RACE2007 has 28 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 28 observations read from the data set WORK.RACE2007.
+NOTE: The PROCEDURE PRINT printed page 8.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.RACE2009 has 76 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 76 observations read from the data set WORK.RACE2009.
+NOTE: The data set WORK.RACE2009 has 76 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8690 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.07 seconds
+      
+
+
+NOTE: There were 8690 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8690 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 76 observations read from the data set WORK.RACE2009.
+31                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 8690 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.RACE2009 has 76 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 76 observations read from the data set WORK.RACE2009.
+NOTE: The data set WORK.RACE2009 has 76 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 76 observations read from the data set WORK.RACE2009.
+NOTE: There were 14177 observations read from the data set WORK.VRACE.
+NOTE: The data set WORK.RACE2009 has 29 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 29 observations read from the data set WORK.RACE2009.
+NOTE: The data set WORK.RACE2009 has 29 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 29 observations read from the data set WORK.RACE2009.
+NOTE: The PROCEDURE PRINT printed page 9.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.RACE2011 has 87 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 87 observations read from the data set WORK.RACE2011.
+NOTE: The data set WORK.RACE2011 has 87 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+32                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: The data set WORK.PERSON has 8907 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 8907 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8907 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 87 observations read from the data set WORK.RACE2011.
+NOTE: There were 8907 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.RACE2011 has 87 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 87 observations read from the data set WORK.RACE2011.
+NOTE: The data set WORK.RACE2011 has 87 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 87 observations read from the data set WORK.RACE2011.
+NOTE: There were 14177 observations read from the data set WORK.VRACE.
+NOTE: The data set WORK.RACE2011 has 28 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 28 observations read from the data set WORK.RACE2011.
+NOTE: The data set WORK.RACE2011 has 28 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 28 observations read from the data set WORK.RACE2011.
+NOTE: The PROCEDURE PRINT printed page 10.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+33                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.RACE2013 has 78 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 78 observations read from the data set WORK.RACE2013.
+NOTE: The data set WORK.RACE2013 has 78 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 9063 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 9063 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 78 observations read from the data set WORK.RACE2013.
+NOTE: There were 9063 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.RACE2013 has 78 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 78 observations read from the data set WORK.RACE2013.
+NOTE: The data set WORK.RACE2013 has 78 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 78 observations read from the data set WORK.RACE2013.
+NOTE: There were 14177 observations read from the data set WORK.VRACE.
+NOTE: The data set WORK.RACE2013 has 23 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+      
+
+34                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 23 observations read from the data set WORK.RACE2013.
+NOTE: The data set WORK.RACE2013 has 23 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 23 observations read from the data set WORK.RACE2013.
+NOTE: The PROCEDURE PRINT printed page 11.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+741        
+742        %macro crace(year);
+743        proc sort data = tmphe.head;
+744        by id&year;
+745        data tmphe.head;
+746        merge tmphe.head race&year;
+747        by id&year;
+748        if headrace ne . then headrace&year = headrace;
+749        run;
+750        data u;
+751        set tmphe.head;
+752        if id&year ne .;
+753        proc freq data = u;
+754        tables headrace&year;
+755        run;
+756        %mend;
+757        %crace(1999) %crace(2001) %crace(2003) %crace(2005)
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 120 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.75 seconds
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 48 observations read from the data set WORK.RACE1999.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.21 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 6997 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+      
+35                                      The SAS System         14:25 Sunday, September 25, 2016
+
+
+
+NOTE: There were 6997 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 12.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.75 seconds
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 102 observations read from the data set WORK.RACE2001.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.21 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 7406 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 7406 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 13.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.18 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 124 observations read from the data set WORK.RACE2003.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.22 seconds
+36                                      The SAS System         14:25 Sunday, September 25, 2016
+
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 7822 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 7822 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 14.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           1.22 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 31 observations read from the data set WORK.RACE2005.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.21 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 8002 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 8002 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 15.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+758        %crace(2007) %crace(2009) %crace(2011) %crace(2013)
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+37                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.19 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 28 observations read from the data set WORK.RACE2007.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.20 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 8289 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 8289 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 16.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.19 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 29 observations read from the data set WORK.RACE2009.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.23 seconds
+      cpu time            0.07 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 8690 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+
+38                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 8690 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 17.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.21 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 28 observations read from the data set WORK.RACE2011.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.21 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 8907 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 8907 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 18.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.19 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 23 observations read from the data set WORK.RACE2013.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.22 seconds
+      cpu time            0.04 seconds
+      
+39                                      The SAS System         14:25 Sunday, September 25, 2016
+
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 9063 observations and 121 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 19.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+759        ************************************************************************************
+759      ! ********************************
+760        ************************************************************************************
+760      ! ********************************
+761        ************************************************************************************
+761      ! ********************************
+762        ************************************************************************************
+762      ! ********************************
+763        ************************************************************************************
+763      ! ********************************
+764        ************************************************************************************
+764      ! *******************************;
+765        
+766        %macro vedu(year);
+767        data vedu&year;
+768        set tmphe.head;
+769        if id&year ne . and headedu&year ne .;
+770        w = &year;
+771        headedu = headedu&year;
+772        keep id&year headedu w;
+773        proc sort data = vedu&year;
+774        by id&year;
+775        
+776        data person;
+777        set tmphe.person;
+778        %if &year = 1968 %then %do; if rel&year = 1; %end;
+779        %else %if &year le 1982 %then %do; if rel&year = 1 and seqno&year = 1; %end;
+780        %else %do; if rel&year = 10 and seqno&year =1; %end;
+781        keep id&year pid;
+782        proc sort data = person;
+783        by id&year;
+784        
+785        data vedu&year;
+786        merge vedu&year(in = in1) person;
+787        by id&year;
+788        keep headedu pid w;
+789        if in1;
+790        run;
+791        %mend;
+40                                      The SAS System         14:25 Sunday, September 25, 2016
+
+792        %vedu(1999) %vedu(2001) %vedu(2003) %vedu(2005) %vedu(2007) %vedu(2009) %vedu(2011)
+792      ! %vedu(2013)
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VEDU1999 has 6683 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.03 seconds
+      
+
+NOTE: There were 6683 observations read from the data set WORK.VEDU1999.
+NOTE: The data set WORK.VEDU1999 has 6683 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 6997 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 6997 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 6997 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 6683 observations read from the data set WORK.VEDU1999.
+NOTE: There were 6997 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VEDU1999 has 6683 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VEDU2001 has 6990 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 6990 observations read from the data set WORK.VEDU2001.
+NOTE: The data set WORK.VEDU2001 has 6990 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+41                                      The SAS System         14:25 Sunday, September 25, 2016
+
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 7406 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 7406 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 7406 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 6990 observations read from the data set WORK.VEDU2001.
+NOTE: There were 7406 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VEDU2001 has 6990 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VEDU2003 has 7332 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 7332 observations read from the data set WORK.VEDU2003.
+NOTE: The data set WORK.VEDU2003 has 7332 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 7822 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 7822 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 7822 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+42                                      The SAS System         14:25 Sunday, September 25, 2016
+
+
+
+NOTE: There were 7332 observations read from the data set WORK.VEDU2003.
+NOTE: There were 7822 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VEDU2003 has 7332 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VEDU2005 has 7558 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 7558 observations read from the data set WORK.VEDU2005.
+NOTE: The data set WORK.VEDU2005 has 7558 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8002 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 8002 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8002 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 7558 observations read from the data set WORK.VEDU2005.
+NOTE: There were 8002 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VEDU2005 has 7558 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VEDU2007 has 7857 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+43                                      The SAS System         14:25 Sunday, September 25, 2016
+
+      
+
+NOTE: There were 7857 observations read from the data set WORK.VEDU2007.
+NOTE: The data set WORK.VEDU2007 has 7857 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8289 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 8289 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8289 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 7857 observations read from the data set WORK.VEDU2007.
+NOTE: There were 8289 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VEDU2007 has 7857 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VEDU2009 has 8547 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 8547 observations read from the data set WORK.VEDU2009.
+NOTE: The data set WORK.VEDU2009 has 8547 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8690 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+44                                      The SAS System         14:25 Sunday, September 25, 2016
+
+
+
+NOTE: There were 8690 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8690 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 8547 observations read from the data set WORK.VEDU2009.
+NOTE: There were 8690 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VEDU2009 has 8547 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VEDU2011 has 8820 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 8820 observations read from the data set WORK.VEDU2011.
+NOTE: The data set WORK.VEDU2011 has 8820 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8907 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 8907 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8907 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 8820 observations read from the data set WORK.VEDU2011.
+NOTE: There were 8907 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VEDU2011 has 8820 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+45                                      The SAS System         14:25 Sunday, September 25, 2016
+
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.VEDU2013 has 8959 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 8959 observations read from the data set WORK.VEDU2013.
+NOTE: The data set WORK.VEDU2013 has 8959 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 9063 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.07 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 9063 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 8959 observations read from the data set WORK.VEDU2013.
+NOTE: There were 9063 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.VEDU2013 has 8959 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+793        
+794        data vedu;
+795        set vedu1999 vedu2001 vedu2003 vedu2005 vedu2007 vedu2009 vedu2011 vedu2013;
+
+NOTE: There were 6683 observations read from the data set WORK.VEDU1999.
+NOTE: There were 6990 observations read from the data set WORK.VEDU2001.
+NOTE: There were 7332 observations read from the data set WORK.VEDU2003.
+NOTE: There were 7558 observations read from the data set WORK.VEDU2005.
+NOTE: There were 7857 observations read from the data set WORK.VEDU2007.
+NOTE: There were 8547 observations read from the data set WORK.VEDU2009.
+NOTE: There were 8820 observations read from the data set WORK.VEDU2011.
+NOTE: There were 8959 observations read from the data set WORK.VEDU2013.
+NOTE: The data set WORK.VEDU has 62746 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+46                                      The SAS System         14:25 Sunday, September 25, 2016
+
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+796        proc sort data = vedu nodupkey;
+797        by pid headedu;
+798        run;
+
+NOTE: There were 62746 observations read from the data set WORK.VEDU.
+NOTE: 46496 observations with duplicate key values were deleted.
+NOTE: The data set WORK.VEDU has 16250 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+799        
+800        
+801        data eduvary1;
+802        set vedu;
+803        by pid headedu;
+804        if first.pid = 1 and last.pid = 1;
+805        keep pid headedu;
+806        
+
+NOTE: There were 16250 observations read from the data set WORK.VEDU.
+NOTE: The data set WORK.EDUVARY1 has 12033 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+807        data eduvary3;
+808        set vedu;
+809        by pid headedu;
+810        if first.pid = 0 and last.pid = 0;
+811        keep pid;
+812        
+
+NOTE: There were 16250 observations read from the data set WORK.VEDU.
+NOTE: The data set WORK.EDUVARY3 has 69 observations and 1 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+813        data eduvary3;
+814        merge vedu eduvary3(in = in1);
+815        by pid;
+816        if in1;
+817        
+
+NOTE: There were 16250 observations read from the data set WORK.VEDU.
+NOTE: There were 69 observations read from the data set WORK.EDUVARY3.
+NOTE: The data set WORK.EDUVARY3 has 207 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+47                                      The SAS System         14:25 Sunday, September 25, 2016
+
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+818        data eduvary31 eduvary32 eduvary33;
+819        set eduvary3;
+820        by pid;
+821        if first.pid = 1 then output eduvary31;
+822        else if last.pid = 1 then output eduvary33;
+823        else if first.pid = 0 and last.pid = 0 then output eduvary32;
+824        
+
+NOTE: There were 207 observations read from the data set WORK.EDUVARY3.
+NOTE: The data set WORK.EDUVARY31 has 69 observations and 3 variables.
+NOTE: The data set WORK.EDUVARY32 has 69 observations and 3 variables.
+NOTE: The data set WORK.EDUVARY33 has 69 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+825        data eduvary31;
+826        set eduvary31;
+827        headedu1 = headedu; w1 = w;
+828        keep pid headedu1 w1;
+829        
+
+NOTE: There were 69 observations read from the data set WORK.EDUVARY31.
+NOTE: The data set WORK.EDUVARY31 has 69 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+830        data eduvary32;
+831        set eduvary32;
+832        headedu2 = headedu; w2 = w;
+833        keep pid headedu2 w2;
+
+NOTE: There were 69 observations read from the data set WORK.EDUVARY32.
+NOTE: The data set WORK.EDUVARY32 has 69 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+834        proc sort nodupkey;
+835        by pid;
+836        
+
+NOTE: There were 69 observations read from the data set WORK.EDUVARY32.
+NOTE: 0 observations with duplicate key values were deleted.
+NOTE: The data set WORK.EDUVARY32 has 69 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+48                                      The SAS System         14:25 Sunday, September 25, 2016
+
+      
+
+837        data eduvary33;
+838        set eduvary33;
+839        headedu3 = headedu; w3 = w;
+840        keep pid headedu3 w3;
+841        
+
+NOTE: There were 69 observations read from the data set WORK.EDUVARY33.
+NOTE: The data set WORK.EDUVARY33 has 69 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+842        data eduvary3;
+843        merge eduvary31 eduvary32 eduvary33;
+844        by pid;
+845        
+
+NOTE: There were 69 observations read from the data set WORK.EDUVARY31.
+NOTE: There were 69 observations read from the data set WORK.EDUVARY32.
+NOTE: There were 69 observations read from the data set WORK.EDUVARY33.
+NOTE: The data set WORK.EDUVARY3 has 69 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+846        data eduvary2;
+847        merge vedu(in = in1) eduvary1(in = in2) eduvary3(in = in3);
+848        by pid;
+849        if in1 and not in2 and not in3;
+850        
+
+NOTE: There were 16250 observations read from the data set WORK.VEDU.
+NOTE: There were 12033 observations read from the data set WORK.EDUVARY1.
+NOTE: There were 69 observations read from the data set WORK.EDUVARY3.
+NOTE: The data set WORK.EDUVARY2 has 4010 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+851        data eduvary21 eduvary22;
+852        set eduvary2;
+853        by pid;
+854        if first.pid = 1 then output eduvary21;
+855        else if last.pid = 1 then output eduvary22;
+856        
+
+NOTE: There were 4010 observations read from the data set WORK.EDUVARY2.
+NOTE: The data set WORK.EDUVARY21 has 2005 observations and 9 variables.
+NOTE: The data set WORK.EDUVARY22 has 2005 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+49                                      The SAS System         14:25 Sunday, September 25, 2016
+
+      cpu time            0.01 seconds
+      
+
+857        data eduvary21;
+858        set eduvary21;
+859        headedu1 = headedu; w1 = w;
+860        keep pid headedu1 w1;
+861        
+
+NOTE: There were 2005 observations read from the data set WORK.EDUVARY21.
+NOTE: The data set WORK.EDUVARY21 has 2005 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+862        data eduvary22;
+863        set eduvary22;
+864        headedu2 = headedu; w2 = w;
+865        keep pid headedu2 w2;
+866        
+
+NOTE: There were 2005 observations read from the data set WORK.EDUVARY22.
+NOTE: The data set WORK.EDUVARY22 has 2005 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+      
+
+867        data eduvary2;
+868        merge eduvary21 eduvary22;
+869        by pid;
+870        run;
+
+NOTE: There were 2005 observations read from the data set WORK.EDUVARY21.
+NOTE: There were 2005 observations read from the data set WORK.EDUVARY22.
+NOTE: The data set WORK.EDUVARY2 has 2005 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+871        
+872        %macro edu(year);
+873        data edu&year;
+874        set tmphe.head;
+875        if id&year ne . and headedu&year = .;
+876        w = &year;
+877        keep id&year w;
+878        proc sort data = edu&year;
+879        by id&year;
+880        
+881        data person;
+882        set tmphe.person;
+883        %if &year = 1968 %then %do; if rel&year = 1; %end;
+884        %else %if &year le 1982 %then %do; if rel&year = 1 and seqno&year = 1; %end;
+50                                      The SAS System         14:25 Sunday, September 25, 2016
+
+885        %else %do; if rel&year = 10 and seqno&year =1; %end;
+886        keep id&year pid;
+887        proc sort data = person;
+888        by id&year;
+889        
+890        data edu&year;
+891        merge edu&year(in = in1) person;
+892        by id&year;
+893        if in1;
+894        proc sort data = edu&year;
+895        by pid;
+896        
+897        data edu&year;
+898        merge edu&year(in = in1) eduvary1(in = in2) eduvary2(in = in3) eduvary3(in = in4);
+899        by pid;
+900        if in1 and (in2 or in3 or in4);
+901        if in3 then do; if w < w2 then headedu = headedu1; else headedu = headedu2; end;
+902        if in4 then do; if w < w2 then headedu = headedu1; else if w < w3 then headedu =
+902      ! headedu2; else headedu = headedu3; end;
+903        keep id&year headedu;
+904        proc sort data = edu&year;
+905        by id&year;
+906        run;
+907        %mend;
+908        %edu(1999) %edu(2001) %edu(2003) %edu(2005) %edu(2007) %edu(2009) %edu(2011)
+908      ! %edu(2013)
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.EDU1999 has 314 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 314 observations read from the data set WORK.EDU1999.
+NOTE: The data set WORK.EDU1999 has 314 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 6997 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 6997 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 6997 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+51                                      The SAS System         14:25 Sunday, September 25, 2016
+
+
+
+NOTE: There were 314 observations read from the data set WORK.EDU1999.
+NOTE: There were 6997 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.EDU1999 has 314 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 314 observations read from the data set WORK.EDU1999.
+NOTE: The data set WORK.EDU1999 has 314 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 314 observations read from the data set WORK.EDU1999.
+NOTE: There were 12033 observations read from the data set WORK.EDUVARY1.
+NOTE: There were 2005 observations read from the data set WORK.EDUVARY2.
+NOTE: There were 69 observations read from the data set WORK.EDUVARY3.
+NOTE: The data set WORK.EDU1999 has 229 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 229 observations read from the data set WORK.EDU1999.
+NOTE: The data set WORK.EDU1999 has 229 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.EDU2001 has 416 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+NOTE: There were 416 observations read from the data set WORK.EDU2001.
+NOTE: The data set WORK.EDU2001 has 416 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 7406 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.07 seconds
+52                                      The SAS System         14:25 Sunday, September 25, 2016
+
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 7406 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 7406 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 416 observations read from the data set WORK.EDU2001.
+NOTE: There were 7406 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.EDU2001 has 416 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 416 observations read from the data set WORK.EDU2001.
+NOTE: The data set WORK.EDU2001 has 416 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 416 observations read from the data set WORK.EDU2001.
+NOTE: There were 12033 observations read from the data set WORK.EDUVARY1.
+NOTE: There were 2005 observations read from the data set WORK.EDUVARY2.
+NOTE: There were 69 observations read from the data set WORK.EDUVARY3.
+NOTE: The data set WORK.EDU2001 has 317 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 317 observations read from the data set WORK.EDU2001.
+NOTE: The data set WORK.EDU2001 has 317 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.EDU2003 has 490 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+NOTE: There were 490 observations read from the data set WORK.EDU2003.
+NOTE: The data set WORK.EDU2003 has 490 observations and 2 variables.
+53                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 7822 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 7822 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 7822 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 490 observations read from the data set WORK.EDU2003.
+NOTE: There were 7822 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.EDU2003 has 490 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 490 observations read from the data set WORK.EDU2003.
+NOTE: The data set WORK.EDU2003 has 490 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 490 observations read from the data set WORK.EDU2003.
+NOTE: There were 12033 observations read from the data set WORK.EDUVARY1.
+NOTE: There were 2005 observations read from the data set WORK.EDUVARY2.
+NOTE: There were 69 observations read from the data set WORK.EDUVARY3.
+NOTE: The data set WORK.EDU2003 has 402 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 402 observations read from the data set WORK.EDU2003.
+NOTE: The data set WORK.EDU2003 has 402 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+54                                      The SAS System         14:25 Sunday, September 25, 2016
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.EDU2005 has 444 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 444 observations read from the data set WORK.EDU2005.
+NOTE: The data set WORK.EDU2005 has 444 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8002 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 8002 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8002 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 444 observations read from the data set WORK.EDU2005.
+NOTE: There were 8002 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.EDU2005 has 444 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 444 observations read from the data set WORK.EDU2005.
+NOTE: The data set WORK.EDU2005 has 444 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 444 observations read from the data set WORK.EDU2005.
+NOTE: There were 12033 observations read from the data set WORK.EDUVARY1.
+NOTE: There were 2005 observations read from the data set WORK.EDUVARY2.
+NOTE: There were 69 observations read from the data set WORK.EDUVARY3.
+NOTE: The data set WORK.EDU2005 has 387 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+55                                      The SAS System         14:25 Sunday, September 25, 2016
+
+      
+
+
+NOTE: There were 387 observations read from the data set WORK.EDU2005.
+NOTE: The data set WORK.EDU2005 has 387 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.EDU2007 has 432 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 432 observations read from the data set WORK.EDU2007.
+NOTE: The data set WORK.EDU2007 has 432 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8289 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 8289 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8289 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 432 observations read from the data set WORK.EDU2007.
+NOTE: There were 8289 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.EDU2007 has 432 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 432 observations read from the data set WORK.EDU2007.
+NOTE: The data set WORK.EDU2007 has 432 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+56                                      The SAS System         14:25 Sunday, September 25, 2016
+
+
+
+NOTE: There were 432 observations read from the data set WORK.EDU2007.
+NOTE: There were 12033 observations read from the data set WORK.EDUVARY1.
+NOTE: There were 2005 observations read from the data set WORK.EDUVARY2.
+NOTE: There were 69 observations read from the data set WORK.EDUVARY3.
+NOTE: The data set WORK.EDU2007 has 395 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 395 observations read from the data set WORK.EDU2007.
+NOTE: The data set WORK.EDU2007 has 395 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.EDU2009 has 143 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 143 observations read from the data set WORK.EDU2009.
+NOTE: The data set WORK.EDU2009 has 143 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8690 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 8690 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8690 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 143 observations read from the data set WORK.EDU2009.
+NOTE: There were 8690 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.EDU2009 has 143 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+57                                      The SAS System         14:25 Sunday, September 25, 2016
+
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 143 observations read from the data set WORK.EDU2009.
+NOTE: The data set WORK.EDU2009 has 143 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.16 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 143 observations read from the data set WORK.EDU2009.
+NOTE: There were 12033 observations read from the data set WORK.EDUVARY1.
+NOTE: There were 2005 observations read from the data set WORK.EDUVARY2.
+NOTE: There were 69 observations read from the data set WORK.EDUVARY3.
+NOTE: The data set WORK.EDU2009 has 124 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 124 observations read from the data set WORK.EDU2009.
+NOTE: The data set WORK.EDU2009 has 124 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.EDU2011 has 87 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+NOTE: There were 87 observations read from the data set WORK.EDU2011.
+NOTE: The data set WORK.EDU2011 has 87 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 8907 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 8907 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 8907 observations and 2 variables.
+58                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 87 observations read from the data set WORK.EDU2011.
+NOTE: There were 8907 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.EDU2011 has 87 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: There were 87 observations read from the data set WORK.EDU2011.
+NOTE: The data set WORK.EDU2011 has 87 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 87 observations read from the data set WORK.EDU2011.
+NOTE: There were 12033 observations read from the data set WORK.EDUVARY1.
+NOTE: There were 2005 observations read from the data set WORK.EDUVARY2.
+NOTE: There were 69 observations read from the data set WORK.EDUVARY3.
+NOTE: The data set WORK.EDU2011 has 79 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 79 observations read from the data set WORK.EDU2011.
+NOTE: The data set WORK.EDU2011 has 79 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.EDU2013 has 104 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.65 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 104 observations read from the data set WORK.EDU2013.
+NOTE: The data set WORK.EDU2013 has 104 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+59                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set WORK.PERSON has 9063 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.PERSON has 9063 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 104 observations read from the data set WORK.EDU2013.
+NOTE: There were 9063 observations read from the data set WORK.PERSON.
+NOTE: The data set WORK.EDU2013 has 104 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: There were 104 observations read from the data set WORK.EDU2013.
+NOTE: The data set WORK.EDU2013 has 104 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 104 observations read from the data set WORK.EDU2013.
+NOTE: There were 12033 observations read from the data set WORK.EDUVARY1.
+NOTE: There were 2005 observations read from the data set WORK.EDUVARY2.
+NOTE: There were 69 observations read from the data set WORK.EDUVARY3.
+NOTE: The data set WORK.EDU2013 has 92 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 92 observations read from the data set WORK.EDU2013.
+NOTE: The data set WORK.EDU2013 has 92 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+909        
+910        %macro cedu(year);
+911        proc sort data = tmphe.head;
+912        by id&year;
+913        data tmphe.head;
+914        merge tmphe.head edu&year;
+60                                      The SAS System         14:25 Sunday, September 25, 2016
+
+915        by id&year;
+916        if headedu ne . then headedu&year = headedu;
+917        run;
+918        data u;
+919        set tmphe.head;
+920        if id&year ne .;
+921        proc freq data = u;
+922        tables headedu&year;
+923        run;
+924        %mend;
+925        %cedu(1999) %cedu(2001) %cedu(2003) %cedu(2005) %cedu(2007) %cedu(2009) %cedu(2011)
+925      ! %cedu(2013)
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 121 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.21 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 229 observations read from the data set WORK.EDU1999.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.20 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 6997 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 6997 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 20.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.20 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 317 observations read from the data set WORK.EDU2001.
+61                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.21 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 7406 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 7406 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 21.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.18 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 402 observations read from the data set WORK.EDU2003.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.19 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 7822 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 7822 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 22.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+62                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.19 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 387 observations read from the data set WORK.EDU2005.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.20 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 8002 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 8002 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 23.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.19 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 395 observations read from the data set WORK.EDU2007.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.21 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 8289 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+63                                      The SAS System         14:25 Sunday, September 25, 2016
+
+
+
+NOTE: There were 8289 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 24.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.22 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 124 observations read from the data set WORK.EDU2009.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.20 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 8690 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 8690 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 25.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.18 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 79 observations read from the data set WORK.EDU2011.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.21 seconds
+64                                      The SAS System         14:25 Sunday, September 25, 2016
+
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 8907 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 8907 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 26.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.20 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 92 observations read from the data set WORK.EDU2013.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.22 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set WORK.U has 9063 observations and 122 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set WORK.U.
+NOTE: The PROCEDURE FREQ printed page 27.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+926        
+927        
+928        *******************************************************;
+
+65                                      The SAS System         14:25 Sunday, September 25, 2016
+
+NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
+NOTE: The SAS System used:
+      real time           39.17 seconds
+      cpu time            7.32 seconds
+      

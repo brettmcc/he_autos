@@ -1,0 +1,53 @@
+1                                       The SAS System         14:24 Sunday, September 25, 2016
+
+NOTE: Copyright (c) 2002-2012 by SAS Institute Inc., Cary, NC, USA. 
+NOTE: SAS (r) Proprietary Software 9.4 (TS1M3 MBCS3170) 
+      Licensed to UNIVERSITY OF CALIFORNIA SYSTEM-SFA-T&R, Site 70081229.
+NOTE: This session is executing on the X64_8PRO  platform.
+
+
+
+NOTE: Updated analytical products:
+      
+      SAS/STAT 14.1
+      SAS/ETS 14.1
+      SAS/IML 14.1
+      SAS/QC 14.1
+
+WARNING: Your system is scheduled to expire on September 28, 2016, which is 3 days from now. 
+         The SAS System will no longer function on or after that date. Please contact your SAS 
+         Installation Representative to obtain your updated SAS Installation Data (SID) file, 
+         which includes SETINIT information.
+To locate the name of your SAS Installation Representative go to 
+http://support.sas.com/repfinder and provide your site number 70081229 and company name as 
+UNIVERSITY OF CALIFORNIA SYSTEM-SFA-T&R. On the SAS REP list provided, locate the REP for 
+operating system Windows.
+NOTE: Additional host information:
+
+ X64_8PRO WIN 6.2.9200  Workstation
+
+NOTE: SAS initialization used:
+      real time           0.48 seconds
+      cpu time            0.17 seconds
+      
+1          /*set libraries
+2          Brett McCully, September 2016*/
+3          
+4          libname in 'E:\rawpsid';
+NOTE: Libref IN was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\rawpsid
+5          libname tmphe 'E:\he_autos\build\temp';
+NOTE: Libref TMPHE was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\he_autos\build\temp
+6          libname out 'E:\he_autos\build\output';
+NOTE: Libref OUT was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\he_autos\build\output
+
+NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
+NOTE: The SAS System used:
+      real time           0.48 seconds
+      cpu time            0.18 seconds
+      

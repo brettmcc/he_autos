@@ -100,11 +100,8 @@ Industry
 ***********************************************************************************************************************
 ***********************************************************************************************************************
 ***********************************************************************************************************************;
-proc printto log='W:\he_autos-master\build\temp\head.log' print='W:\he_autos-master\build\temp\head.lst' new;
-run;
+%include 'setlibraries.sas';
 
-libname in "W:\rawpsid";
-libname tmphe "W:\he_autos-master\build\temp";
 
 *this macro produces the if-then-else statements to make the employment status variable consistent over time. 
  It should be used for 1976 to 1986;
@@ -292,7 +289,7 @@ WGT2013                       =                  ER58257            ;
 keep id2013 headage2013 headgender2013 WGT2013 headmarital2013 headedu2013 headrace2013 headstatus2013 selfemploy2013 famsize2013 headocc3digit2013 headind3digit2013; run;
 
 
-data tmphehead;
+data tmphe.head;
 merge headinfor1999 headinfor2001 headinfor2003 headinfor2005 headinfor2007 headinfor2009 headinfor2011 headinfor2013;
 if    headage1999       > 120 then headage1999      =.   ;
 if    headage2001       > 120 then headage2001      =.   ;
@@ -660,26 +657,6 @@ id2011  headage2011  headgender2011   WGT2011  headmarital2011  headedu2011  hea
 id2013  headage2013  headgender2013   WGT2013  headmarital2013  headedu2013  headrace2013  headstatus2013  selfemploy2013  famsize2013  headocc3digit2013  headind3digit2013  headocc2013  headind2013  originalheadedu2013 ;
 run;
 
-proc freq data = tmphehead;
-tables 
-headmarital1999  headedu1999  headrace1999  headstatus1999  selfemploy1999  famsize1999  headocc1999  headind1999  
-headmarital2001  headedu2001  headrace2001  headstatus2001  selfemploy2001  famsize2001  headocc2001  headind2001  
-headmarital2003  headedu2003  headrace2003  headstatus2003  selfemploy2003  famsize2003  headocc2003  headind2003            
-headmarital2005  headedu2005  headrace2005  headstatus2005  selfemploy2005  famsize2005  headocc2005  headind2005                          
-headmarital2007  headedu2007  headrace2007  headstatus2007  selfemploy2007  famsize2007  headocc2007  headind2007                          
-headmarital2009  headedu2009  headrace2009  headstatus2009  selfemploy2009  famsize2009  headocc2009  headind2009                        
-headmarital2011  headedu2011  headrace2011  headstatus2011  selfemploy2011  famsize2011  headocc2011  headind2011                          
-headmarital2013  headedu2013  headrace2013  headstatus2013  selfemploy2013  famsize2013  headocc2013  headind2013;                           
-run;
-
-%macro freq(year);
-proc freq data = headinfor&year;
-tables headmarital&year headedu&year headrace&year selfemploy&year famsize&year ;
-run;
-%mend;
-%freq(1999); %freq(2001);
-%freq(2003); %freq(2005); %freq(2007); %freq(2009); %freq(2011); %freq(2013); 
-
 ******************************************************************************************************************
 *****Each year there are some missing observations of education and race of PSID head and wife, valid information*
 *****may be located in other waves, we mapped them cross waves to maximize the number of non-missing observations*;
@@ -687,7 +664,7 @@ run;
 *vrace takes race from each year and puts it in the vraceYEAR dataset;
 %macro vrace(year);
 data vrace&year;
-set tmphehead;
+set tmphe.head;
 if id&year ne . and headrace&year ne .; 
 w = &year;
 headrace = headrace&year;
@@ -696,7 +673,7 @@ proc sort data = vrace&year;
 by id&year;
 
 data person;
-set tmpheperson;
+set tmphe.person;
 if rel&year = 10 and seqno&year =1;
 keep id&year pid;
 proc sort data = person;
@@ -720,7 +697,7 @@ run;
 
 %macro race(year);
 data race&year;
-set tmphehead;
+set tmphe.head;
 if id&year ne . and headrace&year = .; 
 w = &year;
 keep id&year w;
@@ -728,7 +705,7 @@ proc sort data = race&year;
 by id&year;
 
 data person;
-set tmpheperson;
+set tmphe.person;
 if rel&year = 10 and seqno&year =1;
 keep id&year pid;
 proc sort data = person;
@@ -757,15 +734,15 @@ run;
 %race(1999) %race(2001) %race(2003) %race(2005) %race(2007) %race(2009) %race(2011) %race(2013)
 
 %macro crace(year);
-proc sort data = tmphehead;
+proc sort data = tmphe.head;
 by id&year;
-data tmphehead;
-merge tmphehead race&year;
+data tmphe.head;
+merge tmphe.head race&year;
 by id&year;
 if headrace ne . then headrace&year = headrace;
 run;
 data u;
-set tmphehead;
+set tmphe.head;
 if id&year ne .;
 proc freq data = u;
 tables headrace&year;
@@ -782,7 +759,7 @@ run;
 
 %macro vedu(year);
 data vedu&year;
-set tmphehead;
+set tmphe.head;
 if id&year ne . and headedu&year ne .; 
 w = &year;
 headedu = headedu&year;
@@ -791,7 +768,7 @@ proc sort data = vedu&year;
 by id&year;
 
 data person;
-set tmpheperson;
+set tmphe.person;
 %if &year = 1968 %then %do; if rel&year = 1; %end;
 %else %if &year le 1982 %then %do; if rel&year = 1 and seqno&year = 1; %end;
 %else %do; if rel&year = 10 and seqno&year =1; %end;
@@ -888,7 +865,7 @@ run;
 
 %macro edu(year);
 data edu&year;
-set tmphehead;
+set tmphe.head;
 if id&year ne . and headedu&year = .; 
 w = &year;
 keep id&year w;
@@ -896,7 +873,7 @@ proc sort data = edu&year;
 by id&year;
 
 data person;
-set tmpheperson;
+set tmphe.person;
 %if &year = 1968 %then %do; if rel&year = 1; %end;
 %else %if &year le 1982 %then %do; if rel&year = 1 and seqno&year = 1; %end;
 %else %do; if rel&year = 10 and seqno&year =1; %end;
@@ -925,15 +902,15 @@ run;
 %edu(1999) %edu(2001) %edu(2003) %edu(2005) %edu(2007) %edu(2009) %edu(2011) %edu(2013)
 
 %macro cedu(year);
-proc sort data = tmphehead;
+proc sort data = tmphe.head;
 by id&year;
-data tmphehead;
-merge tmphehead edu&year;
+data tmphe.head;
+merge tmphe.head edu&year;
 by id&year;
 if headedu ne . then headedu&year = headedu;
 run;
 data u;
-set tmphehead;
+set tmphe.head;
 if id&year ne .;
 proc freq data = u;
 tables headedu&year;
@@ -943,28 +920,3 @@ run;
 
 
 *******************************************************;
-proc freq data = tmphehead;                                                                                                    
-tables                                                                                                                             
-headmarital1999   headgender1999      headedu1999       headrace1999    headstatus1999    selfemploy1999      famsize1999   headocc1999    headind1999 
-headmarital2001   headgender2001      headedu2001       headrace2001    headstatus2001    selfemploy2001      famsize2001   headocc2001    headind2001 
-headmarital2003   headgender2003      headedu2003       headrace2003    headstatus2003    selfemploy2003      famsize2003   headocc2003    headind2003                              
-headmarital2005   headgender2005      headedu2005       headrace2005    headstatus2005    selfemploy2005      famsize2005   headocc2005    headind2005                             
-headmarital2007   headgender2007      headedu2007       headrace2007    headstatus2007    selfemploy2007      famsize2007   headocc2007    headind2007                             
-headmarital2009   headgender2009      headedu2009       headrace2009    headstatus2009    selfemploy2009      famsize2009   headocc2009    headind2009                             
-headmarital2011   headgender2011      headedu2011       headrace2011    headstatus2011    selfemploy2011      famsize2011   headocc2011    headind2011                             
-headmarital2013   headgender2013      headedu2013       headrace2013    headstatus2013    selfemploy2013      famsize2013   headocc2013    headind2013;                             
-run;                                                                                                                               
-
-%macro freq(year);
-data u;
-set tmphehead;
-if id&year ne .;
-proc freq data = u;
-tables headmarital&year headedu&year headgender&year headrace&year headstatus&year selfemploy&year famsize&year headocc&year headind&year;
-run;
-%mend;
-
-%freq(1999); %freq(2001); %freq(2003); %freq(2005); %freq(2007); %freq(2009); %freq(2011); %freq(2013);
-
-proc printto;
-run;

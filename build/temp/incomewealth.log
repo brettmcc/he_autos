@@ -1,0 +1,290 @@
+1                                       The SAS System         14:30 Sunday, September 25, 2016
+
+NOTE: Copyright (c) 2002-2012 by SAS Institute Inc., Cary, NC, USA. 
+NOTE: SAS (r) Proprietary Software 9.4 (TS1M3 MBCS3170) 
+      Licensed to UNIVERSITY OF CALIFORNIA SYSTEM-SFA-T&R, Site 70081229.
+NOTE: This session is executing on the X64_8PRO  platform.
+
+
+
+NOTE: Updated analytical products:
+      
+      SAS/STAT 14.1
+      SAS/ETS 14.1
+      SAS/IML 14.1
+      SAS/QC 14.1
+
+WARNING: Your system is scheduled to expire on September 28, 2016, which is 3 days from now. 
+         The SAS System will no longer function on or after that date. Please contact your SAS 
+         Installation Representative to obtain your updated SAS Installation Data (SID) file, 
+         which includes SETINIT information.
+To locate the name of your SAS Installation Representative go to 
+http://support.sas.com/repfinder and provide your site number 70081229 and company name as 
+UNIVERSITY OF CALIFORNIA SYSTEM-SFA-T&R. On the SAS REP list provided, locate the REP for 
+operating system Windows.
+NOTE: Additional host information:
+
+ X64_8PRO WIN 6.2.9200  Workstation
+
+NOTE: SAS initialization used:
+      real time           0.53 seconds
+      cpu time            0.12 seconds
+      
+1          * Brett McCully, August 2016;
+2          * Rename and organize income and wealth-related variables;
+3          
+4          %include 'setlibraries.sas';
+NOTE: Libref IN was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\rawpsid
+NOTE: Libref TMPHE was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\he_autos\build\temp
+NOTE: Libref OUT was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\he_autos\build\output
+11         
+12         options mprint spool;
+13         
+14         %let faminc = ER16462 ER20456 ER24099 ER28037 ER41027 ER46935 ER52343 ER58152;
+15         *have stock
+16         1 - yes
+17         5 - no
+18         8 - DK
+19         9 - NA;	
+20         %let have_stock = ER15006 ER19202 ER22567 ER26548 ER37566 ER43557 ER48882 ER54633;
+21         
+22         /**MACRO**/
+23         %macro rename(yrs);
+2                                       The SAS System         14:30 Sunday, September 25, 2016
+
+24         	%let max = %sysfunc(countw(&yrs));
+25         	%do i=1 %to &max;
+26         		%put &i.;
+27         		%let yr = %scan(&yrs,&i);
+28         		%let twodigyr = %substr(&yr,3);
+29         		/*match year to ID variable and chained CPI value with base year 1999*/
+30         		%if &yr. = 1999 %then %do; %let idvar = ER13002; %let cpi = 100; %end;
+31         		%if &yr. = 2001 %then %do; %let idvar = ER17002; %let cpi = 104.3; %end;
+32         		%if &yr. = 2003 %then %do; %let idvar = ER21002; %let cpi = 107.8; %end;
+33         		%if &yr. = 2005 %then %do; %let idvar = ER25002; %let cpi = 113.7; %end;
+34         		%if &yr. = 2007 %then %do; %let idvar = ER36002; %let cpi = 119.957; %end;
+35         		%if &yr. = 2009 %then %do; %let idvar = ER42002; %let cpi = 123.850; %end;
+36         		%if &yr. = 2011 %then %do; %let idvar = ER47302; %let cpi = 129.453; %end;
+37         		*unsure of 2013 number;
+38         		%if &yr. = 2013 %then %do; %let idvar = ER53002; %let cpi = 130; %end;
+39         
+40         		data incomewealth&yr.;
+41         			set in.fam&twodigyr.(keep=&idvar. %scan(&faminc.,&i.) %scan(&have_stock.,&i.));
+42         			id&yr. = &idvar.;
+43         			faminc&yr. = %scan(&faminc.,&i.)*&cpi./100;
+44         			stock&yr. = %scan(&have_stock.,&i.);
+45         			have_stock&yr. = (stock&yr.=1);
+46         
+47         			keep id&yr. faminc&yr. have_stock&yr.;
+48         		run;
+49         	%end;
+50         %mend;
+51         
+52         %rename(1999 2001 2003 2005 2007 2009 2011 2013);
+1
+MPRINT(RENAME):   *unsure of 2013 number;
+WARNING: The Base SAS Software product with which DATASTEP is associated will be expiring 
+         soon, and is currently in warning mode to indicate this upcoming expiration. Please 
+         run PROC SETINIT to obtain more information on your warning period.
+MPRINT(RENAME):   data incomewealth1999;
+MPRINT(RENAME):   set in.fam99(keep=ER13002 ER16462 ER15006);
+NOTE: Data file IN.FAM99.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id1999 = ER13002;
+MPRINT(RENAME):   faminc1999 = ER16462*100/100;
+MPRINT(RENAME):   stock1999 = ER15006;
+MPRINT(RENAME):   have_stock1999 = (stock1999=1);
+MPRINT(RENAME):   keep id1999 faminc1999 have_stock1999;
+MPRINT(RENAME):   run;
+
+NOTE: There were 6997 observations read from the data set IN.FAM99.
+NOTE: The data set WORK.INCOMEWEALTH1999 has 6997 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           1.65 seconds
+      cpu time            0.23 seconds
+      
+
+2
+MPRINT(RENAME):   *unsure of 2013 number;
+MPRINT(RENAME):   data incomewealth2001;
+3                                       The SAS System         14:30 Sunday, September 25, 2016
+
+MPRINT(RENAME):   set in.fam01(keep=ER17002 ER20456 ER19202);
+NOTE: Data file IN.FAM01.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id2001 = ER17002;
+MPRINT(RENAME):   faminc2001 = ER20456*104.3/100;
+MPRINT(RENAME):   stock2001 = ER19202;
+MPRINT(RENAME):   have_stock2001 = (stock2001=1);
+MPRINT(RENAME):   keep id2001 faminc2001 have_stock2001;
+MPRINT(RENAME):   run;
+
+NOTE: There were 7406 observations read from the data set IN.FAM01.
+NOTE: The data set WORK.INCOMEWEALTH2001 has 7406 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           1.74 seconds
+      cpu time            0.11 seconds
+      
+
+3
+MPRINT(RENAME):   *unsure of 2013 number;
+MPRINT(RENAME):   data incomewealth2003;
+MPRINT(RENAME):   set in.fam03(keep=ER21002 ER24099 ER22567);
+NOTE: Data file IN.FAM03.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id2003 = ER21002;
+MPRINT(RENAME):   faminc2003 = ER24099*107.8/100;
+MPRINT(RENAME):   stock2003 = ER22567;
+MPRINT(RENAME):   have_stock2003 = (stock2003=1);
+MPRINT(RENAME):   keep id2003 faminc2003 have_stock2003;
+MPRINT(RENAME):   run;
+
+NOTE: There were 7822 observations read from the data set IN.FAM03.
+NOTE: The data set WORK.INCOMEWEALTH2003 has 7822 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           1.85 seconds
+      cpu time            0.17 seconds
+      
+
+4
+MPRINT(RENAME):   *unsure of 2013 number;
+MPRINT(RENAME):   data incomewealth2005;
+MPRINT(RENAME):   set in.fam05(keep=ER25002 ER28037 ER26548);
+NOTE: Data file IN.FAM05.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id2005 = ER25002;
+MPRINT(RENAME):   faminc2005 = ER28037*113.7/100;
+MPRINT(RENAME):   stock2005 = ER26548;
+MPRINT(RENAME):   have_stock2005 = (stock2005=1);
+MPRINT(RENAME):   keep id2005 faminc2005 have_stock2005;
+MPRINT(RENAME):   run;
+
+NOTE: There were 8002 observations read from the data set IN.FAM05.
+NOTE: The data set WORK.INCOMEWEALTH2005 has 8002 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+4                                       The SAS System         14:30 Sunday, September 25, 2016
+
+      real time           1.82 seconds
+      cpu time            0.14 seconds
+      
+
+5
+MPRINT(RENAME):   *unsure of 2013 number;
+MPRINT(RENAME):   data incomewealth2007;
+MPRINT(RENAME):   set in.fam07(keep=ER36002 ER41027 ER37566);
+NOTE: Data file IN.FAM07.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id2007 = ER36002;
+MPRINT(RENAME):   faminc2007 = ER41027*119.957/100;
+MPRINT(RENAME):   stock2007 = ER37566;
+MPRINT(RENAME):   have_stock2007 = (stock2007=1);
+MPRINT(RENAME):   keep id2007 faminc2007 have_stock2007;
+MPRINT(RENAME):   run;
+
+NOTE: There were 8289 observations read from the data set IN.FAM07.
+NOTE: The data set WORK.INCOMEWEALTH2007 has 8289 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           2.70 seconds
+      cpu time            0.23 seconds
+      
+
+6
+MPRINT(RENAME):   *unsure of 2013 number;
+MPRINT(RENAME):   data incomewealth2009;
+MPRINT(RENAME):   set in.fam09(keep=ER42002 ER46935 ER43557);
+NOTE: Data file IN.FAM09.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id2009 = ER42002;
+MPRINT(RENAME):   faminc2009 = ER46935*123.850/100;
+MPRINT(RENAME):   stock2009 = ER43557;
+MPRINT(RENAME):   have_stock2009 = (stock2009=1);
+MPRINT(RENAME):   keep id2009 faminc2009 have_stock2009;
+MPRINT(RENAME):   run;
+
+NOTE: There were 8690 observations read from the data set IN.FAM09.
+NOTE: The data set WORK.INCOMEWEALTH2009 has 8690 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           2.72 seconds
+      cpu time            0.14 seconds
+      
+
+7
+MPRINT(RENAME):   *unsure of 2013 number;
+MPRINT(RENAME):   data incomewealth2011;
+MPRINT(RENAME):   set in.fam11(keep=ER47302 ER52343 ER48882);
+NOTE: Data file IN.FAM11.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id2011 = ER47302;
+MPRINT(RENAME):   faminc2011 = ER52343*129.453/100;
+MPRINT(RENAME):   stock2011 = ER48882;
+5                                       The SAS System         14:30 Sunday, September 25, 2016
+
+MPRINT(RENAME):   have_stock2011 = (stock2011=1);
+MPRINT(RENAME):   keep id2011 faminc2011 have_stock2011;
+MPRINT(RENAME):   run;
+
+NOTE: There were 8907 observations read from the data set IN.FAM11.
+NOTE: The data set WORK.INCOMEWEALTH2011 has 8907 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           2.89 seconds
+      cpu time            0.15 seconds
+      
+
+8
+MPRINT(RENAME):   *unsure of 2013 number;
+MPRINT(RENAME):   data incomewealth2013;
+MPRINT(RENAME):   set in.fam13(keep=ER53002 ER58152 ER54633);
+NOTE: Data file IN.FAM13.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id2013 = ER53002;
+MPRINT(RENAME):   faminc2013 = ER58152*130/100;
+MPRINT(RENAME):   stock2013 = ER54633;
+MPRINT(RENAME):   have_stock2013 = (stock2013=1);
+MPRINT(RENAME):   keep id2013 faminc2013 have_stock2013;
+MPRINT(RENAME):   run;
+
+NOTE: There were 9063 observations read from the data set IN.FAM13.
+NOTE: The data set WORK.INCOMEWEALTH2013 has 9063 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           2.72 seconds
+      cpu time            0.17 seconds
+      
+
+53         
+54         data tmphe.incomewealth;
+55         	merge incomewealth:;
+56         run;
+
+NOTE: There were 6997 observations read from the data set WORK.INCOMEWEALTH1999.
+NOTE: There were 7406 observations read from the data set WORK.INCOMEWEALTH2001.
+NOTE: There were 7822 observations read from the data set WORK.INCOMEWEALTH2003.
+NOTE: There were 8002 observations read from the data set WORK.INCOMEWEALTH2005.
+NOTE: There were 8289 observations read from the data set WORK.INCOMEWEALTH2007.
+NOTE: There were 8690 observations read from the data set WORK.INCOMEWEALTH2009.
+NOTE: There were 8907 observations read from the data set WORK.INCOMEWEALTH2011.
+NOTE: There were 9063 observations read from the data set WORK.INCOMEWEALTH2013.
+NOTE: The data set TMPHE.INCOMEWEALTH has 9063 observations and 24 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.09 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
+NOTE: The SAS System used:
+      real time           18.85 seconds
+      cpu time            1.54 seconds
+      

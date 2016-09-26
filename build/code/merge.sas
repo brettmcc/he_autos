@@ -2,10 +2,8 @@
 * Brett McCully, August 2016;
 
 /*Merge together person, head, housing, and auto, keeping only the head-observation.*/
-proc printto log='W:\he_autos-master\build\temp\merge.log' new;
-run;
 
-libname tmphe "W:\he_autos-master\build\temp";
+%include 'setlibraries.sas';
 
 %macro merger;
 	%do y=1999 %to 2013 %by 2;
@@ -40,5 +38,3 @@ data tmphe.mrgdPsid(drop=id: where=(pid^=.));
 	by pid;
 run;
 
-proc printto;
-run;

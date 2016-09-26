@@ -1,0 +1,540 @@
+1                                       The SAS System         14:24 Sunday, September 25, 2016
+
+NOTE: Copyright (c) 2002-2012 by SAS Institute Inc., Cary, NC, USA. 
+NOTE: SAS (r) Proprietary Software 9.4 (TS1M3 MBCS3170) 
+      Licensed to UNIVERSITY OF CALIFORNIA SYSTEM-SFA-T&R, Site 70081229.
+NOTE: This session is executing on the X64_8PRO  platform.
+
+
+
+NOTE: Updated analytical products:
+      
+      SAS/STAT 14.1
+      SAS/ETS 14.1
+      SAS/IML 14.1
+      SAS/QC 14.1
+
+WARNING: Your system is scheduled to expire on September 28, 2016, which is 3 days from now. 
+         The SAS System will no longer function on or after that date. Please contact your SAS 
+         Installation Representative to obtain your updated SAS Installation Data (SID) file, 
+         which includes SETINIT information.
+To locate the name of your SAS Installation Representative go to 
+http://support.sas.com/repfinder and provide your site number 70081229 and company name as 
+UNIVERSITY OF CALIFORNIA SYSTEM-SFA-T&R. On the SAS REP list provided, locate the REP for 
+operating system Windows.
+NOTE: Additional host information:
+
+ X64_8PRO WIN 6.2.9200  Workstation
+
+NOTE: SAS initialization used:
+      real time           0.46 seconds
+      cpu time            0.23 seconds
+      
+1          * auto.sas;
+2          * August 2016, Brett McCully;
+3          %include 'setlibraries.sas';
+NOTE: Libref IN was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\rawpsid
+NOTE: Libref TMPHE was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\he_autos\build\temp
+NOTE: Libref OUT was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\he_autos\build\output
+10         
+11         options mprint;
+12         
+13         
+14         /**VARIABLE LISTS**/
+15         %let idvars99to13 = ER13002 ER17002 ER21002 ER25002 ER36002 ER42002 ER47302 ER53002;
+16         
+17         *1 - vehicle purchased since last survey
+18          3 - leased since last survey (only 2003-2013)
+19          5 - all others
+20          inexplicable change in frequencies in 2013;
+21         %let veh1boughtinlast2yrs = ER13114 ER17125 ER21764 ER25722 ER36740 ER42743 ER48061
+21       ! ER53757;
+22         %let veh2boughtinlast2yrs = ER13144 ER17155 ER21793 ER25750 ER36768 ER42766 ER48086
+2                                       The SAS System         14:24 Sunday, September 25, 2016
+
+22       ! ER53781;
+23         %let veh3boughtinlast2yrs = ER13174 ER17185 ER21822 ER25778 ER36796 ER42789 ER48111
+23       ! ER53805;
+24         *recode 999998 and 999999 to missing since they are DK and NA, respectively;
+25         %let veh1price =  	ER13115 ER17126 ER21765 ER25723 ER36741 ER42744 ER48062 ER53758;
+26         %let veh2price = ER13145 ER17156 ER21794 ER25751 ER36769 ER42767 ER48087 ER53782;
+27         %let veh3price = ER13175 ER17186 ER21823 ER25779 ER36797 ER42790 ER48112 ER53806;
+28         *how acquired vehicle
+29         1 - bought
+30         2 - leased
+31         3 - received as gift
+32         7 - other
+33         8 - DK
+34         9 - NA or refused;
+35         %let howacqveh1 = ER13107 ER17118 ER21757 ER25716 ER36734 ER42738 ER48056 ER53753;
+36         %let howacqveh2 = ER13137 ER17148 ER21786 ER25744 ER36762 ER42761 ER48081 ER53777;
+37         %let howacqveh3 = ER13167 ER17178 ER21815 ER25772 ER36790 ER42784 ER48106 ER53801;
+38         *new or used (1999 thru 2011)
+39         1 - new
+40         2 - used
+41         8 - DK
+42         9 - NA or refused;
+43         %let neworusedveh1 = ER13108 ER17119 ER21758 ER25717 ER36735 ER42739 ER48057;
+44         %let neworusedveh2 = ER13138 ER17149 ER21787 ER25745 ER36763 ER42762 ER48082;
+45         %let neworusedveh3 = ER13168 ER17179 ER21816 ER25773 ER36791 ER42785 ER48107;
+46         *car financing
+47         1 - yes, financed all or part of auto purchase
+48         5 - no
+49         8 - DK
+50         9 - NA or refused;
+51         %let financeveh1 = ER13119 ER17130 ER21769 ER25727 ER36745 ER42746 ER48064 ER53760;
+52         %let financeveh2 = ER13149 ER17160 ER21798 ER25755 ER36773 ER42769 ER48089 ER53784;
+53         %let financeveh3 = ER13179 ER17190 ER21827 ER25783 ER36801 ER42792 ER48114 ER53808;
+54         
+55         
+56         /**MACRO**/
+57         %macro rename(yrs);
+58         	%let max = %sysfunc(countw(&yrs));
+59         	%do i=1 %to &max;
+60         		%let yr = %scan(&yrs,&i);
+61         		%let twodigyr = %substr(&yr,3);
+62         		/*match year to ID variable*/
+63         		%if &yr = 1999 %then %let idvar = ER13002;
+64         		%else %if &yr. = 2001 %then %let idvar = ER17002;
+65         		%else %if &yr. = 2003 %then %let idvar = ER21002;
+66         		%else %if &yr. = 2005 %then %let idvar = ER25002;
+67         		%else %if &yr. = 2007 %then %let idvar = ER36002;
+68         		%else %if &yr. = 2009 %then %let idvar = ER42002;
+69         		%else %if &yr. = 2011 %then %let idvar = ER47302;
+70         		%else %if &yr. = 2013 %then %let idvar = ER53002;
+71         
+72         		data auto&yr.;
+73         			set in.fam&twodigyr.;
+74         			id&yr. = &idvar.;
+75         			veh1boughtinlast2yrs&yr. = %scan(&veh1boughtinlast2yrs.,&i.);
+76         			veh2boughtinlast2yrs&yr. = %scan(&veh2boughtinlast2yrs.,&i.);
+3                                       The SAS System         14:24 Sunday, September 25, 2016
+
+77         			veh3boughtinlast2yrs&yr. = %scan(&veh3boughtinlast2yrs.,&i.);
+78         			vehboughtinlast2yrs&yr. = (veh1boughtinlast2yrs&yr.=1 OR
+78       ! veh1boughtinlast2yrs&yr.=1 OR veh1boughtinlast2yrs&yr.=1);
+79         			veh1price&yr. = %scan(&veh1price.,&i.);
+80         			veh2price&yr. = %scan(&veh2price.,&i.);
+81         			veh3price&yr. = %scan(&veh3price.,&i.);
+82         			if veh1price&yr. in (999998,999999) then veh1price&yr.=.;
+83         			if veh2price&yr. in (999998,999999) then veh2price&yr.=.;
+84         			if veh3price&yr. in (999998,999999) then veh3price&yr.=.;
+85         			howacqveh1&yr. = %scan(&howacqveh1.,&i.);
+86         			howacqveh2&yr. = %scan(&howacqveh2.,&i.);
+87         			howacqveh3&yr. = %scan(&howacqveh3.,&i.);
+88         			%if &yr.^=2013 %then %do;
+89         			neworusedveh1&yr. = %scan(&neworusedveh1.,&i.);
+90         			neworusedveh2&yr. = %scan(&neworusedveh2.,&i.);
+91         			neworusedveh3&yr. = %scan(&neworusedveh3.,&i.);
+92         			*counts number of new vehicles purchased in the last 2 years;
+93         			newvehboughtinlast2yrs&yr. = (veh1boughtinlast2yrs&yr.=1 AND neworusedveh1&yr.=1)
+93       !  + (veh2boughtinlast2yrs&yr.=1 AND neworusedveh2&yr.=1) +
+93       ! (veh3boughtinlast2yrs&yr.=1 AND neworusedveh3&yr.=1);
+94         			%end;
+95         			financeveh1&yr. = %scan(&financeveh1.,&i.);
+96         			financeveh2&yr. = %scan(&financeveh2.,&i.);
+97         			financeveh3&yr. = %scan(&financeveh3.,&i.);
+98         			keep id&yr. vehboughtinlast2yrs&yr. veh1boughtinlast2yrs&yr.
+98       ! veh2boughtinlast2yrs&yr. veh3boughtinlast2yrs&yr.
+99         				 veh1price&yr. veh2price&yr. veh3price&yr. howacqveh1&yr. howacqveh2&yr.
+99       ! howacqveh3&yr.
+100        				 %if &yr.^=2013 %then %do; neworusedveh1&yr. neworusedveh2&yr. neworusedveh3&yr.
+101        										newvehboughtinlast2yrs&yr. %end;
+102        				 financeveh1&yr. financeveh2&yr. financeveh3&yr.;
+103        		run;
+104        	%end;
+105        %mend;
+106        
+107        %rename(1999 2001 2003 2005 2007 2009 2011 2013);
+WARNING: The Base SAS Software product with which DATASTEP is associated will be expiring 
+         soon, and is currently in warning mode to indicate this upcoming expiration. Please 
+         run PROC SETINIT to obtain more information on your warning period.
+MPRINT(RENAME):   data auto1999;
+MPRINT(RENAME):   set in.fam99;
+NOTE: Data file IN.FAM99.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id1999 = ER13002;
+MPRINT(RENAME):   veh1boughtinlast2yrs1999 = ER13114;
+MPRINT(RENAME):   veh2boughtinlast2yrs1999 = ER13144;
+MPRINT(RENAME):   veh3boughtinlast2yrs1999 = ER13174;
+MPRINT(RENAME):   vehboughtinlast2yrs1999 = (veh1boughtinlast2yrs1999=1 OR 
+veh1boughtinlast2yrs1999=1 OR veh1boughtinlast2yrs1999=1);
+MPRINT(RENAME):   veh1price1999 = ER13115;
+MPRINT(RENAME):   veh2price1999 = ER13145;
+MPRINT(RENAME):   veh3price1999 = ER13175;
+MPRINT(RENAME):   if veh1price1999 in (999998,999999) then veh1price1999=.;
+MPRINT(RENAME):   if veh2price1999 in (999998,999999) then veh2price1999=.;
+MPRINT(RENAME):   if veh3price1999 in (999998,999999) then veh3price1999=.;
+4                                       The SAS System         14:24 Sunday, September 25, 2016
+
+MPRINT(RENAME):   howacqveh11999 = ER13107;
+MPRINT(RENAME):   howacqveh21999 = ER13137;
+MPRINT(RENAME):   howacqveh31999 = ER13167;
+MPRINT(RENAME):   neworusedveh11999 = ER13108;
+MPRINT(RENAME):   neworusedveh21999 = ER13138;
+MPRINT(RENAME):   neworusedveh31999 = ER13168;
+MPRINT(RENAME):   *counts number of new vehicles purchased in the last 2 years;
+MPRINT(RENAME):   newvehboughtinlast2yrs1999 = (veh1boughtinlast2yrs1999=1 AND 
+neworusedveh11999=1) + (veh2boughtinlast2yrs1999=1 AND neworusedveh21999=1) + 
+(veh3boughtinlast2yrs1999=1 AND neworusedveh31999=1);
+MPRINT(RENAME):   financeveh11999 = ER13119;
+MPRINT(RENAME):   financeveh21999 = ER13149;
+MPRINT(RENAME):   financeveh31999 = ER13179;
+MPRINT(RENAME):   keep id1999 vehboughtinlast2yrs1999 veh1boughtinlast2yrs1999 
+veh2boughtinlast2yrs1999 veh3boughtinlast2yrs1999 veh1price1999 veh2price1999 veh3price1999 
+howacqveh11999 howacqveh21999 howacqveh31999 neworusedveh11999 neworusedveh21999 
+neworusedveh31999 newvehboughtinlast2yrs1999 financeveh11999 financeveh21999 financeveh31999;
+MPRINT(RENAME):   run;
+
+NOTE: There were 6997 observations read from the data set IN.FAM99.
+NOTE: The data set WORK.AUTO1999 has 6997 observations and 18 variables.
+NOTE: DATA statement used (Total process time):
+      real time           1.93 seconds
+      cpu time            0.26 seconds
+      
+
+MPRINT(RENAME):   data auto2001;
+MPRINT(RENAME):   set in.fam01;
+NOTE: Data file IN.FAM01.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id2001 = ER17002;
+MPRINT(RENAME):   veh1boughtinlast2yrs2001 = ER17125;
+MPRINT(RENAME):   veh2boughtinlast2yrs2001 = ER17155;
+MPRINT(RENAME):   veh3boughtinlast2yrs2001 = ER17185;
+MPRINT(RENAME):   vehboughtinlast2yrs2001 = (veh1boughtinlast2yrs2001=1 OR 
+veh1boughtinlast2yrs2001=1 OR veh1boughtinlast2yrs2001=1);
+MPRINT(RENAME):   veh1price2001 = ER17126;
+MPRINT(RENAME):   veh2price2001 = ER17156;
+MPRINT(RENAME):   veh3price2001 = ER17186;
+MPRINT(RENAME):   if veh1price2001 in (999998,999999) then veh1price2001=.;
+MPRINT(RENAME):   if veh2price2001 in (999998,999999) then veh2price2001=.;
+MPRINT(RENAME):   if veh3price2001 in (999998,999999) then veh3price2001=.;
+MPRINT(RENAME):   howacqveh12001 = ER17118;
+MPRINT(RENAME):   howacqveh22001 = ER17148;
+MPRINT(RENAME):   howacqveh32001 = ER17178;
+MPRINT(RENAME):   neworusedveh12001 = ER17119;
+MPRINT(RENAME):   neworusedveh22001 = ER17149;
+MPRINT(RENAME):   neworusedveh32001 = ER17179;
+MPRINT(RENAME):   *counts number of new vehicles purchased in the last 2 years;
+MPRINT(RENAME):   newvehboughtinlast2yrs2001 = (veh1boughtinlast2yrs2001=1 AND 
+neworusedveh12001=1) + (veh2boughtinlast2yrs2001=1 AND neworusedveh22001=1) + 
+(veh3boughtinlast2yrs2001=1 AND neworusedveh32001=1);
+MPRINT(RENAME):   financeveh12001 = ER17130;
+MPRINT(RENAME):   financeveh22001 = ER17160;
+MPRINT(RENAME):   financeveh32001 = ER17190;
+5                                       The SAS System         14:24 Sunday, September 25, 2016
+
+MPRINT(RENAME):   keep id2001 vehboughtinlast2yrs2001 veh1boughtinlast2yrs2001 
+veh2boughtinlast2yrs2001 veh3boughtinlast2yrs2001 veh1price2001 veh2price2001 veh3price2001 
+howacqveh12001 howacqveh22001 howacqveh32001 neworusedveh12001 neworusedveh22001 
+neworusedveh32001 newvehboughtinlast2yrs2001 financeveh12001 financeveh22001 financeveh32001;
+MPRINT(RENAME):   run;
+
+NOTE: There were 7406 observations read from the data set IN.FAM01.
+NOTE: The data set WORK.AUTO2001 has 7406 observations and 18 variables.
+NOTE: DATA statement used (Total process time):
+      real time           2.08 seconds
+      cpu time            0.14 seconds
+      
+
+MPRINT(RENAME):   data auto2003;
+MPRINT(RENAME):   set in.fam03;
+NOTE: Data file IN.FAM03.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id2003 = ER21002;
+MPRINT(RENAME):   veh1boughtinlast2yrs2003 = ER21764;
+MPRINT(RENAME):   veh2boughtinlast2yrs2003 = ER21793;
+MPRINT(RENAME):   veh3boughtinlast2yrs2003 = ER21822;
+MPRINT(RENAME):   vehboughtinlast2yrs2003 = (veh1boughtinlast2yrs2003=1 OR 
+veh1boughtinlast2yrs2003=1 OR veh1boughtinlast2yrs2003=1);
+MPRINT(RENAME):   veh1price2003 = ER21765;
+MPRINT(RENAME):   veh2price2003 = ER21794;
+MPRINT(RENAME):   veh3price2003 = ER21823;
+MPRINT(RENAME):   if veh1price2003 in (999998,999999) then veh1price2003=.;
+MPRINT(RENAME):   if veh2price2003 in (999998,999999) then veh2price2003=.;
+MPRINT(RENAME):   if veh3price2003 in (999998,999999) then veh3price2003=.;
+MPRINT(RENAME):   howacqveh12003 = ER21757;
+MPRINT(RENAME):   howacqveh22003 = ER21786;
+MPRINT(RENAME):   howacqveh32003 = ER21815;
+MPRINT(RENAME):   neworusedveh12003 = ER21758;
+MPRINT(RENAME):   neworusedveh22003 = ER21787;
+MPRINT(RENAME):   neworusedveh32003 = ER21816;
+MPRINT(RENAME):   *counts number of new vehicles purchased in the last 2 years;
+MPRINT(RENAME):   newvehboughtinlast2yrs2003 = (veh1boughtinlast2yrs2003=1 AND 
+neworusedveh12003=1) + (veh2boughtinlast2yrs2003=1 AND neworusedveh22003=1) + 
+(veh3boughtinlast2yrs2003=1 AND neworusedveh32003=1);
+MPRINT(RENAME):   financeveh12003 = ER21769;
+MPRINT(RENAME):   financeveh22003 = ER21798;
+MPRINT(RENAME):   financeveh32003 = ER21827;
+MPRINT(RENAME):   keep id2003 vehboughtinlast2yrs2003 veh1boughtinlast2yrs2003 
+veh2boughtinlast2yrs2003 veh3boughtinlast2yrs2003 veh1price2003 veh2price2003 veh3price2003 
+howacqveh12003 howacqveh22003 howacqveh32003 neworusedveh12003 neworusedveh22003 
+neworusedveh32003 newvehboughtinlast2yrs2003 financeveh12003 financeveh22003 financeveh32003;
+MPRINT(RENAME):   run;
+
+NOTE: There were 7822 observations read from the data set IN.FAM03.
+NOTE: The data set WORK.AUTO2003 has 7822 observations and 18 variables.
+NOTE: DATA statement used (Total process time):
+      real time           1.96 seconds
+      cpu time            0.20 seconds
+      
+
+6                                       The SAS System         14:24 Sunday, September 25, 2016
+
+MPRINT(RENAME):   data auto2005;
+MPRINT(RENAME):   set in.fam05;
+NOTE: Data file IN.FAM05.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id2005 = ER25002;
+MPRINT(RENAME):   veh1boughtinlast2yrs2005 = ER25722;
+MPRINT(RENAME):   veh2boughtinlast2yrs2005 = ER25750;
+MPRINT(RENAME):   veh3boughtinlast2yrs2005 = ER25778;
+MPRINT(RENAME):   vehboughtinlast2yrs2005 = (veh1boughtinlast2yrs2005=1 OR 
+veh1boughtinlast2yrs2005=1 OR veh1boughtinlast2yrs2005=1);
+MPRINT(RENAME):   veh1price2005 = ER25723;
+MPRINT(RENAME):   veh2price2005 = ER25751;
+MPRINT(RENAME):   veh3price2005 = ER25779;
+MPRINT(RENAME):   if veh1price2005 in (999998,999999) then veh1price2005=.;
+MPRINT(RENAME):   if veh2price2005 in (999998,999999) then veh2price2005=.;
+MPRINT(RENAME):   if veh3price2005 in (999998,999999) then veh3price2005=.;
+MPRINT(RENAME):   howacqveh12005 = ER25716;
+MPRINT(RENAME):   howacqveh22005 = ER25744;
+MPRINT(RENAME):   howacqveh32005 = ER25772;
+MPRINT(RENAME):   neworusedveh12005 = ER25717;
+MPRINT(RENAME):   neworusedveh22005 = ER25745;
+MPRINT(RENAME):   neworusedveh32005 = ER25773;
+MPRINT(RENAME):   *counts number of new vehicles purchased in the last 2 years;
+MPRINT(RENAME):   newvehboughtinlast2yrs2005 = (veh1boughtinlast2yrs2005=1 AND 
+neworusedveh12005=1) + (veh2boughtinlast2yrs2005=1 AND neworusedveh22005=1) + 
+(veh3boughtinlast2yrs2005=1 AND neworusedveh32005=1);
+MPRINT(RENAME):   financeveh12005 = ER25727;
+MPRINT(RENAME):   financeveh22005 = ER25755;
+MPRINT(RENAME):   financeveh32005 = ER25783;
+MPRINT(RENAME):   keep id2005 vehboughtinlast2yrs2005 veh1boughtinlast2yrs2005 
+veh2boughtinlast2yrs2005 veh3boughtinlast2yrs2005 veh1price2005 veh2price2005 veh3price2005 
+howacqveh12005 howacqveh22005 howacqveh32005 neworusedveh12005 neworusedveh22005 
+neworusedveh32005 newvehboughtinlast2yrs2005 financeveh12005 financeveh22005 financeveh32005;
+MPRINT(RENAME):   run;
+
+NOTE: There were 8002 observations read from the data set IN.FAM05.
+NOTE: The data set WORK.AUTO2005 has 8002 observations and 18 variables.
+NOTE: DATA statement used (Total process time):
+      real time           1.76 seconds
+      cpu time            0.09 seconds
+      
+
+MPRINT(RENAME):   data auto2007;
+MPRINT(RENAME):   set in.fam07;
+NOTE: Data file IN.FAM07.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id2007 = ER36002;
+MPRINT(RENAME):   veh1boughtinlast2yrs2007 = ER36740;
+MPRINT(RENAME):   veh2boughtinlast2yrs2007 = ER36768;
+MPRINT(RENAME):   veh3boughtinlast2yrs2007 = ER36796;
+MPRINT(RENAME):   vehboughtinlast2yrs2007 = (veh1boughtinlast2yrs2007=1 OR 
+veh1boughtinlast2yrs2007=1 OR veh1boughtinlast2yrs2007=1);
+MPRINT(RENAME):   veh1price2007 = ER36741;
+MPRINT(RENAME):   veh2price2007 = ER36769;
+7                                       The SAS System         14:24 Sunday, September 25, 2016
+
+MPRINT(RENAME):   veh3price2007 = ER36797;
+MPRINT(RENAME):   if veh1price2007 in (999998,999999) then veh1price2007=.;
+MPRINT(RENAME):   if veh2price2007 in (999998,999999) then veh2price2007=.;
+MPRINT(RENAME):   if veh3price2007 in (999998,999999) then veh3price2007=.;
+MPRINT(RENAME):   howacqveh12007 = ER36734;
+MPRINT(RENAME):   howacqveh22007 = ER36762;
+MPRINT(RENAME):   howacqveh32007 = ER36790;
+MPRINT(RENAME):   neworusedveh12007 = ER36735;
+MPRINT(RENAME):   neworusedveh22007 = ER36763;
+MPRINT(RENAME):   neworusedveh32007 = ER36791;
+MPRINT(RENAME):   *counts number of new vehicles purchased in the last 2 years;
+MPRINT(RENAME):   newvehboughtinlast2yrs2007 = (veh1boughtinlast2yrs2007=1 AND 
+neworusedveh12007=1) + (veh2boughtinlast2yrs2007=1 AND neworusedveh22007=1) + 
+(veh3boughtinlast2yrs2007=1 AND neworusedveh32007=1);
+MPRINT(RENAME):   financeveh12007 = ER36745;
+MPRINT(RENAME):   financeveh22007 = ER36773;
+MPRINT(RENAME):   financeveh32007 = ER36801;
+MPRINT(RENAME):   keep id2007 vehboughtinlast2yrs2007 veh1boughtinlast2yrs2007 
+veh2boughtinlast2yrs2007 veh3boughtinlast2yrs2007 veh1price2007 veh2price2007 veh3price2007 
+howacqveh12007 howacqveh22007 howacqveh32007 neworusedveh12007 neworusedveh22007 
+neworusedveh32007 newvehboughtinlast2yrs2007 financeveh12007 financeveh22007 financeveh32007;
+MPRINT(RENAME):   run;
+
+NOTE: There were 8289 observations read from the data set IN.FAM07.
+NOTE: The data set WORK.AUTO2007 has 8289 observations and 18 variables.
+NOTE: DATA statement used (Total process time):
+      real time           3.32 seconds
+      cpu time            0.36 seconds
+      
+
+MPRINT(RENAME):   data auto2009;
+MPRINT(RENAME):   set in.fam09;
+NOTE: Data file IN.FAM09.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id2009 = ER42002;
+MPRINT(RENAME):   veh1boughtinlast2yrs2009 = ER42743;
+MPRINT(RENAME):   veh2boughtinlast2yrs2009 = ER42766;
+MPRINT(RENAME):   veh3boughtinlast2yrs2009 = ER42789;
+MPRINT(RENAME):   vehboughtinlast2yrs2009 = (veh1boughtinlast2yrs2009=1 OR 
+veh1boughtinlast2yrs2009=1 OR veh1boughtinlast2yrs2009=1);
+MPRINT(RENAME):   veh1price2009 = ER42744;
+MPRINT(RENAME):   veh2price2009 = ER42767;
+MPRINT(RENAME):   veh3price2009 = ER42790;
+MPRINT(RENAME):   if veh1price2009 in (999998,999999) then veh1price2009=.;
+MPRINT(RENAME):   if veh2price2009 in (999998,999999) then veh2price2009=.;
+MPRINT(RENAME):   if veh3price2009 in (999998,999999) then veh3price2009=.;
+MPRINT(RENAME):   howacqveh12009 = ER42738;
+MPRINT(RENAME):   howacqveh22009 = ER42761;
+MPRINT(RENAME):   howacqveh32009 = ER42784;
+MPRINT(RENAME):   neworusedveh12009 = ER42739;
+MPRINT(RENAME):   neworusedveh22009 = ER42762;
+MPRINT(RENAME):   neworusedveh32009 = ER42785;
+MPRINT(RENAME):   *counts number of new vehicles purchased in the last 2 years;
+MPRINT(RENAME):   newvehboughtinlast2yrs2009 = (veh1boughtinlast2yrs2009=1 AND 
+neworusedveh12009=1) + (veh2boughtinlast2yrs2009=1 AND neworusedveh22009=1) + 
+8                                       The SAS System         14:24 Sunday, September 25, 2016
+
+(veh3boughtinlast2yrs2009=1 AND neworusedveh32009=1);
+MPRINT(RENAME):   financeveh12009 = ER42746;
+MPRINT(RENAME):   financeveh22009 = ER42769;
+MPRINT(RENAME):   financeveh32009 = ER42792;
+MPRINT(RENAME):   keep id2009 vehboughtinlast2yrs2009 veh1boughtinlast2yrs2009 
+veh2boughtinlast2yrs2009 veh3boughtinlast2yrs2009 veh1price2009 veh2price2009 veh3price2009 
+howacqveh12009 howacqveh22009 howacqveh32009 neworusedveh12009 neworusedveh22009 
+neworusedveh32009 newvehboughtinlast2yrs2009 financeveh12009 financeveh22009 financeveh32009;
+MPRINT(RENAME):   run;
+
+NOTE: There were 8690 observations read from the data set IN.FAM09.
+NOTE: The data set WORK.AUTO2009 has 8690 observations and 18 variables.
+NOTE: DATA statement used (Total process time):
+      real time           3.17 seconds
+      cpu time            0.32 seconds
+      
+
+MPRINT(RENAME):   data auto2011;
+MPRINT(RENAME):   set in.fam11;
+NOTE: Data file IN.FAM11.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id2011 = ER47302;
+MPRINT(RENAME):   veh1boughtinlast2yrs2011 = ER48061;
+MPRINT(RENAME):   veh2boughtinlast2yrs2011 = ER48086;
+MPRINT(RENAME):   veh3boughtinlast2yrs2011 = ER48111;
+MPRINT(RENAME):   vehboughtinlast2yrs2011 = (veh1boughtinlast2yrs2011=1 OR 
+veh1boughtinlast2yrs2011=1 OR veh1boughtinlast2yrs2011=1);
+MPRINT(RENAME):   veh1price2011 = ER48062;
+MPRINT(RENAME):   veh2price2011 = ER48087;
+MPRINT(RENAME):   veh3price2011 = ER48112;
+MPRINT(RENAME):   if veh1price2011 in (999998,999999) then veh1price2011=.;
+MPRINT(RENAME):   if veh2price2011 in (999998,999999) then veh2price2011=.;
+MPRINT(RENAME):   if veh3price2011 in (999998,999999) then veh3price2011=.;
+MPRINT(RENAME):   howacqveh12011 = ER48056;
+MPRINT(RENAME):   howacqveh22011 = ER48081;
+MPRINT(RENAME):   howacqveh32011 = ER48106;
+MPRINT(RENAME):   neworusedveh12011 = ER48057;
+MPRINT(RENAME):   neworusedveh22011 = ER48082;
+MPRINT(RENAME):   neworusedveh32011 = ER48107;
+MPRINT(RENAME):   *counts number of new vehicles purchased in the last 2 years;
+MPRINT(RENAME):   newvehboughtinlast2yrs2011 = (veh1boughtinlast2yrs2011=1 AND 
+neworusedveh12011=1) + (veh2boughtinlast2yrs2011=1 AND neworusedveh22011=1) + 
+(veh3boughtinlast2yrs2011=1 AND neworusedveh32011=1);
+MPRINT(RENAME):   financeveh12011 = ER48064;
+MPRINT(RENAME):   financeveh22011 = ER48089;
+MPRINT(RENAME):   financeveh32011 = ER48114;
+MPRINT(RENAME):   keep id2011 vehboughtinlast2yrs2011 veh1boughtinlast2yrs2011 
+veh2boughtinlast2yrs2011 veh3boughtinlast2yrs2011 veh1price2011 veh2price2011 veh3price2011 
+howacqveh12011 howacqveh22011 howacqveh32011 neworusedveh12011 neworusedveh22011 
+neworusedveh32011 newvehboughtinlast2yrs2011 financeveh12011 financeveh22011 financeveh32011;
+MPRINT(RENAME):   run;
+
+NOTE: There were 8907 observations read from the data set IN.FAM11.
+NOTE: The data set WORK.AUTO2011 has 8907 observations and 18 variables.
+NOTE: DATA statement used (Total process time):
+9                                       The SAS System         14:24 Sunday, September 25, 2016
+
+      real time           3.16 seconds
+      cpu time            0.15 seconds
+      
+
+MPRINT(RENAME):   data auto2013;
+MPRINT(RENAME):   set in.fam13;
+NOTE: Data file IN.FAM13.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+MPRINT(RENAME):   id2013 = ER53002;
+MPRINT(RENAME):   veh1boughtinlast2yrs2013 = ER53757;
+MPRINT(RENAME):   veh2boughtinlast2yrs2013 = ER53781;
+MPRINT(RENAME):   veh3boughtinlast2yrs2013 = ER53805;
+MPRINT(RENAME):   vehboughtinlast2yrs2013 = (veh1boughtinlast2yrs2013=1 OR 
+veh1boughtinlast2yrs2013=1 OR veh1boughtinlast2yrs2013=1);
+MPRINT(RENAME):   veh1price2013 = ER53758;
+MPRINT(RENAME):   veh2price2013 = ER53782;
+MPRINT(RENAME):   veh3price2013 = ER53806;
+MPRINT(RENAME):   if veh1price2013 in (999998,999999) then veh1price2013=.;
+MPRINT(RENAME):   if veh2price2013 in (999998,999999) then veh2price2013=.;
+MPRINT(RENAME):   if veh3price2013 in (999998,999999) then veh3price2013=.;
+MPRINT(RENAME):   howacqveh12013 = ER53753;
+MPRINT(RENAME):   howacqveh22013 = ER53777;
+MPRINT(RENAME):   howacqveh32013 = ER53801;
+MPRINT(RENAME):   financeveh12013 = ER53760;
+MPRINT(RENAME):   financeveh22013 = ER53784;
+MPRINT(RENAME):   financeveh32013 = ER53808;
+MPRINT(RENAME):   keep id2013 vehboughtinlast2yrs2013 veh1boughtinlast2yrs2013 
+veh2boughtinlast2yrs2013 veh3boughtinlast2yrs2013 veh1price2013 veh2price2013 veh3price2013 
+howacqveh12013 howacqveh22013 howacqveh32013 financeveh12013 financeveh22013 financeveh32013;
+MPRINT(RENAME):   run;
+
+NOTE: There were 9063 observations read from the data set IN.FAM13.
+NOTE: The data set WORK.AUTO2013 has 9063 observations and 14 variables.
+NOTE: DATA statement used (Total process time):
+      real time           3.12 seconds
+      cpu time            0.84 seconds
+      
+
+108        
+109        data tmphe.auto;
+110        	merge auto:;
+111        run;
+
+NOTE: There were 6997 observations read from the data set WORK.AUTO1999.
+NOTE: There were 7406 observations read from the data set WORK.AUTO2001.
+NOTE: There were 7822 observations read from the data set WORK.AUTO2003.
+NOTE: There were 8002 observations read from the data set WORK.AUTO2005.
+NOTE: There were 8289 observations read from the data set WORK.AUTO2007.
+NOTE: There were 8690 observations read from the data set WORK.AUTO2009.
+NOTE: There were 8907 observations read from the data set WORK.AUTO2011.
+NOTE: There were 9063 observations read from the data set WORK.AUTO2013.
+NOTE: The data set TMPHE.AUTO has 9063 observations and 140 variables.
+NOTE: DATA statement used (Total process time):
+      real time           1.19 seconds
+      cpu time            0.14 seconds
+10                                      The SAS System         14:24 Sunday, September 25, 2016
+
+      
+
+112        	
+113        proc printto;
+114        run;
+
+NOTE: PROCEDURE PRINTTO used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
+NOTE: The SAS System used:
+      real time           22.34 seconds
+      cpu time            2.81 seconds
+      

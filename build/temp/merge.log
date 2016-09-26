@@ -1,0 +1,627 @@
+1                                       The SAS System         14:30 Sunday, September 25, 2016
+
+NOTE: Copyright (c) 2002-2012 by SAS Institute Inc., Cary, NC, USA. 
+NOTE: SAS (r) Proprietary Software 9.4 (TS1M3 MBCS3170) 
+      Licensed to UNIVERSITY OF CALIFORNIA SYSTEM-SFA-T&R, Site 70081229.
+NOTE: This session is executing on the X64_8PRO  platform.
+
+
+
+NOTE: Updated analytical products:
+      
+      SAS/STAT 14.1
+      SAS/ETS 14.1
+      SAS/IML 14.1
+      SAS/QC 14.1
+
+WARNING: Your system is scheduled to expire on September 28, 2016, which is 3 days from now. 
+         The SAS System will no longer function on or after that date. Please contact your SAS 
+         Installation Representative to obtain your updated SAS Installation Data (SID) file, 
+         which includes SETINIT information.
+To locate the name of your SAS Installation Representative go to 
+http://support.sas.com/repfinder and provide your site number 70081229 and company name as 
+UNIVERSITY OF CALIFORNIA SYSTEM-SFA-T&R. On the SAS REP list provided, locate the REP for 
+operating system Windows.
+NOTE: Additional host information:
+
+ X64_8PRO WIN 6.2.9200  Workstation
+
+NOTE: SAS initialization used:
+      real time           0.60 seconds
+      cpu time            0.15 seconds
+      
+1          * merge.sas;
+2          * Brett McCully, August 2016;
+3          
+4          /*Merge together person, head, housing, and auto, keeping only the
+4        ! head-observation.*/
+5          
+6          %include 'setlibraries.sas';
+NOTE: Libref IN was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\rawpsid
+NOTE: Libref TMPHE was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\he_autos\build\temp
+NOTE: Libref OUT was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\he_autos\build\output
+13         
+14         %macro merger;
+15         	%do y=1999 %to 2013 %by 2;
+16         		proc sort data=tmphe.person; by id&y.; run;
+17         		proc sort data=tmphe.housing; by id&y.; run;
+18         		proc sort data=tmphe.auto; by id&y.; run;
+19         		proc sort data=tmphe.head; by id&y.; run;
+20         		proc sort data=tmphe.incomewealth; by id&y.; run;
+21         		data temp&y.(drop=rel&y. seqno&y.);
+22         			merge 	tmphe.person(keep=pid id&y. rel&y. seqno&y. where=(rel&y.=10 &
+2                                       The SAS System         14:30 Sunday, September 25, 2016
+
+22       ! seqno&y.=1))
+23         					tmphe.housing(keep=id&y. hmval&y. mortgage&y. secMtg&y. hmowner&y. soldHome&y.)
+24         					tmphe.auto(keep=id&y. vehboughtinlast2yrs&y. veh1boughtinlast2yrs&y.
+24       ! veh2boughtinlast2yrs&y. veh3boughtinlast2yrs&y.
+25         							veh1price&y. veh2price&y. veh3price&y. howacqveh1&y. howacqveh2&y.
+25       ! howacqveh3&y.
+26         				 			%if &y.^=2013 %then %do; neworusedveh1&y. neworusedveh2&y. neworusedveh3&y.
+26       ! newvehboughtinlast2yrs&y. %end;
+27         				 			financeveh1&y. financeveh2&y. financeveh3&y.)
+28         					tmphe.head(keep=id&y. headmarital&y.  headedu&y.  headrace&y.  headstatus&y.
+28       ! selfemploy&y.  famsize&y.  headocc&y.  headind&y. wgt&y.)
+29         					tmphe.incomewealth;
+30         			by id&y.;
+31         			if headrace&y. in (3, 4, 5, 6, 7) then headrace&y. = 3;
+32         			if headrace&y. = 0 then headrace&y. = .;
+33         		run;
+34         		proc sort data=temp&y.;
+35         			by pid;
+36         		run;
+37         	%end;
+38         %mend;
+39         
+40         %merger;
+WARNING: The Base SAS Software product with which SORT is associated will be expiring soon, 
+         and is currently in warning mode to indicate this upcoming expiration. Please run 
+         PROC SETINIT to obtain more information on your warning period.
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set TMPHE.PERSON has 75252 observations and 114 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           3.45 seconds
+      cpu time            0.15 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: The data set TMPHE.HOUSING has 10764 observations and 241 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.44 seconds
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: The data set TMPHE.AUTO has 9063 observations and 140 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.81 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.19 seconds
+      cpu time            0.06 seconds
+3                                       The SAS System         14:30 Sunday, September 25, 2016
+
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set TMPHE.INCOMEWEALTH has 9063 observations and 24 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.10 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: MERGE statement has more than one data set with repeats of BY values.
+NOTE: There were 6997 observations read from the data set TMPHE.PERSON.
+      WHERE (rel1999=10) and (seqno1999=1);
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set WORK.TEMP1999 has 10764 observations and 56 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.08 seconds
+      cpu time            0.07 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set WORK.TEMP1999.
+NOTE: The data set WORK.TEMP1999 has 10764 observations and 56 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set TMPHE.PERSON has 75252 observations and 114 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           1.91 seconds
+      cpu time            0.14 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: The data set TMPHE.HOUSING has 10764 observations and 241 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.45 seconds
+      cpu time            0.09 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: The data set TMPHE.AUTO has 9063 observations and 140 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.84 seconds
+      cpu time            0.03 seconds
+      
+
+4                                       The SAS System         14:30 Sunday, September 25, 2016
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.14 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set TMPHE.INCOMEWEALTH has 9063 observations and 24 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.08 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: MERGE statement has more than one data set with repeats of BY values.
+NOTE: There were 7406 observations read from the data set TMPHE.PERSON.
+      WHERE (rel2001=10) and (seqno2001=1);
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set WORK.TEMP2001 has 10764 observations and 56 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set WORK.TEMP2001.
+NOTE: The data set WORK.TEMP2001 has 10764 observations and 56 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set TMPHE.PERSON has 75252 observations and 114 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           4.04 seconds
+      cpu time            0.14 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: The data set TMPHE.HOUSING has 10764 observations and 241 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           1.33 seconds
+      cpu time            0.07 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+5                                       The SAS System         14:30 Sunday, September 25, 2016
+
+NOTE: The data set TMPHE.AUTO has 9063 observations and 140 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.20 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.17 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set TMPHE.INCOMEWEALTH has 9063 observations and 24 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: MERGE statement has more than one data set with repeats of BY values.
+NOTE: There were 7822 observations read from the data set TMPHE.PERSON.
+      WHERE (rel2003=10) and (seqno2003=1);
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set WORK.TEMP2003 has 10764 observations and 56 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set WORK.TEMP2003.
+NOTE: The data set WORK.TEMP2003 has 10764 observations and 56 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set TMPHE.PERSON has 75252 observations and 114 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           1.90 seconds
+      cpu time            0.07 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: The data set TMPHE.HOUSING has 10764 observations and 241 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+6                                       The SAS System         14:30 Sunday, September 25, 2016
+
+      real time           2.27 seconds
+      cpu time            0.07 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: The data set TMPHE.AUTO has 9063 observations and 140 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.22 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.70 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set TMPHE.INCOMEWEALTH has 9063 observations and 24 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.09 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: MERGE statement has more than one data set with repeats of BY values.
+NOTE: There were 8002 observations read from the data set TMPHE.PERSON.
+      WHERE (rel2005=10) and (seqno2005=1);
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set WORK.TEMP2005 has 10764 observations and 56 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set WORK.TEMP2005.
+NOTE: The data set WORK.TEMP2005 has 10764 observations and 56 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set TMPHE.PERSON has 75252 observations and 114 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           1.90 seconds
+      cpu time            0.10 seconds
+7                                       The SAS System         14:30 Sunday, September 25, 2016
+
+      
+
+
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: The data set TMPHE.HOUSING has 10764 observations and 241 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.43 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: The data set TMPHE.AUTO has 9063 observations and 140 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.83 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.26 seconds
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set TMPHE.INCOMEWEALTH has 9063 observations and 24 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.08 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: MERGE statement has more than one data set with repeats of BY values.
+NOTE: There were 8289 observations read from the data set TMPHE.PERSON.
+      WHERE (rel2007=10) and (seqno2007=1);
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set WORK.TEMP2007 has 10764 observations and 56 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set WORK.TEMP2007.
+NOTE: The data set WORK.TEMP2007 has 10764 observations and 56 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+8                                       The SAS System         14:30 Sunday, September 25, 2016
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set TMPHE.PERSON has 75252 observations and 114 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           2.47 seconds
+      cpu time            0.10 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: The data set TMPHE.HOUSING has 10764 observations and 241 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.51 seconds
+      cpu time            0.09 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: The data set TMPHE.AUTO has 9063 observations and 140 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.19 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.21 seconds
+      cpu time            0.07 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set TMPHE.INCOMEWEALTH has 9063 observations and 24 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.09 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: MERGE statement has more than one data set with repeats of BY values.
+NOTE: There were 8690 observations read from the data set TMPHE.PERSON.
+      WHERE (rel2009=10) and (seqno2009=1);
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set WORK.TEMP2009 has 10764 observations and 56 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.09 seconds
+      cpu time            0.09 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set WORK.TEMP2009.
+9                                       The SAS System         14:30 Sunday, September 25, 2016
+
+NOTE: The data set WORK.TEMP2009 has 10764 observations and 56 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set TMPHE.PERSON has 75252 observations and 114 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           1.36 seconds
+      cpu time            0.09 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: The data set TMPHE.HOUSING has 10764 observations and 241 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           1.42 seconds
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: The data set TMPHE.AUTO has 9063 observations and 140 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.21 seconds
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.20 seconds
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set TMPHE.INCOMEWEALTH has 9063 observations and 24 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.11 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: MERGE statement has more than one data set with repeats of BY values.
+NOTE: There were 8907 observations read from the data set TMPHE.PERSON.
+      WHERE (rel2011=10) and (seqno2011=1);
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set WORK.TEMP2011 has 10764 observations and 56 variables.
+NOTE: DATA statement used (Total process time):
+10                                      The SAS System         14:30 Sunday, September 25, 2016
+
+      real time           0.08 seconds
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set WORK.TEMP2011.
+NOTE: The data set WORK.TEMP2011 has 10764 observations and 56 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 75252 observations read from the data set TMPHE.PERSON.
+NOTE: The data set TMPHE.PERSON has 75252 observations and 114 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           2.53 seconds
+      cpu time            0.11 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+NOTE: The data set TMPHE.HOUSING has 10764 observations and 241 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           1.06 seconds
+      cpu time            0.12 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: The data set TMPHE.AUTO has 9063 observations and 140 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           1.09 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: The data set TMPHE.HEAD has 9063 observations and 122 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.20 seconds
+      cpu time            0.04 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set TMPHE.INCOMEWEALTH has 9063 observations and 24 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.09 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: There were 9063 observations read from the data set TMPHE.PERSON.
+      WHERE (rel2013=10) and (seqno2013=1);
+NOTE: There were 10764 observations read from the data set TMPHE.HOUSING.
+11                                      The SAS System         14:30 Sunday, September 25, 2016
+
+NOTE: There were 9063 observations read from the data set TMPHE.AUTO.
+NOTE: There were 9063 observations read from the data set TMPHE.HEAD.
+NOTE: There were 9063 observations read from the data set TMPHE.INCOMEWEALTH.
+NOTE: The data set WORK.TEMP2013 has 10764 observations and 52 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.06 seconds
+      
+
+
+NOTE: There were 10764 observations read from the data set WORK.TEMP2013.
+NOTE: The data set WORK.TEMP2013 has 10764 observations and 52 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+41         
+42         data tmphe.mrgdPsid(drop=id: where=(pid^=.));
+43         	merge temp:;
+44         	by pid;
+45         run;
+
+NOTE: MERGE statement has more than one data set with repeats of BY values.
+NOTE: There were 10764 observations read from the data set WORK.TEMP1999.
+NOTE: There were 10764 observations read from the data set WORK.TEMP2001.
+NOTE: There were 10764 observations read from the data set WORK.TEMP2003.
+NOTE: There were 10764 observations read from the data set WORK.TEMP2005.
+NOTE: There were 10764 observations read from the data set WORK.TEMP2007.
+NOTE: There were 10764 observations read from the data set WORK.TEMP2009.
+NOTE: There were 10764 observations read from the data set WORK.TEMP2011.
+NOTE: There were 10764 observations read from the data set WORK.TEMP2013.
+NOTE: The data set TMPHE.MRGDPSID has 14329 observations and 261 variables.
+NOTE: DATA statement used (Total process time):
+      real time           2.61 seconds
+      cpu time            0.28 seconds
+      
+
+46         
+
+NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
+NOTE: The SAS System used:
+      real time           39.75 seconds
+      cpu time            3.35 seconds
+      

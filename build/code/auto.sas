@@ -1,12 +1,9 @@
 * auto.sas;
 * August 2016, Brett McCully;
-proc printto log='W:\he_autos-master\build\temp\auto.log' new;
-run;
+%include 'setlibraries.sas';
 
 options mprint;
 
-libname in "W:\rawpsid";
-libname tmphe "W:\he_autos-master\build\temp";
 
 /**VARIABLE LISTS**/
 %let idvars99to13 = ER13002 ER17002 ER21002 ER25002 ER36002 ER42002 ER47302 ER53002;

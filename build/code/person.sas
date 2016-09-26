@@ -1,7 +1,6 @@
-proc printto log='W:\he_autos-master\build\temp\person.log' new;
-run;
+%include 'setlibraries.sas';
 
-data temphe.person;
+data tmphe.person;
 set in.inperson;
 id1968       =      ER30001;
 id1969       =      ER30020;
@@ -124,5 +123,3 @@ keep id1968 - id1997 id1999 id2001 id2003 id2005 id2007 id2009 id2011 id2013
 	 rel1968 - rel1997 rel1999 rel2001 rel2003 rel2005 rel2007 rel2009 rel2011 rel2013 pid;
 run;
 
-proc printto;
-run;

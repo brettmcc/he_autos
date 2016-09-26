@@ -1,12 +1,12 @@
 * Brett McCully, August 2016
 * Finish prepping PSID dataset for analysis
 
-log using "W:\he_autos-master\build\temp\finaltouches.log", replace
+log using "E:\he_autos\build\temp\finaltouches.log", replace
 
 set more off
 clear all
 
-use "W:\BM-HE-Autos\build\temp\mrgdpsid.dta", clear
+use "E:\he_autos\build\temp\mrgdpsid.dta", clear
 forval y = 2001(2)2013 {
 	local y2back = `y' - 2
 	gen hmvalchg2yrsback`y' = hmval`y' - hmval`y2back' if soldHome`y'!=. & soldHome`y'!=1
@@ -46,6 +46,6 @@ label values headmarital marital
 label values headedu edu
 label values hmowner hmown
 
-save "W:\BM-HE-Autos\build\output\mrgdPsid.dta", replace
+save "E:\he_autos\build\output\mrgdPsid.dta", replace
 
 log close

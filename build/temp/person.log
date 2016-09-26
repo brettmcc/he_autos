@@ -1,0 +1,194 @@
+1                                       The SAS System         14:24 Sunday, September 25, 2016
+
+NOTE: Copyright (c) 2002-2012 by SAS Institute Inc., Cary, NC, USA. 
+NOTE: SAS (r) Proprietary Software 9.4 (TS1M3 MBCS3170) 
+      Licensed to UNIVERSITY OF CALIFORNIA SYSTEM-SFA-T&R, Site 70081229.
+NOTE: This session is executing on the X64_8PRO  platform.
+
+
+
+NOTE: Updated analytical products:
+      
+      SAS/STAT 14.1
+      SAS/ETS 14.1
+      SAS/IML 14.1
+      SAS/QC 14.1
+
+WARNING: Your system is scheduled to expire on September 28, 2016, which is 3 days from now. 
+         The SAS System will no longer function on or after that date. Please contact your SAS 
+         Installation Representative to obtain your updated SAS Installation Data (SID) file, 
+         which includes SETINIT information.
+To locate the name of your SAS Installation Representative go to 
+http://support.sas.com/repfinder and provide your site number 70081229 and company name as 
+UNIVERSITY OF CALIFORNIA SYSTEM-SFA-T&R. On the SAS REP list provided, locate the REP for 
+operating system Windows.
+NOTE: Additional host information:
+
+ X64_8PRO WIN 6.2.9200  Workstation
+
+NOTE: SAS initialization used:
+      real time           0.46 seconds
+      cpu time            0.10 seconds
+      
+1          %include 'setlibraries.sas';
+NOTE: Libref IN was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\rawpsid
+NOTE: Libref TMPHE was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\he_autos\build\temp
+NOTE: Libref OUT was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: E:\he_autos\build\output
+8          
+9          data tmphe.person;
+WARNING: The Base SAS Software product with which DATASTEP is associated will be expiring 
+         soon, and is currently in warning mode to indicate this upcoming expiration. Please 
+         run PROC SETINIT to obtain more information on your warning period.
+10         set in.inperson;
+NOTE: Data file IN.INPERSON.DATA is in a format that is native to another host, or the file 
+      encoding does not match the session encoding. Cross Environment Data Access will be 
+      used, which might require additional CPU resources and might reduce performance.
+11         id1968       =      ER30001;
+12         id1969       =      ER30020;
+13         id1970       =      ER30043;
+14         id1971       =      ER30067;
+15         id1972       =      ER30091;
+16         id1973       =      ER30117;
+17         id1974       =      ER30138;
+2                                       The SAS System         14:24 Sunday, September 25, 2016
+
+18         id1975       =      ER30160;
+19         id1976       =      ER30188;
+20         id1977       =      ER30217;
+21         id1978       =      ER30246;
+22         id1979       =      ER30283;
+23         id1980       =      ER30313;
+24         id1981       =      ER30343;
+25         id1982       =      ER30373;
+26         id1983       =      ER30399;
+27         id1984       =      ER30429;
+28         id1985       =      ER30463;
+29         id1986       =      ER30498;
+30         id1987       =      ER30535;
+31         id1988       =      ER30570;
+32         id1989       =      ER30606;
+33         id1990       =      ER30642;
+34         id1991       =      ER30689;
+35         id1992       =      ER30733;
+36         id1993       =      ER30806;
+37         id1994       =      ER33101;
+38         id1995       =      ER33201;
+39         id1996       =      ER33301;
+40         id1997       =      ER33401;
+41         id1999       =      ER33501;
+42         id2001       =      ER33601;
+43         id2003       =      ER33701;
+44         id2005       =      ER33801;
+45         id2007       =      ER33901;
+46         id2009       =      ER34001;
+47         id2011		 =		ER34101;
+48         id2013		 =		ER34201;
+49         seqno1969      =      ER30021;
+50         seqno1970      =      ER30044;
+51         seqno1971      =      ER30068;
+52         seqno1972      =      ER30092;
+53         seqno1973      =      ER30118;
+54         seqno1974      =      ER30139;
+55         seqno1975      =      ER30161;
+56         seqno1976      =      ER30189;
+57         seqno1977      =      ER30218;
+58         seqno1978      =      ER30247;
+59         seqno1979      =      ER30284;
+60         seqno1980      =      ER30314;
+61         seqno1981      =      ER30344;
+62         seqno1982      =      ER30374;
+63         seqno1983      =      ER30400;
+64         seqno1984      =      ER30430;
+65         seqno1985      =      ER30464;
+66         seqno1986      =      ER30499;
+67         seqno1987      =      ER30536;
+68         seqno1988      =      ER30571;
+69         seqno1989      =      ER30607;
+70         seqno1990      =      ER30643;
+71         seqno1991      =      ER30690;
+72         seqno1992      =      ER30734;
+73         seqno1993      =      ER30807;
+3                                       The SAS System         14:24 Sunday, September 25, 2016
+
+74         seqno1994      =      ER33102;
+75         seqno1995      =      ER33202;
+76         seqno1996      =      ER33302;
+77         seqno1997      =      ER33402;
+78         seqno1999      =      ER33502;
+79         seqno2001      =      ER33602;
+80         seqno2003      =      ER33702;
+81         seqno2005      =      ER33802;
+82         seqno2007      =      ER33902;
+83         seqno2009      =      ER34002;
+84         seqno2011	   =	  ER34102;
+85         seqno2013	   =	  ER34202;
+86         rel1968      =      ER30003;
+87         rel1969      =      ER30022;
+88         rel1970      =      ER30045;
+89         rel1971      =      ER30069;
+90         rel1972      =      ER30093;
+91         rel1973      =      ER30119;
+92         rel1974      =      ER30140;
+93         rel1975      =      ER30162;
+94         rel1976      =      ER30190;
+95         rel1977      =      ER30219;
+96         rel1978      =      ER30248;
+97         rel1979      =      ER30285;
+98         rel1980      =      ER30315;
+99         rel1981      =      ER30345;
+100        rel1982      =      ER30375;
+101        rel1983      =      ER30401;
+102        rel1984      =      ER30431;
+103        rel1985      =      ER30465;
+104        rel1986      =      ER30500;
+105        rel1987      =      ER30537;
+106        rel1988      =      ER30572;
+107        rel1989      =      ER30608;
+108        rel1990      =      ER30644;
+109        rel1991      =      ER30691;
+110        rel1992      =      ER30735;
+111        rel1993      =      ER30808;
+112        rel1994      =      ER33103;
+113        rel1995      =      ER33203;
+114        rel1996      =      ER33303;
+115        rel1997      =      ER33403;
+116        rel1999      =      ER33503;
+117        rel2001      =      ER33603;
+118        rel2003      =      ER33703;
+119        rel2005      =      ER33803;
+120        rel2007      =      ER33903;
+121        rel2009      =      ER34003;
+122        rel2011		 =		ER34103;
+123        rel2013		 =		ER34203;
+124        
+125        pid = ER30001 * 1000 + ER30002;
+126        
+127        keep id1968 - id1997 id1999 id2001 id2003 id2005 id2007 id2009 id2011 id2013
+128             seqno1969 - seqno1997 seqno1999 seqno2001 seqno2003 seqno2005 seqno2007
+128      ! seqno2009 seqno2011 seqno2013
+4                                       The SAS System         14:24 Sunday, September 25, 2016
+
+129        	 rel1968 - rel1997 rel1999 rel2001 rel2003 rel2005 rel2007 rel2009 rel2011 rel2013
+129      ! pid;
+130        run;
+
+NOTE: There were 75252 observations read from the data set IN.INPERSON.
+NOTE: The data set TMPHE.PERSON has 75252 observations and 114 variables.
+NOTE: DATA statement used (Total process time):
+      real time           1.96 seconds
+      cpu time            0.10 seconds
+      
+
+131        
+
+NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
+NOTE: The SAS System used:
+      real time           2.44 seconds
+      cpu time            0.23 seconds
+      

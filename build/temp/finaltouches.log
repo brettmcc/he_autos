@@ -1,0 +1,145 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\he_autos\build\temp\finaltouches.log
+  log type:  text
+ opened on:  25 Sep 2016, 14:45:39
+
+. 
+. set more off
+
+. clear all
+
+. 
+. use "E:\he_autos\build\temp\mrgdpsid.dta", clear
+
+. forval y = 2001(2)2013 {
+  2.         local y2back = `y' - 2
+  3.         gen hmvalchg2yrsback`y' = hmval`y' - hmval`y2back' if soldHome`y'!=. & soldHome`y'!=1
+  4.         gen hmvalincr2yrsback`y' = (hmvalchg2yrsback`y'>0) if hmvalchg2yrsback`y'!=.
+  5.         gen hmvalincr2yrsback_gt2pct`y' = (((hmval`y' - hmval`y2back')/hmval`y2back'-1)>.02) if ((hmval`y' - hmval`y2back')/hmval`y2back'-1)!=.
+  6. }
+(11,012 missing values generated)
+(11,012 missing values generated)
+(10,802 missing values generated)
+(10,884 missing values generated)
+(10,884 missing values generated)
+(10,649 missing values generated)
+(10,822 missing values generated)
+(10,822 missing values generated)
+(10,553 missing values generated)
+(10,780 missing values generated)
+(10,780 missing values generated)
+(10,517 missing values generated)
+(10,601 missing values generated)
+(10,601 missing values generated)
+(10,470 missing values generated)
+(10,632 missing values generated)
+(10,632 missing values generated)
+(10,521 missing values generated)
+(10,692 missing values generated)
+(10,692 missing values generated)
+(10,594 missing values generated)
+
+. 
+. local vars = "hmowner secMtg hmval vehboughtinlast2yrs headrace hmvalchg2yrsback headmarital WGT headedu famsize hmvalincr2yrsback hmvalincr2yrsback_gt2pct faminc have_stock newvehboughtinlast2yrs"
+
+. reshape long `vars', i(pid) j(year)
+(note: j = 1999 2001 2003 2005 2007 2009 2011 2013)
+(note: hmvalchg2yrsback1999 not found)
+(note: hmvalincr2yrsback1999 not found)
+(note: hmvalincr2yrsback_gt2pct1999 not found)
+(note: newvehboughtinlast2yrs2013 not found)
+
+Data                               wide   ->   long
+-----------------------------------------------------------------------------
+Number of obs.                    14329   ->  114632
+Number of variables                 282   ->     182
+j variable (8 values)                     ->   year
+xij variables:
+hmowner1999 hmowner2001 ... hmowner2013   ->   hmowner
+   secMtg1999 secMtg2001 ... secMtg2013   ->   secMtg
+      hmval1999 hmval2001 ... hmval2013   ->   hmval
+vehboughtinlast2yrs1999 vehboughtinlast2yrs2001 ... vehboughtinlast2yrs2013->vehboughtinlast2yrs
+headrace1999 headrace2001 ... headrace2013->   headrace
+hmvalchg2yrsback1999 hmvalchg2yrsback2001 ... hmvalchg2yrsback2013->hmvalchg2yrsback
+headmarital1999 headmarital2001 ... headmarital2013->headmarital
+            WGT1999 WGT2001 ... WGT2013   ->   WGT
+headedu1999 headedu2001 ... headedu2013   ->   headedu
+famsize1999 famsize2001 ... famsize2013   ->   famsize
+hmvalincr2yrsback1999 hmvalincr2yrsback2001 ... hmvalincr2yrsback2013->hmvalincr2yrsback
+hmvalincr2yrsback_gt2pct1999 hmvalincr2yrsback_gt2pct2001 ... hmvalincr2yrsback_gt2pct2013->hmvalincr2yrsback_gt2pct
+   faminc1999 faminc2001 ... faminc2013   ->   faminc
+have_stock1999 have_stock2001 ... have_stock2013->have_stock
+newvehboughtinlast2yrs1999 newvehboughtinlast2yrs2001 ... newvehboughtinlast2yrs2013->newvehboughtinlast2yrs
+-----------------------------------------------------------------------------
+
+. keep pid year `vars'
+
+. gen hmvalchg2yrsback_lag1 = hmvalchg2yrsback[_n-1]
+(89,752 missing values generated)
+
+. gen hmvalincr2yrsback_lag1 = hmvalincr2yrsback[_n-1]
+(89,752 missing values generated)
+
+. gen hmvalincr2yrsback_gt2pct_lag1 = hmvalincr2yrsback_gt2pct[_n-1]
+(88,435 missing values generated)
+
+. 
+. /*Individuals cannot change race or get less educated*/
+. count if headrace!=headrace[_n-1] & headrace!=. & headrace[_n-1]!=. & pid==pid[_n-1]
+  1,835
+
+. count if headrace!=headrace[_n+1] & headrace!=. & headrace[_n+1]!=. & pid==pid[_n+1]
+  1,835
+
+. count if headedu<headedu[_n-1] & headedu!=. & headedu[_n-1]!=. & pid==pid[_n-1]
+  4,447
+
+. count if headedu>headedu[_n+1] & headedu!=. & headedu[_n+1]!=. & pid==pid[_n+1]
+  4,447
+
+. 
+. *drop from 2013 since it has an anomalously lower rate of bought car in last 2 years
+. drop if year==2013
+(14,329 observations deleted)
+
+. 
+. *make second mortgage variable a dummy for whether or not individual has one, assuming dont know or 
+. *refused responses indicate the respondent doesnt have one;
+. gen mtg2 = (secMtg==1) if hmowner==1
+(67,730 missing values generated)
+
+. gen newvehboughtinlast2yrs_dummy = (newvehboughtinlast2yrs >0 & newvehboughtinlast2yrs != . )
+
+. drop secMtg
+
+. 
+. 
+. label define race 1 "White" 2 "Black" 3 "Other"
+
+. label define marital 1 "Married" 2 "Single" 3 "Widowed" 4 "Divorced" 5 "Separated"
+
+. label define edu 1 "high school dropout" 2 "high school grad" 3 "Some college" 4 "college grad or more"
+
+. label define hmown 1 "Homeowner" 5 "Rents" 8 "Neither owns/rents"
+
+. label values headrace race
+
+. label values headmarital marital
+
+. label values headedu edu
+
+. label values hmowner hmown
+
+. 
+. save "E:\he_autos\build\output\mrgdPsid.dta", replace
+(note: file E:\he_autos\build\output\mrgdPsid.dta not found)
+file E:\he_autos\build\output\mrgdPsid.dta saved
+
+. 
+. log close
+      name:  <unnamed>
+       log:  E:\he_autos\build\temp\finaltouches.log
+  log type:  text
+ closed on:  25 Sep 2016, 14:45:41
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

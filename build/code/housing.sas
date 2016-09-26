@@ -1,14 +1,11 @@
 * Housing.sas
 * Brett McCully, August 2016;
 
-proc printto log='W:\he_autos-master\build\temp\housing.log' new;
-run;
+%include 'setlibraries.sas';
 
 *clear out any remaining work files;
 proc datasets lib=work kill memtype=data nolist;
 run;
-libname in "W:\rawpsid";
-libname tmphe "W:\he_autos-master\build\temp";
 
 /**VARIABLES**/
 *id, 1968-2013;
@@ -164,5 +161,3 @@ data tmphe.housing;
 	merge housing:;
 run;
 
-proc printto;
-run;
